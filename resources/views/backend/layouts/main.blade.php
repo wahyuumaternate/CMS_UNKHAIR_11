@@ -44,6 +44,9 @@
     <link href="{{ asset('summernote/summernote-bs4.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
+    @stack('css')
+    <link rel="stylesheet" href="{{ asset('vendor/laravel-filemanager/css/lfm.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/laravel-filemanager/css/dropzone.min.css') }}">
 </head>
 
 <body>
@@ -169,8 +172,23 @@
         @endif
     </script>
 
-    @yield('js')
-
+    @stack('scripts')
+    <!-- Include Laravel File Manager's script -->
+    <script src="{{ asset('vendor/laravel-filemanager/js/filemanager.js') }}"></script>
+    <script src="{{ asset('vendor/laravel-filemanager/js/dropzone.min.js') }}"></script>
+    <script>
+        // Handle file selection
+        window.addEventListener('message', function(event) {
+            if (event.origin === "{{ url('/') }}") {
+                var data = event.data;
+                if (data && data.link) {
+                    console.log('File URL:', data.link); // Handle the file URL as needed
+                    // Example: Show the selected file URL in an alert
+                    alert('File URL: ' + data.link);
+                }
+            }
+        }, false);
+    </script>
 </body>
 
 </html>

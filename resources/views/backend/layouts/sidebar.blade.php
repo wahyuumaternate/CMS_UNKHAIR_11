@@ -104,25 +104,11 @@
                      </div>
                  </li>
                  <li class="nav-item">
-                     <a data-bs-toggle="collapse" href="#sidebarLayouts">
+                     <a href="{{ route('media.index') }}">
                          <i class="fas fa-camera"></i>
                          <p>Media</p>
-                         <span class="caret"></span>
+
                      </a>
-                     <div class="collapse" id="sidebarLayouts">
-                         <ul class="nav nav-collapse">
-                             <li>
-                                 <a href="sidebar-style-2.html">
-                                     <span class="sub-item">Sidebar Style 2</span>
-                                 </a>
-                             </li>
-                             <li>
-                                 <a href="icon-menu.html">
-                                     <span class="sub-item">Icon Menu</span>
-                                 </a>
-                             </li>
-                         </ul>
-                     </div>
                  </li>
                  <li class="nav-item">
                      <a data-bs-toggle="collapse" href="#forms">
@@ -190,14 +176,26 @@
                      </div>
                  </li>
                  <li class="nav-item">
-                     <a href="widgets.html">
+                     <a data-bs-toggle="collapse" href="#pengaturan">
                          <i class="fas fa-cogs"></i>
                          <p>Pengaturan</p>
-                         <span class="badge badge-success">4</span>
+                         <span class="caret"></span>
                      </a>
+                     <div class="collapse" id="pengaturan">
+                         <ul class="nav nav-collapse">
+                             <li>
+                                 <a href="charts/charts.html">
+                                     <span class="sub-item">Umum</span>
+                                 </a>
+                             </li>
+                             <li>
+                                 <a href="charts/sparkline.html">
+                                     <span class="sub-item">Sparkline</span>
+                                 </a>
+                             </li>
+                         </ul>
+                     </div>
                  </li>
-
-
              </ul>
          </div>
      </div>

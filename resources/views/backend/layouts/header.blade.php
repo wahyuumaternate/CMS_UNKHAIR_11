@@ -52,6 +52,7 @@
                     <a class="nav-link dropdown-toggle" href="#" id="messageDropdown" role="button"
                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-envelope"></i>
+                        <span class="notification">4</span>
                     </a>
                     <ul class="dropdown-menu messages-notif-box animated fadeIn" aria-labelledby="messageDropdown">
                         <li>
