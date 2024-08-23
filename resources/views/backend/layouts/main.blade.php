@@ -41,7 +41,7 @@
 
     {{-- summernote --}}
     {{-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"> --}}
-    <link href="{{ asset('summernote/summernote-bs4.min.css') }}" rel="stylesheet">
+    {{-- <link href="{{ asset('summernote/summernote-bs4.min.css') }}" rel="stylesheet"> --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
     @stack('css')
@@ -106,37 +106,37 @@
         $(document).ready(function() {
             $("#basic-datatables").DataTable({});
 
-            $("#multi-filter-select").DataTable({
-                pageLength: 5,
-                initComplete: function() {
-                    this.api()
-                        .columns()
-                        .every(function() {
-                            var column = this;
-                            var select = $(
-                                    '<select class="form-select"><option value=""></option></select>'
-                                )
-                                .appendTo($(column.footer()).empty())
-                                .on("change", function() {
-                                    var val = $.fn.dataTable.util.escapeRegex($(this).val());
+            // $("#multi-filter-select").DataTable({
+            //     pageLength: 5,
+            //     initComplete: function() {
+            //         this.api()
+            //             .columns()
+            //             .every(function() {
+            //                 var column = this;
+            //                 var select = $(
+            //                         '<select class="form-select"><option value=""></option></select>'
+            //                     )
+            //                     .appendTo($(column.footer()).empty())
+            //                     .on("change", function() {
+            //                         var val = $.fn.dataTable.util.escapeRegex($(this).val());
 
-                                    column
-                                        .search(val ? "^" + val + "$" : "", true, false)
-                                        .draw();
-                                });
+            //                         column
+            //                             .search(val ? "^" + val + "$" : "", true, false)
+            //                             .draw();
+            //                     });
 
-                            column
-                                .data()
-                                .unique()
-                                .sort()
-                                .each(function(d, j) {
-                                    select.append(
-                                        '<option value="' + d + '">' + d + "</option>"
-                                    );
-                                });
-                        });
-                },
-            });
+            //                 column
+            //                     .data()
+            //                     .unique()
+            //                     .sort()
+            //                     .each(function(d, j) {
+            //                         select.append(
+            //                             '<option value="' + d + '">' + d + "</option>"
+            //                         );
+            //                     });
+            //             });
+            //     },
+            // });
 
             // // Add Row
             // $("#add-row").DataTable({

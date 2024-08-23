@@ -56,48 +56,23 @@
                      <div class="collapse" id="base">
                          <ul class="nav nav-collapse">
                              <li>
-                                 <a href="components/avatars.html">
-                                     <span class="sub-item">Avatars</span>
+                                 <a href="{{ route('posts.index') }}">
+                                     <span class="sub-item">Semua Posts</span>
+                                 </a>
+                             </li>
+                             <li>
+                                 <a href="{{ route('posts.create') }}">
+                                     <span class="sub-item">Tambah Posts</span>
                                  </a>
                              </li>
                              <li>
                                  <a href="components/buttons.html">
-                                     <span class="sub-item">Buttons</span>
+                                     <span class="sub-item">Kategori</span>
                                  </a>
                              </li>
                              <li>
                                  <a href="components/gridsystem.html">
-                                     <span class="sub-item">Grid System</span>
-                                 </a>
-                             </li>
-                             <li>
-                                 <a href="components/panels.html">
-                                     <span class="sub-item">Panels</span>
-                                 </a>
-                             </li>
-                             <li>
-                                 <a href="components/notifications.html">
-                                     <span class="sub-item">Notifications</span>
-                                 </a>
-                             </li>
-                             <li>
-                                 <a href="components/sweetalert.html">
-                                     <span class="sub-item">Sweet Alert</span>
-                                 </a>
-                             </li>
-                             <li>
-                                 <a href="components/font-awesome-icons.html">
-                                     <span class="sub-item">Font Awesome Icons</span>
-                                 </a>
-                             </li>
-                             <li>
-                                 <a href="components/simple-line-icons.html">
-                                     <span class="sub-item">Simple Line Icons</span>
-                                 </a>
-                             </li>
-                             <li>
-                                 <a href="components/typography.html">
-                                     <span class="sub-item">Typography</span>
+                                     <span class="sub-item">Tag</span>
                                  </a>
                              </li>
                          </ul>

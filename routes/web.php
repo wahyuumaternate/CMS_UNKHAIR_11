@@ -1,11 +1,14 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Models\Posts;
 use Illuminate\Support\Facades\Route;
 // use UniSharp\LaravelFilemanager\Lfm;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/post', function () {
+    return view('welcome',[
+        'posts'=> Posts::all(),
+    ]);
 });
 
 // Daftarkan rute-rute Laravel File Manager secara terpisah
