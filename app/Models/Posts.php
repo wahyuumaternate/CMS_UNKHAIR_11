@@ -14,4 +14,9 @@ class Posts extends Model
     protected $casts = [
         'status' => PostStatus::class,
     ];
+
+    public function categories()
+    {
+        return $this->belongsToMany(Categories::class, 'posts_categories', 'post_id', 'category_id');
+    }
 }

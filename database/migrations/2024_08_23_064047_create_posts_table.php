@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('slug');
-            $table->string('excerp');
+            $table->string('excerpt');
             $table->string('image');
+            $table->string('author');
             $table->integer('views');
             $table->longText('content');
             $table->enum('status', ['draft', 'published', 'trashed'])->default('draft');

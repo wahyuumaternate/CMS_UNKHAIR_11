@@ -21,18 +21,21 @@
                                 @csrf
                                 <div class="mb-3">
                                     <label for="title" class="form-label">Judul</label>
-                                    <input type="text" name="title" id="title" class="form-control" required>
+                                    <input type="text" value="{{ old('title') }}" name="title" id="title"
+                                        class="form-control" required>
                                 </div>
                                 <div class="mb-3">
                                     <div class="mb-3">
                                         <label for="slug" class="form-label">Slug</label>
-                                        <input type="text" id="slug-display" class="form-control" readonly>
-                                        <input type="hidden" name="slug" id="slug" required>
+                                        <input type="text" id="slug-display" class="form-control"
+                                            value="{{ old('slug') }}" readonly>
+                                        <input type="hidden" name="slug" id="slug" required
+                                            value="{{ old('slug') }}">
                                     </div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="content" class="form-label">Konten</label>
-                                    <textarea name="content" id="editor" class="form-control" rows="10"></textarea>
+                                    <textarea name="content" id="editor" class="form-control" rows="10">{{ old('content') }}</textarea>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Simpan</button>
 
@@ -48,7 +51,8 @@
                                     <label for="image" class="form-label">Gambar</label>
                                     <div class="input-group">
                                         <input type="text" name="image" id="fileUrl"
-                                            class="form-control @error('image') is-invalid @enderror" readonly>
+                                            class="form-control @error('image') is-invalid @enderror"
+                                            value="{{ old('image') }}" readonly>
                                         <button type="button" class="btn btn-secondary" onclick="openFileManager()">Pilih
                                             Gambar</button>
                                     </div>
@@ -62,16 +66,45 @@
                                     <img id="imagePreview" src="" alt="Preview Gambar"
                                         style="max-width: 100%; height: auto; display: none;">
                                 </div>
-
+                                <div class="form-group">
+                                    <label class="form-label">Categories</label>
+                                    <br>
+                                    <div class="selectgroup selectgroup-pills">
+                                        @foreach ($categories as $category)
+                                            <label class="selectgroup-item">
+                                                <input type="checkbox" name="categories[]" value="{{ $category->id }}"
+                                                    class="selectgroup-input"
+                                                    {{ in_array($category->id, old('categories', [])) ? 'checked' : '' }}>
+                                                <span class="selectgroup-button">{{ $category->name }}</span>
+                                            </label>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Tags</label>
+                                    <br>
+                                    <div class="selectgroup selectgroup-pills">
+                                        @foreach ($categories as $category)
+                                            <label class="selectgroup-item">
+                                                <input type="checkbox" name="categories[]" value="{{ $category->id }}"
+                                                    class="selectgroup-input"
+                                                    {{ in_array($category->id, old('categories', [])) ? 'checked' : '' }}>
+                                                <span class="selectgroup-button">{{ $category->name }}</span>
+                                            </label>
+                                        @endforeach
+                                    </div>
+                                </div>
                                 <div class="mb-3">
                                     <label for="status" class="form-label">Status</label>
                                     <select name="status" id="status" class="form-control" required>
-                                        <option value="draft">Draft</option>
-                                        <option value="published">Published</option>
-                                        <option value="trashed">Trashed</option>
+                                        <option value="draft" {{ old('status') == 'draft' ? 'selected' : '' }}>Draft
+                                        </option>
+                                        <option value="published" {{ old('status') == 'published' ? 'selected' : '' }}>
+                                            Published</option>
+                                        <option value="trashed" {{ old('status') == 'trashed' ? 'selected' : '' }}>Trashed
+                                        </option>
                                     </select>
                                 </div>
-
                             </div>
                         </div>
                     </div>

@@ -5,10 +5,8 @@ use App\Models\Posts;
 use Illuminate\Support\Facades\Route;
 // use UniSharp\LaravelFilemanager\Lfm;
 
-Route::get('/post', function () {
-    return view('welcome',[
-        'posts'=> Posts::all(),
-    ]);
+Route::get('/', function () {
+    return view('welcome');
 });
 
 // Daftarkan rute-rute Laravel File Manager secara terpisah

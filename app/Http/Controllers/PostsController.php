@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Enums\PostStatus;
+use App\Models\Categories;
 use App\Models\Posts;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Log;
 class PostsController extends Controller
 {
     public function index(Request $request)
@@ -35,20 +36,23 @@ class PostsController extends Controller
     }
     
     public function create(){
-        return view('backend.posts.create');
+        $categories = Categories::all();
+        return view('backend.posts.create', compact('categories'));
     }
 // Menyimpan post dan gambar
 public function store(Request $request)
 {
     try {
        // dd($request->all());
-    $request->validate([
+   $validatedData = $request->validate([
         'title' => 'required|string|max:255|unique:posts',
         // 'slug' => 'required|string|max:255|unique:posts',
         // 'excerpt' => 'required|string|max:255',
-        'image' => 'required|url|regex:/\.(jpg|jpeg|png)$/i',
+        // 'image' => 'required|url|regex:/\.(jpg|jpeg|png)$/i',
         'content' => 'required',
-        'status' => 'required|in:draft,published,trashed'
+        'status' => 'required|in:draft,published,trashed',
+        'categories' => 'array|required',
+        'categories.*' => 'exists:categories,id',
     ]);
 
     $post = new Posts();
@@ -58,12 +62,18 @@ public function store(Request $request)
     $post->status = $request->input('status');
     $post->content = $request->input('content');
     $post->views = 0;
-    $post->image = $request->input('image');;
+    $post->author = Auth::user()->name;
+    $post->image = $request->input('image');
     $post->save();
+
+     // Attach categories
+     if (!empty($validatedData['categories'])) {
+        $post->categories()->attach($validatedData['categories']);
+    }
 
     return redirect()->route('posts.index')->with('success', 'Post created successfully.');
 } catch (\Throwable $th) {
-        return redirect()->back()->with('error', 'Post created successfully.'.$th->getMessage());
+        return redirect()->back()->with('error', 'Post created Unsuccessfully. '.$th->getMessage())->withInput();
         //throw $th;
     }
 }

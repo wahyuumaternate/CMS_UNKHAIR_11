@@ -160,7 +160,7 @@
         });
     </script>
 
-    <script>
+    {{-- <script>
         @if (session('success'))
             toastr.success("{{ session('success') }}", 'Success');
         @elseif (session('error'))
@@ -170,7 +170,7 @@
         @elseif (session('info'))
             toastr.info("{{ session('info') }}", 'Info');
         @endif
-    </script>
+    </script> --}}
 
     @stack('scripts')
     <!-- Include Laravel File Manager's script -->
@@ -188,6 +188,71 @@
                 }
             }
         }, false);
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            // Menampilkan notifikasi jika ada pesan sukses
+            @if (session('success'))
+                $.notify({
+                    title: 'Berhasil!',
+                    message: '{{ session('success') }}',
+                    icon: 'fa fa-check'
+                }, {
+                    type: 'success',
+                    placement: {
+                        from: 'bottom',
+                        align: 'right'
+                    },
+                    delay: 2000, // Durasi tampilan notifikasi dalam milidetik
+                    timer: 2000 // Durasi tampilan notifikasi dalam milidetik
+                });
+            @endif
+
+            // Menampilkan notifikasi jika ada pesan error
+            @if (session('error'))
+                $.notify({
+                    title: 'Error!',
+                    message: '{{ session('error') }}',
+                    icon: 'fa fa-times'
+                }, {
+                    type: 'danger',
+                    placement: {
+                        from: 'bottom',
+                        align: 'right'
+                    },
+                    delay: 2000, // Durasi tampilan notifikasi dalam milidetik
+                    timer: 0 // Durasi tampilan notifikasi dalam milidetik
+                });
+            @endif
+
+            // Tombol notifikasi tambahan
+            $("#displayNotif").on("click", function() {
+                var placementFrom = 'bottom'; // Menampilkan dari bawah
+                var placementAlign = 'right'; // Penempatan di kanan
+                var state = 'success'; // Jenis notifikasi (success, danger, dll.)
+                var style = 'withicon'; // Menampilkan ikon
+
+                var content = {
+                    message: 'Notifikasi berhasil ditampilkan!',
+                    title: "Notifikasi",
+                    icon: style === "withicon" ? "fa fa-bell" : "none",
+                    url: "index.html",
+                    target: "_blank"
+                };
+
+                $.notify(content, {
+                    type: state,
+                    placement: {
+                        from: placementFrom,
+                        align: placementAlign
+                    },
+                    delay: 2000, // Durasi tampilan notifikasi dalam milidetik
+                    timer: 2000 // Durasi tampilan notifikasi dalam milidetik
+                });
+            });
+
+        });
     </script>
 </body>
 
