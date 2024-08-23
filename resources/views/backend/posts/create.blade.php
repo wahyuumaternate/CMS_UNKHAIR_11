@@ -3,22 +3,21 @@
 @section('body')
     <div class="container">
         <div class="page-inner">
-            <div class="card">
-                <div class="card-body">
-                    <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
-                        <div>
-                            <h3 class="fw-bold mb-3">Dashboard</h3>
-                            <h6 class="op-7 mb-2">Tambah Post</h6>
-                        </div>
-                        <div class="ms-md-auto py-2 py-md-0">
-                            {{-- <a href="#" class="btn btn-label-info btn-round me-2">Manage</a> --}}
-                            {{-- <a href="#" class="btn btn-primary btn-round"><i class="fa fa-plus"></i> Tambah User</a> --}}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h4 class="mb-4">Tambah Post</h4>
-                            <form method="POST" action="{{ route('posts.store') }}" enctype="multipart/form-data">
+            <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
+                <div>
+                    <h3 class="fw-bold mb-3">Tambah Post</h3>
+                    {{-- <h6 class="op-7 mb-2">Tambah Post</h6> --}}
+                </div>
+                <div class="ms-md-auto py-2 py-md-0">
+                    {{-- <a href="#" class="btn btn-label-info btn-round me-2">Manage</a> --}}
+                    {{-- <a href="#" class="btn btn-primary btn-round"><i class="fa fa-plus"></i> Tambah User</a> --}}
+                </div>
+            </div>
+            <form method="POST" action="{{ route('posts.store') }}" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-body">
                                 @csrf
                                 <div class="mb-3">
                                     <label for="title" class="form-label">Judul</label>
@@ -31,22 +30,39 @@
                                         <input type="hidden" name="slug" id="slug" required>
                                     </div>
                                 </div>
-                                {{-- <div class="mb-3">
-                                    <label for="excerpt" class="form-label">Excerpt</label>
-                                    <input type="text" name="excerpt" id="excerpt" class="form-control" required>
-                                </div> --}}
-                                <div class="mb-3">
-                                    <label for="image" class="form-label">Gambar</label>
-                                    <div class="input-group">
-                                        <input type="text" name="image" id="fileUrl" class="form-control" readonly>
-                                        <button type="button" class="btn btn-secondary" onclick="openFileManager()">Pilih
-                                            Gambar</button>
-                                    </div>
-                                </div>
                                 <div class="mb-3">
                                     <label for="content" class="form-label">Konten</label>
                                     <textarea name="content" id="editor" class="form-control" rows="10"></textarea>
                                 </div>
+                                <button type="submit" class="btn btn-primary">Simpan</button>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+
+                                @csrf
+                                <div class="mb-3">
+                                    <label for="image" class="form-label">Gambar</label>
+                                    <div class="input-group">
+                                        <input type="text" name="image" id="fileUrl"
+                                            class="form-control @error('image') is-invalid @enderror" readonly>
+                                        <button type="button" class="btn btn-secondary" onclick="openFileManager()">Pilih
+                                            Gambar</button>
+                                    </div>
+                                    @error('image')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <!-- Preview Gambar -->
+                                <div class="mb-3">
+                                    <img id="imagePreview" src="" alt="Preview Gambar"
+                                        style="max-width: 100%; height: auto; display: none;">
+                                </div>
+
                                 <div class="mb-3">
                                     <label for="status" class="form-label">Status</label>
                                     <select name="status" id="status" class="form-control" required>
@@ -55,12 +71,12 @@
                                         <option value="trashed">Trashed</option>
                                     </select>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Simpan</button>
-                            </form>
+
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 
@@ -84,6 +100,8 @@
         function openFileManager() {
             let route_prefix = "{{ url('laravel-filemanager') }}";
             window.open(route_prefix + '?type=file', 'FileManager', 'width=800,height=600');
+
+
         }
 
         window.SetUrl = function(items) {
@@ -92,6 +110,10 @@
                 document.getElementById('fileUrl').value = file_url;
                 // Optionally, update a preview of the selected image
                 // document.getElementById('filePreview').src = file_url;
+                // Show the image preview
+                const imagePreview = document.getElementById('imagePreview');
+                imagePreview.src = file_url;
+                imagePreview.style.display = 'block';
             }
         };
 

@@ -46,7 +46,7 @@ public function store(Request $request)
         'title' => 'required|string|max:255|unique:posts',
         // 'slug' => 'required|string|max:255|unique:posts',
         // 'excerpt' => 'required|string|max:255',
-        'image' => 'required',
+        'image' => 'required|url|regex:/\.(jpg|jpeg|png)$/i',
         'content' => 'required',
         'status' => 'required|in:draft,published,trashed'
     ]);
