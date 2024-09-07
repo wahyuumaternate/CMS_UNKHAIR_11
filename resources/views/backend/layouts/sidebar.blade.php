@@ -109,26 +109,12 @@
                      </a>
                  </li>
                  <li class="nav-item">
-                     <a data-bs-toggle="collapse" href="#maps">
+                     <a href="{{ route('tema.index') }}">
                          <i class="far fa-window-restore"></i>
                          <p>Tema</p>
-                         <span class="caret"></span>
                      </a>
-                     <div class="collapse" id="maps">
-                         <ul class="nav nav-collapse">
-                             <li>
-                                 <a href="maps/googlemaps.html">
-                                     <span class="sub-item">Google Maps</span>
-                                 </a>
-                             </li>
-                             <li>
-                                 <a href="maps/jsvectormap.html">
-                                     <span class="sub-item">Jsvectormap</span>
-                                 </a>
-                             </li>
-                         </ul>
-                     </div>
                  </li>
+
                  <li class="nav-item">
                      <a data-bs-toggle="collapse" href="#charts">
                          <i class="fas fa-user-cog"></i>

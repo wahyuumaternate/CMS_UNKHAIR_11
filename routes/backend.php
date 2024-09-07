@@ -4,6 +4,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ThemeController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -28,6 +29,9 @@ Route::prefix('/cms-unkhair/cp')->middleware('auth')->group(function () {
     Route::post('/posts/store', [PostsController::class, 'store'])->name('posts.store');
     // Route::post('/upload-image', [PostsController::class, 'uploadImage'])->name('upload.image');
     Route::post('/posts/bulk', [PostsController::class, 'bulk'])->name('posts.bulk_action');
-
+    // themes
+    
+    Route::get('/tema', [ThemeController::class, 'index'])->name('tema.index');
+    Route::get('/ganti-tema/{themeId}', [ThemeController::class, 'switchTheme'])->name('ganti.tema');
 
 });

@@ -108,30 +108,38 @@ public function show($id)
         
         // Log::info('Bulk action received: ' . $action);
         // Log::info('Selected posts: ' . implode(', ', $selectedPosts));
-
-        if ($action === 'trash') {
-            Posts::whereIn('id', $selectedPosts)
-                ->update(['status' => PostStatus::Trashed->value, 'deleted_at' => now()]);
-            // Soft delete tidak perlu mengatur deleted_at secara manual
-        } elseif ($action === 'delete') {
-            Posts::whereIn('id', $selectedPosts)
-                ->forceDelete(); // Menghapus permanen
-        } elseif ($action === 'publish') {
-            Posts::whereIn('id', $selectedPosts)
-                ->update(['status' => PostStatus::Published->value]);
-            // Menghapus timestamp deleted_at tidak diperlukan
-        } elseif ($action === 'draft') {
-            Posts::whereIn('id', $selectedPosts)
-                ->update(['status' => PostStatus::Draft->value]);
-            // Menghapus timestamp deleted_at tidak diperlukan
-        } elseif ($action === 'kembalikan') {
-            Posts::whereIn('id', $selectedPosts)
-                ->restore(); // Mengembalikan dari soft delete
-            Posts::whereIn('id', $selectedPosts)
-                ->update(['status' => PostStatus::Published->value]);
+        if ($selectedPosts) {
+            if ($action === 'trash') {
+                Posts::whereIn('id', $selectedPosts)
+                    ->update(['status' => PostStatus::Trashed->value, 'deleted_at' => now()]);
+                // Soft delete tidak perlu mengatur deleted_at secara manual
+            } elseif ($action === 'delete') {
+                Posts::whereIn('id', $selectedPosts)
+                    ->forceDelete(); // Menghapus permanen
+            } elseif ($action === 'publish') {
+                Posts::whereIn('id', $selectedPosts)
+                    ->update(['status' => PostStatus::Published->value]);
+                // Menghapus timestamp deleted_at tidak diperlukan
+            } elseif ($action === 'draft') {
+                Posts::whereIn('id', $selectedPosts)
+                    ->update(['status' => PostStatus::Draft->value]);
+                // Menghapus timestamp deleted_at tidak diperlukan
+            } elseif ($action === 'kembalikan') {
+                Posts::whereIn('id', $selectedPosts)
+                    ->restore(); // Mengembalikan dari soft delete
+                Posts::whereIn('id', $selectedPosts)
+                    ->update(['status' => PostStatus::Published->value]);
+            }else{
+                return redirect()->back()
+                         ->with('error', 'Pilih Tindakan!');
+            }
+    
+            return redirect()->route('posts.index', ['status' => $request->query('status')])
+                         ->with('success', 'Tindakan bulk berhasil dilakukan!');
+        }else{
+            return redirect()->back()
+            ->with('error', 'Pilih Post Terlebih Dahulu!');
         }
-
-        return redirect()->route('posts.index', ['status' => $request->query('status')])
-                     ->with('success', 'Tindakan bulk berhasil dilakukan!');
+        
     }
 }
