@@ -50,7 +50,7 @@
                                 <div class="mb-3">
                                     <label for="image" class="form-label">Gambar</label>
                                     <div class="input-group">
-                                        <input type="text" name="image" id="fileUrl"
+                                        <input type="hidden" name="image" id="fileUrl"
                                             class="form-control @error('image') is-invalid @enderror"
                                             value="{{ old('image') }}" readonly>
                                         <button type="button" class="btn btn-secondary" onclick="openFileManager()">Pilih

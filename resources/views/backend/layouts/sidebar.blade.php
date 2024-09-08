@@ -45,7 +45,7 @@
                      <span class="sidebar-mini-icon">
                          <i class="fa fa-ellipsis-h"></i>
                      </span>
-                     <h4 class="text-section">Components</h4>
+                     <h4 class="text-section">Halaman</h4>
                  </li>
                  <li class="nav-item">
                      <a data-bs-toggle="collapse" href="#base">
@@ -114,7 +114,12 @@
                          <p>Tema</p>
                      </a>
                  </li>
-
+                 <li class="nav-section">
+                     <span class="sidebar-mini-icon">
+                         <i class="fa fa-ellipsis-h"></i>
+                     </span>
+                     <h4 class="text-section">Pengaturan</h4>
+                 </li>
                  <li class="nav-item">
                      <a data-bs-toggle="collapse" href="#charts">
                          <i class="fas fa-user-cog"></i>

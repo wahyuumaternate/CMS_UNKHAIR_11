@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Categories;
+use App\Models\Theme;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -30,5 +31,20 @@ class DatabaseSeeder extends Seeder
             'slug' => 'News',
             'name' => 'news',
         ]);
+
+        Theme::create([
+            'name' => 'news-master',
+            'path' => 'themes/news-master',
+            'image' => 'themes/news-master.png',
+            'active' => 1,
+        ]);
+
+        Theme::create([
+            'name' => 'nextpage-lite',
+            'path' => 'themes/nextpage-lite',
+            'image' => 'themes/nextpage-lite.png',
+            'active' => 0,
+        ]);
+        
     }
 }
