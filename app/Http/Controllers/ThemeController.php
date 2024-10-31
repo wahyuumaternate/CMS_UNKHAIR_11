@@ -33,6 +33,6 @@ class ThemeController extends Controller
         $theme->active = true;
         $theme->save();
     
-        return redirect()->back();
+        return redirect()->back()->with('success','Tema Berhasil Di Ganti');
     }
 }

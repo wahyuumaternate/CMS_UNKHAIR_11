@@ -78,28 +78,41 @@
                          </ul>
                      </div>
                  </li>
+
                  <li class="nav-item">
                      <a href="{{ route('media.index') }}">
                          <i class="fas fa-camera"></i>
-                         <p>Media</p>
+                         <p>Galeri</p>
 
                      </a>
                  </li>
                  <li class="nav-item">
                      <a data-bs-toggle="collapse" href="#forms">
                          <i class="fas fa-file"></i>
-                         <p>Halaman</p>
+                         <p>Laman</p>
                          <span class="caret"></span>
                      </a>
                      <div class="collapse" id="forms">
                          <ul class="nav nav-collapse">
                              <li>
-                                 <a href="forms/forms.html">
-                                     <span class="sub-item">Basic Form</span>
+                                 <a href="">
+                                     <span class="sub-item">Semua Laman</span>
+                                 </a>
+                             </li>
+                             <li>
+                                 <a href="">
+                                     <span class="sub-item">Tambah Laman</span>
                                  </a>
                              </li>
                          </ul>
                      </div>
+                 </li>
+                 <li class="nav-item">
+                     <a href="{{ route('media.index') }}">
+                         <i class="fas fa-folder"></i>
+                         <p>Media</p>
+
+                     </a>
                  </li>
                  <li class="nav-item">
                      <a href="../../documentation/index.html">

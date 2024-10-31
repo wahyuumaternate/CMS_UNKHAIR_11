@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Drag and Drop Menu with Submenus</title>
+        <link
+            rel="stylesheet"
+            href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css"
+        />
+        <style>
+            /* Basic styling for the menu container and items */
+            ul {
+                list-style-type: none;
+                padding-left: 0;
+                max-width: 300px;
+                border: 1px solid #ccc;
+                padding: 10px;
+                background-color: #f9f9f9;
+            }
+
+            #menu li {
+                padding: 10px;
+                margin: 5px 0;
+                background-color: #f0f0f0;
+                border: 1px solid #ccc;
+                cursor: move;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                transition: margin-left 0.2s; /* Smooth transition for indentation */
+            }
+
+            /* Styling for sub-menu items with indentation */
+            .submenu {
+                margin-left: 20px;
+            }
+
+            /* Highlight style for drag-and-drop */
+            .ui-state-highlight {
+                height: 1.5em;
+                line-height: 1.2em;
+                background: #d9e6f2;
+                border: 1px dashed #0073e6;
+                margin-left: 0 !important;
+                transition: margin-left 0.2s;
+            }
+
+            /* Styling for custom link labels */
+            .label {
+                font-size: 12px;
+                color: #888;
+            }
+        </style>
+    </head>
+    <body>
+        <h2>Drag and Drop Menu with Submenus</h2>
+        <ul id="menu">
+            <li data-id="1">
+                Home default <span class="label">Custom link</span>
+            </li>
+            <li data-id="2">Home 2 <span class="label">Custom link</span></li>
+            <li data-id="3">Home <span class="label">Custom link</span></li>
+            <li data-id="4">Home 3 <span class="label">Custom link</span></li>
+            <li data-id="5">
+                Galleries <span class="label">Custom link</span>
+            </li>
+            <li data-id="6">Post layouts <span class="label">Post</span></li>
+            <li data-id="7" class="submenu">
+                Default <span class="label">Post</span>
+            </li>
+            <li data-id="8" class="submenu">
+                Full top <span class="label">Post</span>
+            </li>
+            <li data-id="9" class="submenu">
+                Inline <span class="label">Post</span>
+            </li>
+            <li data-id="10">Pages <span class="label">Custom link</span></li>
+        </ul>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
+        <script>
+            $(function () {
+                // Initialize sortable with custom handling
+                $("#menu").sortable({
+                    placeholder: "ui-state-highlight",
+                    start: function (event, ui) {
+                        // Store the initial position of the item being dragged
+                        ui.item.data("startPosition", ui.item.index());
+                    },
+                    sort: function (event, ui) {
+                        adjustPlaceholderIndent(ui.placeholder, ui.helper);
+                    },
+                    stop: function (event, ui) {
+                        adjustIndentation(ui.item);
+                        saveMenuStructure();
+                    },
+                });
+
+                // Adjust the indentation of the placeholder based on the dragged item's level
+                function adjustPlaceholderIndent(placeholder, helper) {
+                    // Get the left margin of the helper (the dragged item)
+                    let helperMarginLeft = parseInt(helper.css("margin-left"));
+
+                    // Check if dragged item is moving right (to become a submenu)
+                    if (helperMarginLeft >= 20) {
+                        // Apply the same margin to the placeholder to match the dragged item
+                        placeholder.css("margin-left", "20px");
+                    } else {
+                        // Reset margin if moving to the main level
+                        placeholder.css("margin-left", "0px");
+                    }
+                }
+
+                // Function to adjust indentation based on position
+                function adjustIndentation(item) {
+                    let startPosition = item.data("startPosition");
+                    let endPosition = item.index();
+
+                    // Check if item was dragged to the right (down in hierarchy)
+                    if (endPosition > startPosition) {
+                        // Indent the item as a sub-menu
+                        item.addClass("submenu");
+                        item.css("margin-left", "20px");
+                    } else {
+                        // Remove indent if moved back to main level
+                        item.removeClass("submenu");
+                        item.css("margin-left", "0px");
+                    }
+                }
+
+                // Function to save and print menu structure
+                function saveMenuStructure() {
+                    let menuStructure = [];
+                    let parent = null;
+
+                    $("#menu li").each(function () {
+                        let menuItem = {
+                            id: $(this).data("id"),
+                            text: $(this).text().trim(),
+                            parent_id: parent,
+                        };
+
+                        // If item is indented, set it as a sub-menu item
+                        if ($(this).hasClass("submenu")) {
+                            menuItem.parent_id = parent;
+                        } else {
+                            parent = menuItem.id; // Update parent for next items
+                        }
+
+                        menuStructure.push(menuItem);
+                    });
+
+                    // Print menu structure in console for verification
+                    console.log(
+                        "Menu Structure:",
+                        JSON.stringify(menuStructure)
+                    );
+                }
+            });
+        </script>
+    </body>
+</html>
