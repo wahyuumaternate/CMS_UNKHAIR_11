@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MediaController;
+use App\Http\Controllers\MenuItemController;
+use App\Http\Controllers\PageController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ThemeController;
@@ -33,5 +35,11 @@ Route::prefix('/cms-unkhair/cp')->middleware('auth')->group(function () {
     
     Route::get('/tema', [ThemeController::class, 'index'])->name('tema.index');
     Route::get('/ganti-tema/{themeId}', [ThemeController::class, 'switchTheme'])->name('ganti.tema');
-
+    // pages
+    Route::get('/pages/create', [PageController::class, 'create'])->name('pages.create');
+    Route::post('/pages', [PageController::class, 'store'])->name('pages.store');
+    // menus
+    Route::get('/menus/create', [MenuItemController::class, 'create'])->name('menus.create');
+    Route::post('/menus', [MenuItemController::class, 'store'])->name('menus.store');
+    Route::get('/menus', [MenuItemController::class, 'index'])->name('menus.index');
 });

@@ -87,12 +87,12 @@
                      </a>
                  </li>
                  <li class="nav-item">
-                     <a data-bs-toggle="collapse" href="#forms">
+                     <a data-bs-toggle="collapse" href="#laman">
                          <i class="fas fa-file"></i>
                          <p>Laman</p>
                          <span class="caret"></span>
                      </a>
-                     <div class="collapse" id="forms">
+                     <div class="collapse" id="laman">
                          <ul class="nav nav-collapse">
                              <li>
                                  <a href="">
@@ -100,7 +100,28 @@
                                  </a>
                              </li>
                              <li>
+                                 <a href="{{ route('pages.create') }}">
+                                     <span class="sub-item">Tambah Laman</span>
+                                 </a>
+                             </li>
+                         </ul>
+                     </div>
+                 </li>
+                 <li class="nav-item">
+                     <a data-bs-toggle="collapse" href="#menu">
+                         <i class="fas fa-file"></i>
+                         <p>Menu</p>
+                         <span class="caret"></span>
+                     </a>
+                     <div class="collapse" id="menu">
+                         <ul class="nav nav-collapse">
+                             <li>
                                  <a href="">
+                                     <span class="sub-item">Semua Laman</span>
+                                 </a>
+                             </li>
+                             <li>
+                                 <a href="{{ route('menus.create') }}">
                                      <span class="sub-item">Tambah Laman</span>
                                  </a>
                              </li>
