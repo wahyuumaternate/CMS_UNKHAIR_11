@@ -23,6 +23,120 @@
     <link rel="stylesheet" href="{{ asset('themes/newsMaster/css/slick.css') }}">
     <link rel="stylesheet" href="{{ asset('themes/newsMaster/css/nice-select.css') }}">
     <link rel="stylesheet" href="{{ asset('themes/newsMaster/css/style.css') }}">
+    <style>
+        /* Style dasar untuk navbar */
+        #navigation {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        #navigation>li {
+            position: relative;
+            display: inline-block;
+            margin-right: 20px;
+        }
+
+        #navigation>li>a {
+            text-decoration: none;
+            padding: 10px 15px;
+            color: #333;
+            display: block;
+        }
+
+        /* Tambahkan indikator panah untuk item dengan submenu */
+        .has-submenu>a::after {
+            content: " ▼";
+            font-size: 0.8em;
+            margin-left: 5px;
+            display: inline-block;
+            color: #555;
+        }
+
+        /* Style untuk submenu */
+        .submenu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            min-width: 200px;
+            z-index: 1;
+        }
+
+        .submenu li {
+            position: relative;
+        }
+
+        .submenu li a {
+            padding: 10px 15px;
+            color: #333;
+            text-decoration: none;
+            display: block;
+            white-space: nowrap;
+        }
+
+        .submenu li a:hover {
+            background-color: #ddd;
+        }
+
+        /* Tampilkan submenu saat item di-hover */
+        #navigation>li:hover>.submenu,
+        .submenu li:hover>.submenu {
+            display: block;
+        }
+
+        /* Untuk submenu tingkat berikutnya (sub-submenu) */
+        .submenu .submenu {
+            top: 0;
+            left: 100%;
+            margin-left: 1px;
+            border-left: 1px solid #ccc;
+        }
+
+        /* Perbaiki tampilan saat hover untuk multi-level */
+        .submenu .submenu li a:hover {
+            background-color: #ccc;
+        }
+
+        /* Responsif untuk mobile/tablet */
+        @media (max-width: 768px) {
+
+            /* Submenu turun ke bawah pada ukuran mobile */
+            #navigation {
+                display: block;
+            }
+
+            #navigation>li {
+                display: block;
+                margin: 0;
+            }
+
+            .submenu {
+                position: relative;
+                top: auto;
+                left: auto;
+                border: none;
+            }
+
+            .submenu .submenu {
+                position: relative;
+                top: auto;
+                left: auto;
+                margin-left: 0;
+                border: none;
+            }
+
+            /* Hapus indikator pada mobile untuk menghemat ruang */
+            .has-submenu>a::after {
+                content: "";
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -84,7 +198,7 @@
                 <div class="header-bottom header-sticky">
                     <div class="container">
                         <div class="row align-items-center">
-                            <div class="col-xl-8 col-lg-8 col-md-12 header-flex">
+                            <div class="col-xl-12 col-lg-12 col-md-12 header-flex">
                                 <!-- sticky -->
                                 <div class="sticky-logo">
                                     <a href=""><img src="{{ asset('backend/assets/img/logo-unkhair.png') }}"
@@ -94,23 +208,47 @@
                                 <div class="main-menu d-none d-md-block">
                                     <nav>
                                         <ul id="navigation">
-                                            <li><a href="">Home</a></li>
-                                            <li><a href="about.html">about</a></li>
-                                            <li><a href="categori.html">Category</a></li>
-                                            <li><a href="latest_news.html">Latest News</a></li>
-                                            <li><a href="#">Pages</a>
-                                                <ul class="submenu">
-                                                    <li><a href="blog.html">Blog</a></li>
-                                                    <li><a href="blog_details.html">Blog Details</a></li>
-                                                    <li><a href="elements.html">Element</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="contact.html">Contact</a></li>
+                                            @foreach ($menus as $menu)
+                                                @foreach ($menu->items as $item)
+                                                    <li
+                                                        class="{{ $item->children->isNotEmpty() ? 'has-submenu' : '' }}">
+                                                        <a
+                                                            href="{{ $item->page ? url($item->page->slug) : $item->url }}">{{ $item->label }}</a>
+
+                                                        @if ($item->children->isNotEmpty())
+                                                            <ul class="submenu">
+                                                                @foreach ($item->children as $child)
+                                                                    <li
+                                                                        class="{{ $child->children->isNotEmpty() ? 'has-submenu' : '' }}">
+                                                                        <a
+                                                                            href="{{ $child->page ? url($child->page->slug) : $child->url }}">{{ $child->label }}</a>
+
+                                                                        {{-- Cek untuk sub-submenu --}}
+                                                                        @if ($child->children->isNotEmpty())
+                                                                            <ul class="submenu">
+                                                                                @foreach ($child->children as $subchild)
+                                                                                    <li>
+                                                                                        <a
+                                                                                            href="{{ $subchild->page ? url($subchild->page->slug) : $subchild->url }}">{{ $subchild->label }}</a>
+                                                                                    </li>
+                                                                                @endforeach
+                                                                            </ul>
+                                                                        @endif
+                                                                    </li>
+                                                                @endforeach
+                                                            </ul>
+                                                        @endif
+                                                    </li>
+                                                @endforeach
+                                            @endforeach
                                         </ul>
                                     </nav>
+
+
+
                                 </div>
                             </div>
-                            <div class="col-xl-4 col-lg-4 col-md-4">
+                            {{-- <div class="col-xl-4 col-lg-4 col-md-4">
                                 <div class="header-right f-right d-none d-lg-block">
                                     <!-- Heder social -->
                                     <ul class="header-social">
@@ -125,7 +263,7 @@
                                         <i class="fa fa-search"></i>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                             <!-- Mobile Menu -->
                             <div class="col-12">
                                 <div class="mobile_menu d-block d-md-none"></div>
@@ -150,8 +288,7 @@
                                 <div class="single-slider">
                                     <div class="trending-top mb-30">
                                         <div class="trend-top-img">
-                                            <img src="themes/newsMaster/img/trending/trending_top2.jpg"
-                                                alt="">
+                                            <img src="themes/newsMaster/img/trending/trending_top2.jpg" alt="">
                                             <div class="trend-top-cap">
                                                 <span class="bgr" data-animation="fadeInUp" data-delay=".2s"
                                                     data-duration="1000ms">Business</span>
