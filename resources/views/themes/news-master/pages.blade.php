@@ -23,242 +23,87 @@
     <link rel="stylesheet" href="{{ asset('themes/newsMaster/css/slick.css') }}">
     <link rel="stylesheet" href="{{ asset('themes/newsMaster/css/nice-select.css') }}">
     <link rel="stylesheet" href="{{ asset('themes/newsMaster/css/style.css') }}">
+
+
     <style>
-        /* Style dasar untuk navbar */
-        #navigation {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        #navigation>li {
-            position: relative;
-            display: inline-block;
-            margin-right: 20px;
-        }
-
-        #navigation>li>a {
-            text-decoration: none;
-            padding: 10px 15px;
+        /* General styling for navbar */
+        .navbar-nav .nav-link {
             color: #333;
-            display: block;
+            padding: 10px 15px;
         }
 
-        /* Tambahkan indikator panah untuk item dengan submenu */
-        .has-submenu>a::after {
-            content: " ▼";
-            font-size: 0.8em;
-            margin-left: 5px;
-            display: inline-block;
-            color: #555;
-        }
-
-        /* Style untuk submenu */
-        .submenu {
-            display: none;
+        .dropdown-menu {
             position: absolute;
             top: 100%;
             left: 0;
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-            background-color: #f9f9f9;
-            border: 1px solid #ccc;
+            display: none;
+            margin-top: 0;
+            background-color: #fff;
+            border: 1px solid #ddd;
             min-width: 200px;
-            z-index: 1;
+            z-index: 1000;
         }
 
-        .submenu li {
+        .navbar-nav .dropdown:hover>.dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-submenu {
             position: relative;
         }
 
-        .submenu li a {
-            padding: 10px 15px;
+        .dropdown-submenu>.dropdown-menu {
+            top: 0;
+            left: 100%;
+            margin-left: 0;
+            display: none;
+        }
+
+        .dropdown-submenu:hover>.dropdown-menu {
+            display: block;
+        }
+
+        .navbar-nav .dropdown-menu a {
+            padding: 10px 20px;
             color: #333;
             text-decoration: none;
             display: block;
-            white-space: nowrap;
         }
 
-        .submenu li a:hover {
-            background-color: #ddd;
+        .navbar-nav .dropdown-menu a:hover {
+            background-color: #f8f9fa;
         }
 
-        /* Tampilkan submenu saat item di-hover */
-        #navigation>li:hover>.submenu,
-        .submenu li:hover>.submenu {
-            display: block;
+        .dropdown-menu .dropdown-toggle::after {
+            display: inline-block;
+            margin-left: 4px;
+            vertical-align: middle;
+            content: "";
+            font-size: 12px;
         }
 
-        /* Untuk submenu tingkat berikutnya (sub-submenu) */
-        .submenu .submenu {
-            top: 0;
-            left: 100%;
-            margin-left: 1px;
-            border-left: 1px solid #ccc;
-        }
-
-        /* Perbaiki tampilan saat hover untuk multi-level */
-        .submenu .submenu li a:hover {
-            background-color: #ccc;
-        }
-
-        /* Responsif untuk mobile/tablet */
-        @media (max-width: 768px) {
-
-            /* Submenu turun ke bawah pada ukuran mobile */
-            #navigation {
+        @media (max-width: 992px) {
+            .navbar-nav {
                 display: block;
             }
 
-            #navigation>li {
-                display: block;
-                margin: 0;
+            .dropdown-menu {
+                position: static;
             }
 
-            .submenu {
-                position: relative;
-                top: auto;
-                left: auto;
-                border: none;
-            }
-
-            .submenu .submenu {
-                position: relative;
-                top: auto;
-                left: auto;
+            .dropdown-menu .dropdown-submenu .dropdown-menu {
                 margin-left: 0;
-                border: none;
-            }
-
-            /* Hapus indikator pada mobile untuk menghemat ruang */
-            .has-submenu>a::after {
-                content: "";
             }
         }
     </style>
+
+
+
 </head>
 
 <body>
-    <!-- Preloader Start -->
-    <div id="preloader-active">
-        <div class="preloader d-flex align-items-center justify-content-center">
-            <div class="preloader-inner position-relative">
-                <div class="preloader-circle"></div>
-                <div class="preloader-img pere-text">
-                    <img src="{{ asset('backend/assets/img/logo-unkhair.png') }}" alt="">
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Preloader Start -->
-    <header>
-        <!-- Header Start -->
-        <div class="header-area">
-            <div class="main-header ">
-                <div class="header-top black-bg d-none d-sm-block">
-                    <div class="container">
-                        <div class="col-xl-12">
-                            <div class="row d-flex justify-content-between align-items-center">
-                                <div class="header-info-left">
-                                    <ul>
-                                        <li class="title"><span class="flaticon-energy"></span> trending-title</li>
-                                        <li>Class property employ ancho red multi level mansion</li>
-                                    </ul>
-                                </div>
-                                <div class="header-info-right">
-                                    <ul class="header-date">
-                                        <li><span class="flaticon-calendar"></span> +880166 253 232</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="header-mid gray-bg">
-                    <div class="container">
-                        <div class="row d-flex align-items-center">
-                            <!-- Logo -->
-                            <div class="col-xl-3 col-lg-3 col-md-3 d-none d-md-block">
-                                <div class="logo">
-                                    <a href=""><img src="{{ asset('backend/assets/img/logo-unkhair.png') }}"
-                                            alt="" width="70"></a>
-                                </div>
-                            </div>
-                            <div class="col-xl-9 col-lg-9 col-md-9">
-                                <div class="header-banner f-right ">
-                                    {{-- <img src="{{ asset('themes/newsMaster/img/gallery/header_card.png') }}"
-                                        alt=""> --}}
-                                    <h3>Fakultas Teknik</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="header-bottom header-sticky">
-                    <div class="container">
-                        <div class="row align-items-center">
-                            <div class="col-xl-12 col-lg-12 col-md-12 header-flex">
-                                <!-- sticky -->
-                                <div class="sticky-logo">
-                                    <a href=""><img src="{{ asset('backend/assets/img/logo-unkhair.png') }}"
-                                            alt="" width="50"></a>
-                                </div>
-                                <!-- Main-menu -->
-                                <div class="main-menu d-none d-md-block">
-                                    <nav>
-                                        <ul id="navigation">
-                                            @foreach ($menus as $menu)
-                                                @foreach ($menu->items as $item)
-                                                    <li
-                                                        class="{{ $item->children->isNotEmpty() ? 'has-submenu' : '' }}">
-                                                        <a
-                                                            href="{{ $item->page ? url($item->page->slug) : $item->url }}">{{ $item->label }}</a>
-
-                                                        @if ($item->children->isNotEmpty())
-                                                            <ul class="submenu">
-                                                                @foreach ($item->children as $child)
-                                                                    <li
-                                                                        class="{{ $child->children->isNotEmpty() ? 'has-submenu' : '' }}">
-                                                                        <a
-                                                                            href="{{ $child->page ? url($child->page->slug) : $child->url }}">{{ $child->label }}</a>
-
-                                                                        {{-- Cek untuk sub-submenu --}}
-                                                                        @if ($child->children->isNotEmpty())
-                                                                            <ul class="submenu">
-                                                                                @foreach ($child->children as $subchild)
-                                                                                    <li>
-                                                                                        <a
-                                                                                            href="{{ $subchild->page ? url($subchild->page->slug) : $subchild->url }}">{{ $subchild->label }}</a>
-                                                                                    </li>
-                                                                                @endforeach
-                                                                            </ul>
-                                                                        @endif
-                                                                    </li>
-                                                                @endforeach
-                                                            </ul>
-                                                        @endif
-                                                    </li>
-                                                @endforeach
-                                            @endforeach
-                                        </ul>
-                                    </nav>
-
-
-
-                                </div>
-                            </div>
-
-                            <div class="col-12">
-                                <div class="mobile_menu d-block d-md-none"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Header End -->
-    </header>
+    {{-- header --}}
+    @include('themes.news-master.layouts.header')
     <main>
         <!-- End Weekly-News -->
         <!--  Recent Articles start -->
@@ -430,7 +275,24 @@
     <!-- Jquery Plugins, main Jquery -->
     <script src="{{ asset('themes/newsMaster/js/plugins.js') }}"></script>
     <script src="{{ asset('themes/newsMaster/js/main.js') }}"></script>
-
+    <!-- JavaScript for Toggle Functionality -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Toggle submenu on click
+            document.querySelectorAll('.dropdown-submenu > a').forEach(function(element) {
+                element.addEventListener("click", function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    let submenu = this.nextElementSibling;
+                    if (submenu.style.display === 'block') {
+                        submenu.style.display = 'none';
+                    } else {
+                        submenu.style.display = 'block';
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>
