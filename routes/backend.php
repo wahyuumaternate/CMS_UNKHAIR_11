@@ -43,4 +43,5 @@ Route::prefix('/cms-unkhair/cp')->middleware('auth')->group(function () {
     Route::post('/menus', [MenuItemController::class, 'store'])->name('menus.store');
     Route::get('/menus', [MenuItemController::class, 'index'])->name('menus.index');
     Route::post('/menu/update-order', [MenuItemController::class, 'updateOrder'])->name('menu.updateOrder');
+    Route::delete('/menu-items/{id}', [MenuItemController::class, 'destroy'])->name('menu-items.destroy');
 });

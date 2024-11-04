@@ -26,19 +26,20 @@ class MenuItemController extends Controller
     public function store(Request $request)
     {
         // Validasi data input
-        $request->validate([
-            'menu_id' => 'required|integer',
+       $data =  $request->validate([
             'label' => 'required|string|max:255',
             'url' => 'nullable|string|max:255',
             'parent_id' => 'nullable|integer',
-            'order' => 'required|integer',
             'page_id' => 'nullable|integer',
         ]);
 
-        // Simpan data menu item ke database
-        MenuItem::create($request->all());
+        $data['menu_id'] = 1;
+        $data['order'] = MenuItem::where('menu_id', $request->menu_id)->max('order') + 1;
 
-        return redirect()->back()->with('success', 'Menu item created successfully.');
+        // Simpan data menu item ke database dengan nilai 'order' otomatis
+        MenuItem::create($data);
+
+        return redirect()->route('menus.create')->with('success', 'Menu item created successfully.');
     }
 
     /**
@@ -79,5 +80,16 @@ class MenuItemController extends Controller
 
         // Return a JSON response
         return response()->json(['success' => true, 'message' => 'Menu order updated successfully']);
+    }
+
+    public function destroy($id)
+    {
+        $menuItem = MenuItem::findOrFail($id);
+        $menuItem->delete();
+
+        
+
+ 
+        return redirect()->back()->with('success', 'Menu item deleted successfully.');
     }
 }

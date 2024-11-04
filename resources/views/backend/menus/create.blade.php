@@ -77,43 +77,201 @@
         <div class="page-inner">
             <h3 class="fw-bold mb-3">Menu Structure</h3>
 
-            <div class="card">
-                <div class="card-body">
-                    <!-- Nestable Menu Structure -->
-                    <div class="dd" id="nestable">
-                        <ol class="dd-list">
-                            @foreach ($menus as $menu)
-                                @foreach ($menu->items as $item)
-                                    <li class="dd-item" data-id="{{ $item->id }}">
-                                        <div class="dd-handle">{{ $item->label }}</div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h2 class="card-title">Tambah Menu</h2>
+                            <form action="{{ route('menus.store') }}" method="POST" class="p-4 border rounded">
+                                @csrf
 
-                                        <!-- Check for children and render nested items -->
-                                        @if ($item->children->isNotEmpty())
-                                            <ol class="dd-list">
-                                                @foreach ($item->children as $child)
-                                                    <li class="dd-item" data-id="{{ $child->id }}">
-                                                        <div class="dd-handle">{{ $child->label }}</div>
 
-                                                        <!-- Check for sub-children -->
-                                                        @if ($child->children->isNotEmpty())
-                                                            <ol class="dd-list">
-                                                                @foreach ($child->children as $subchild)
-                                                                    <li class="dd-item" data-id="{{ $subchild->id }}">
-                                                                        <div class="dd-handle">{{ $subchild->label }}</div>
-                                                                    </li>
-                                                                @endforeach
-                                                            </ol>
-                                                        @endif
-                                                    </li>
-                                                @endforeach
-                                            </ol>
-                                        @endif
-                                    </li>
-                                @endforeach
-                            @endforeach
-                        </ol>
+                                <!-- Label Field -->
+                                <div class="mb-3">
+                                    <label for="label" class="form-label">Label</label>
+                                    <input type="text" name="label" id="label" class="form-control" required
+                                        maxlength="255">
+                                    @error('label')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <!-- URL Field -->
+                                <div class="mb-3">
+                                    <label for="url" class="form-label">URL (optional)</label>
+                                    <input type="text" name="url" id="url" class="form-control"
+                                        maxlength="255">
+                                    @error('url')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <!-- Parent ID Field -->
+                                <div class="mb-3">
+                                    <label for="parent_id" class="form-label">Parent (optional)</label>
+                                    <select name="parent_id" id="parent_id" class="form-select">
+                                        <option value="" selected>-- Select Parent --</option>
+                                        @foreach ($menuItems as $item)
+                                            <option value="{{ $item->id }}">{{ $item->label }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('parent_id')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <!-- Order Field -->
+                                {{-- <div class="mb-3">
+                                    <label for="order" class="form-label">Order</label>
+                                    <input type="number" name="order" id="order" class="form-control" required>
+                                    @error('order')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div> --}}
+
+                                <!-- Page ID Field -->
+                                <div class="mb-3">
+                                    <label for="page_id" class="form-label">Page (optional)</label>
+                                    <select name="page_id" id="page_id" class="form-select">
+                                        <option value="" selected>-- Select Page --</option>
+                                        @foreach ($pages as $page)
+                                            <option value="{{ $page->id }}">{{ $page->title }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('page_id')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">Save Menu Item</button>
+                            </form>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h2 class="card-title">Struktur Menu</h2>
+                            <!-- Nestable Menu Structure -->
+                            <div class="dd" id="nestable">
+                                <ol class="dd-list">
+                                    @foreach ($menus as $menu)
+                                        @foreach ($menu->items as $item)
+                                            <li class="dd-item" data-id="{{ $item->id }}">
+                                                <div class="dd-handle d-flex justify-content-between align-items-center">
+                                                    {{ $item->label }}
+                                                    <!-- Dropdown for Actions -->
+                                                    <div class="dropdown" style="display: inline-block;">
+                                                        <button class="btn btn-sm btn-primary dropdown-toggle"
+                                                            type="button" id="dropdownMenuButton{{ $item->id }}"
+                                                            data-bs-toggle="dropdown" aria-expanded="false">
+
+                                                        </button>
+                                                        <ul class="dropdown-menu"
+                                                            aria-labelledby="dropdownMenuButton{{ $item->id }}">
+                                                            <li>
+                                                                <form action="{{ route('menu-items.destroy', $item->id) }}"
+                                                                    method="POST">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="submit" class="dropdown-item"
+                                                                        onclick="return confirm('Are you sure you want to delete this item?')">Delete</button>
+                                                                </form>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Check for children and render nested items -->
+                                                @if ($item->children->isNotEmpty())
+                                                    <ol class="dd-list">
+                                                        @foreach ($item->children as $child)
+                                                            <li class="dd-item" data-id="{{ $child->id }}">
+                                                                <div
+                                                                    class="dd-handle d-flex justify-content-between align-items-center">
+                                                                    {{ $child->label }}
+                                                                    <div class="dropdown" style="display: inline-block;">
+                                                                        <button
+                                                                            class="btn btn-sm btn-primary dropdown-toggle"
+                                                                            type="button"
+                                                                            id="dropdownMenuButton{{ $child->id }}"
+                                                                            data-bs-toggle="dropdown" aria-expanded="false">
+
+                                                                        </button>
+                                                                        <ul class="dropdown-menu"
+                                                                            aria-labelledby="dropdownMenuButton{{ $child->id }}">
+                                                                            <li>
+                                                                                <form
+                                                                                    action="{{ route('menu-items.destroy', $child->id) }}"
+                                                                                    method="POST">
+                                                                                    @csrf
+                                                                                    @method('DELETE')
+                                                                                    <button type="submit"
+                                                                                        class="dropdown-item"
+                                                                                        onclick="return confirm('Are you sure you want to delete this item?')">Delete</button>
+                                                                                </form>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+
+                                                                <!-- Check for sub-children -->
+                                                                @if ($child->children->isNotEmpty())
+                                                                    <ol class="dd-list">
+                                                                        @foreach ($child->children as $subchild)
+                                                                            <li class="dd-item"
+                                                                                data-id="{{ $subchild->id }}">
+                                                                                <div
+                                                                                    class="dd-handle d-flex justify-content-between align-items-center">
+                                                                                    {{ $subchild->label }}
+                                                                                    <div class="dropdown"
+                                                                                        style="display: inline-block;">
+                                                                                        <button
+                                                                                            class="btn btn-sm btn-primary dropdown-toggle"
+                                                                                            type="button"
+                                                                                            id="dropdownMenuButton{{ $subchild->id }}"
+                                                                                            data-bs-toggle="dropdown"
+                                                                                            aria-expanded="false">
+
+                                                                                        </button>
+                                                                                        <ul class="dropdown-menu"
+                                                                                            aria-labelledby="dropdownMenuButton{{ $subchild->id }}">
+                                                                                            <li>
+                                                                                                <form
+                                                                                                    action="{{ route('menu-items.destroy', $subchild->id) }}"
+                                                                                                    method="POST">
+                                                                                                    @csrf
+                                                                                                    @method('DELETE')
+                                                                                                    <button type="submit"
+                                                                                                        class="dropdown-item"
+                                                                                                        onclick="return confirm('Are you sure you want to delete this item?')">Delete</button>
+                                                                                                </form>
+                                                                                            </li>
+                                                                                        </ul>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                        @endforeach
+                                                                    </ol>
+                                                                @endif
+                                                            </li>
+                                                        @endforeach
+                                                    </ol>
+                                                @endif
+                                            </li>
+                                        @endforeach
+                                    @endforeach
+                                </ol>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+
+
+
             </div>
 
             <!-- Hidden field to store serialized menu structure -->
@@ -125,7 +283,7 @@
 
 @push('scripts')
     <!-- Load jQuery and Nestable2 in correct order -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/nestable2@1.6.0/jquery.nestable.min.js"></script>
 
     <script>
@@ -157,6 +315,14 @@
                         console.error('An error occurred:', error);
                     }
                 });
+            });
+        });
+    </script>
+    <!-- JavaScript untuk menghindari konflik drag -->
+    <script>
+        document.querySelectorAll('.dropdown').forEach(handle => {
+            handle.addEventListener('mousedown', function(event) {
+                event.stopPropagation(); // Menghentikan propagasi event untuk menghindari konflik
             });
         });
     </script>

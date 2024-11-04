@@ -26,21 +26,13 @@
          <div class="sidebar-content">
              <ul class="nav nav-secondary">
                  <li class="nav-item active">
-                     <a data-bs-toggle="collapse" href="#dashboard" class="collapsed" aria-expanded="false">
+                     <a href="{{ route('dashboard') }}">
                          <i class="fas fa-home"></i>
-                         <p>Dasbor</p>
-                         <span class="caret"></span>
+                         <p>Dashboard</p>
+
                      </a>
-                     <div class="collapse" id="dashboard">
-                         <ul class="nav nav-collapse">
-                             <li>
-                                 <a href="../demo1/index.html">
-                                     <span class="sub-item">Dashboard 1</span>
-                                 </a>
-                             </li>
-                         </ul>
-                     </div>
                  </li>
+
                  <li class="nav-section">
                      <span class="sidebar-mini-icon">
                          <i class="fa fa-ellipsis-h"></i>
@@ -86,48 +78,8 @@
 
                      </a>
                  </li>
-                 <li class="nav-item">
-                     <a data-bs-toggle="collapse" href="#laman">
-                         <i class="fas fa-file"></i>
-                         <p>Laman</p>
-                         <span class="caret"></span>
-                     </a>
-                     <div class="collapse" id="laman">
-                         <ul class="nav nav-collapse">
-                             <li>
-                                 <a href="">
-                                     <span class="sub-item">Semua Laman</span>
-                                 </a>
-                             </li>
-                             <li>
-                                 <a href="{{ route('pages.create') }}">
-                                     <span class="sub-item">Tambah Laman</span>
-                                 </a>
-                             </li>
-                         </ul>
-                     </div>
-                 </li>
-                 <li class="nav-item">
-                     <a data-bs-toggle="collapse" href="#menu">
-                         <i class="fas fa-file"></i>
-                         <p>Menu</p>
-                         <span class="caret"></span>
-                     </a>
-                     <div class="collapse" id="menu">
-                         <ul class="nav nav-collapse">
-                             <li>
-                                 <a href="">
-                                     <span class="sub-item">Semua Laman</span>
-                                 </a>
-                             </li>
-                             <li>
-                                 <a href="{{ route('menus.create') }}">
-                                     <span class="sub-item">Tambah Laman</span>
-                                 </a>
-                             </li>
-                         </ul>
-                     </div>
-                 </li>
+
+
                  <li class="nav-item">
                      <a href="{{ route('media.index') }}">
                          <i class="fas fa-folder"></i>
@@ -153,6 +105,34 @@
                          <i class="fa fa-ellipsis-h"></i>
                      </span>
                      <h4 class="text-section">Pengaturan</h4>
+                 </li>
+                 <li class="nav-item">
+                     <a data-bs-toggle="collapse" href="#laman">
+                         <i class="fas fa-file"></i>
+                         <p>Laman</p>
+                         <span class="caret"></span>
+                     </a>
+                     <div class="collapse" id="laman">
+                         <ul class="nav nav-collapse">
+                             <li>
+                                 <a href="">
+                                     <span class="sub-item">Semua Laman</span>
+                                 </a>
+                             </li>
+                             <li>
+                                 <a href="{{ route('pages.create') }}">
+                                     <span class="sub-item">Tambah Laman</span>
+                                 </a>
+                             </li>
+                         </ul>
+                     </div>
+                 </li>
+                 <li class="nav-item">
+                     <a href="{{ route('menus.create') }}">
+                         <i class="fas fa-caret-square-right"></i>
+                         <p>Menu</p>
+
+                     </a>
                  </li>
                  <li class="nav-item">
                      <a data-bs-toggle="collapse" href="#charts">

@@ -16,6 +16,92 @@
     <link rel="stylesheet" href="{{ asset('themes/nextpage-lite/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('themes/nextpage-lite/css/responsive.css') }}">
 
+    <style>
+        /* General styling for navbar */
+        .navbar-nav .nav-link {
+            color: #333;
+            padding: 10px 15px;
+        }
+
+        /* Dropdown Menu Styling */
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            display: none;
+            margin-top: 0;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            min-width: 200px;
+            z-index: 1000;
+        }
+
+        /* Show dropdown on hover */
+        .navbar-nav .dropdown:hover>.dropdown-menu {
+            display: block;
+        }
+
+        /* Submenu Positioning */
+        .dropdown-submenu {
+            position: relative;
+        }
+
+        .dropdown-submenu>.dropdown-menu {
+            top: 0;
+            left: 100%;
+            /* Aligns the submenu to the right of the parent item */
+            margin-left: 0;
+            display: none;
+        }
+
+        /* Show submenu on hover of parent item */
+        .dropdown-submenu:hover>.dropdown-menu {
+            display: block;
+        }
+
+        /* Dropdown items styling */
+        .navbar-nav .dropdown-menu a {
+            padding: 10px 20px;
+            color: #333;
+            text-decoration: none;
+            display: block;
+        }
+
+        .navbar-nav .dropdown-menu a:hover {
+            background-color: #f8f9fa;
+        }
+
+        /* Custom arrow for dropdown toggle items */
+        .dropdown-menu .dropdown-toggle::after {
+            display: inline-block;
+            margin-left: 4px;
+            vertical-align: middle;
+            content: "";
+            font-size: 12px;
+        }
+
+        .dropdown-item,
+        .dropdown-submenu,
+        .dropdown-menu {
+            color: black !important;
+
+        }
+
+        /* Responsive styling for mobile view */
+        @media (max-width: 992px) {
+            .navbar-nav {
+                display: block;
+            }
+
+            .dropdown-menu {
+                position: static;
+            }
+
+            .dropdown-menu .dropdown-submenu .dropdown-menu {
+                margin-left: 0;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -99,13 +185,15 @@
         <!-- adbar end-->
 
         <!-- navbar start -->
+        <!-- navbar start -->
         <nav class="navbar navbar-expand-lg">
             <div class="container nav-container">
                 <div class="responsive-mobile-menu">
                     <div class="logo d-lg-none d-block">
-                        <a class="main-logo" href="">
+                        <a class="main-logo" href="#">
                             <img src="{{ asset('backend/assets/img/logo-unkhair.png') }}" alt="img"
-                                style="max-width: 30px"></a>
+                                style="max-width: 30px">
+                        </a>
                     </div>
                     <button class="menu toggle-btn d-block d-lg-none" data-target="#themes/nextpage_main_menu"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -116,33 +204,62 @@
                 <div class="nav-right-part nav-right-part-mobile">
                     <a class="search header-search" href="#"><i class="fa fa-search"></i></a>
                 </div>
+
                 <div class="collapse navbar-collapse" id="themes/nextpage_main_menu">
                     <ul class="navbar-nav menu-open">
-                        <li class="current-menu-item">
-                            <a href="#banner">Home</a>
-                        </li>
-                        <li class="current-menu-item">
-                            <a href="#trending">Trending News</a>
-                        </li>
-                        <li class="current-menu-item">
-                            <a href="#latest">Latest News</a>
-                        </li>
-                        <li class="current-menu-item">
-                            <a href="#grid">News Grid</a>
-                        </li>
-                        <li class="current-menu-item">
-                            <a target="_blank" href="https://1.envato.market/5OQX2">Pro Version</a>
-                        </li>
+                        <!-- Dynamic menu items from database -->
+                        @foreach ($menus as $menu)
+                            @foreach ($menu->items as $item)
+                                <li
+                                    class="nav-item {{ ($item->children ?? collect())->isNotEmpty() ? 'dropdown' : '' }}">
+                                    <a class="nav-link {{ ($item->children ?? collect())->isNotEmpty() ? 'dropdown-toggle' : '' }}"
+                                        href="{{ $item->page ? url($item->page->slug) : $item->url }}"
+                                        {{ ($item->children ?? collect())->isNotEmpty() ? 'data-toggle=dropdown' : '' }}>
+                                        {{ $item->label }}
+                                    </a>
+
+                                    <!-- First-level dropdown menu -->
+                                    @if (($item->children ?? collect())->isNotEmpty())
+                                        <ul class="dropdown-menu">
+                                            @foreach ($item->children as $child)
+                                                <li
+                                                    class="dropdown-submenu {{ ($child->children ?? collect())->isNotEmpty() ? 'dropdown' : '' }}">
+                                                    <a class="dropdown-item {{ ($child->children ?? collect())->isNotEmpty() ? 'dropdown-toggle' : '' }}"
+                                                        href="{{ $child->page ? url($child->page->slug) : $child->url }}"
+                                                        {{ ($child->children ?? collect())->isNotEmpty() ? 'data-toggle=dropdown' : '' }}>
+                                                        {{ $child->label }}
+                                                    </a>
+
+                                                    <!-- Second-level dropdown menu -->
+                                                    @if (($child->children ?? collect())->isNotEmpty())
+                                                        <ul class="dropdown-menu">
+                                                            @foreach ($child->children as $subchild)
+                                                                <li><a class="dropdown-item"
+                                                                        href="{{ $subchild->page ? url($subchild->page->slug) : $subchild->url }}">
+                                                                        {{ $subchild->label }}
+                                                                    </a></li>
+                                                            @endforeach
+                                                        </ul>
+                                                    @endif
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    @endif
+                                </li>
+                            @endforeach
+                        @endforeach
                     </ul>
                 </div>
-                <div class="nav-right-part nav-right-part-desktop">
-                    <div class="menu-search-inner">
-                        <input type="text" placeholder="Search For">
-                        <button type="submit" class="submit-btn"><i class="fa fa-search"></i></button>
-                    </div>
-                </div>
+
+
+
+
             </div>
         </nav>
+        <!-- navbar end -->
+
+        <!-- navbar end -->
+
     </div>
     <!-- navbar end -->
 
