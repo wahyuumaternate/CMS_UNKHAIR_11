@@ -118,7 +118,7 @@
 
             <!-- Hidden field to store serialized menu structure -->
             <textarea id="nestable-output" name="menu_structure" style="display: none;"></textarea>
-
+            <button class="submit-btn btn btn-primary" onclick="submitMenuOrder()">Submit Order</button>
         </div>
     </div>
 @endsection

@@ -53,4 +53,31 @@ class MenuItemController extends Controller
 
         return view('backend.menus.index', compact('menuItems'));
     }
+
+    public function updateOrder(Request $request)
+    {
+        // Retrieve the menu structure from the request
+        $menuItems = $request->input('menu_structure');
+
+        // Define a recursive function to update parent_id and order for each item
+        function updateMenuItems($items, $parentId = null)
+        {
+            foreach ($items as $index => $item) {
+                MenuItem::where('id', $item['id'])->update([
+                    'parent_id' => $parentId,
+                    'order' => $index + 1,
+                ]);
+
+                if (isset($item['children'])) {
+                    updateMenuItems($item['children'], $item['id']);
+                }
+            }
+        }
+
+        // Update the menu items
+        updateMenuItems($menuItems);
+
+        // Return a JSON response
+        return response()->json(['success' => true, 'message' => 'Menu order updated successfully']);
+    }
 }

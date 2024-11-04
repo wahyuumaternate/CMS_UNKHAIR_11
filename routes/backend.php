@@ -42,4 +42,5 @@ Route::prefix('/cms-unkhair/cp')->middleware('auth')->group(function () {
     Route::get('/menus/create', [MenuItemController::class, 'create'])->name('menus.create');
     Route::post('/menus', [MenuItemController::class, 'store'])->name('menus.store');
     Route::get('/menus', [MenuItemController::class, 'index'])->name('menus.index');
+    Route::post('/menu/update-order', [MenuItemController::class, 'updateOrder'])->name('menu.updateOrder');
 });

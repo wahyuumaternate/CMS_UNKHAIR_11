@@ -40,8 +40,7 @@
     {{-- <link rel="stylesheet" href="{{ asset('backend/assets/css/demo.css') }}" /> --}}
 
     {{-- summernote --}}
-    {{-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"> --}}
-    {{-- <link href="{{ asset('summernote/summernote-bs4.min.css') }}" rel="stylesheet"> --}}
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
     @stack('css')
