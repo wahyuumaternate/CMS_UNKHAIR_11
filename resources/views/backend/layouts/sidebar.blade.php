@@ -115,7 +115,7 @@
                      <div class="collapse" id="laman">
                          <ul class="nav nav-collapse">
                              <li>
-                                 <a href="">
+                                 <a href="{{ route('pages.index') }}">
                                      <span class="sub-item">Semua Laman</span>
                                  </a>
                              </li>

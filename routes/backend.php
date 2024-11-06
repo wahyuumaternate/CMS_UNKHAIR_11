@@ -36,12 +36,15 @@ Route::prefix('/cms-unkhair/cp')->middleware('auth')->group(function () {
     Route::get('/tema', [ThemeController::class, 'index'])->name('tema.index');
     Route::get('/ganti-tema/{themeId}', [ThemeController::class, 'switchTheme'])->name('ganti.tema');
     // pages
+    Route::get('/pages', [PageController::class, 'index'])->name('pages.index');
     Route::get('/pages/create', [PageController::class, 'create'])->name('pages.create');
     Route::post('/pages', [PageController::class, 'store'])->name('pages.store');
+    Route::post('/pages/bulk', [PageController::class, 'bulk'])->name('pages.bulk_action');
     // menus
     Route::get('/menus/create', [MenuItemController::class, 'create'])->name('menus.create');
     Route::post('/menus', [MenuItemController::class, 'store'])->name('menus.store');
     Route::get('/menus', [MenuItemController::class, 'index'])->name('menus.index');
     Route::post('/menu/update-order', [MenuItemController::class, 'updateOrder'])->name('menu.updateOrder');
     Route::delete('/menu-items/{id}', [MenuItemController::class, 'destroy'])->name('menu-items.destroy');
+    Route::patch('/menus/{menu}/update', [MenuItemController::class, 'update'])->name('menus.update');
 });

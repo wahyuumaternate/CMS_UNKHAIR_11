@@ -5,15 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\MenuItem;
 use App\Models\Page;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class MenuItemController extends Controller
 {
     public function create()
     {
         // Mengambil semua item menu dan halaman untuk opsi Parent ID dan Page ID
-        $menuItems = MenuItem::all();  // Untuk parent ID
+        $menuItems = MenuItem::with(['children'])->get();  // Untuk parent ID
         $pages = Page::all();          // Untuk page ID
-
+        
         return view('backend.menus.create', compact('menuItems', 'pages'));
     }
 
@@ -42,18 +43,39 @@ class MenuItemController extends Controller
         return redirect()->route('menus.create')->with('success', 'Menu item created successfully.');
     }
 
+    public function update(Request $request, $id)
+    {
+        // Validate the input data
+        $data = $request->validate([
+            'label' => 'required|string|max:255',
+            'url' => 'nullable|string|max:255',
+            'parent_id' => 'nullable|integer|exists:menu_items,id',
+            'page_id' => 'nullable|integer|exists:pages,id',
+        ]);
+        
+        // Find the menu item by ID
+        $menuItem = MenuItem::findOrFail($id);
+        
+        // dd($menuItem);
+    
+        // Update the menu item with new data
+        $menuItem->update($data);
+        Alert::success('Berhasil', 'Menu Berhasil Diedit');
+        return redirect()->route('menus.create')->with('success', 'Menu item updated successfully.');
+    }
+
     /**
      * Display a listing of the menu items.
      *
      * @return \Illuminate\View\View
      */
-    public function index()
-    {
-        // Mendapatkan semua item menu untuk ditampilkan di halaman index
-        $menuItems = MenuItem::orderBy('order')->get();
+    // public function index()
+    // {
+    //     // Mendapatkan semua item menu untuk ditampilkan di halaman index
+    //     $menuItems = MenuItem::orderBy('order')->get();
 
-        return view('backend.menus.index', compact('menuItems'));
-    }
+    //     return view('backend.menus.index', compact('menuItems'));
+    // }
 
     public function updateOrder(Request $request)
     {
@@ -73,6 +95,8 @@ class MenuItemController extends Controller
                     updateMenuItems($item['children'], $item['id']);
                 }
             }
+
+            
         }
 
         // Update the menu items
@@ -85,11 +109,12 @@ class MenuItemController extends Controller
     public function destroy($id)
     {
         $menuItem = MenuItem::findOrFail($id);
+        // dd($menuItem);
         $menuItem->delete();
 
         
 
- 
+        Alert::success('Berhasil', 'Menu Berhasil Dihapus');
         return redirect()->back()->with('success', 'Menu item deleted successfully.');
     }
 }

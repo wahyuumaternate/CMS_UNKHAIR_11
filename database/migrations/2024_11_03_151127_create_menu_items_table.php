@@ -17,7 +17,7 @@ return new class extends Migration
             // $table->foreignId('page_id')->nullable()->constrained('pages')->onDelete('set null');
             $table->string('label');
             $table->string('url')->nullable();
-            $table->foreignId('parent_id')->nullable()->constrained('menu_items')->onDelete('cascade');
+            $table->foreignId('parent_id')->nullable()->constrained('menu_items')->onDelete('set null');
             $table->integer('order')->default(0);
             $table->timestamps();
         });

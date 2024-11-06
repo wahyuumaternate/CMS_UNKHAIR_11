@@ -8,6 +8,12 @@ use Illuminate\Http\Request;
 
 class PageController extends Controller
 {
+    public function index()
+    {
+          
+        $pages = Page::paginate(10); // Ambil semua halaman dengan paginasi
+        return view('backend.pages.index', compact('pages'));
+    }
     public function create()
     {
         return view('backend.pages.create');
