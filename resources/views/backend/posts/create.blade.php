@@ -15,7 +15,7 @@
             </div>
             <form method="POST" action="{{ route('posts.store') }}" enctype="multipart/form-data">
                 <div class="row">
-                    <div class="col-md-8">
+                    <div class="col-md-9">
                         <div class="card">
                             <div class="card-body">
                                 @csrf
@@ -42,11 +42,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
+                        {{-- gambar --}}
                         <div class="card">
                             <div class="card-body">
 
-                                @csrf
                                 <div class="mb-3">
                                     <label for="image" class="form-label">Gambar</label>
                                     <div class="input-group">
@@ -66,34 +66,35 @@
                                     <img id="imagePreview" src="" alt="Preview Gambar"
                                         style="max-width: 100%; height: auto; display: none;">
                                 </div>
-                                <div class="form-group">
-                                    <label class="form-label">Categories</label>
-                                    <br>
-                                    <div class="selectgroup selectgroup-pills">
+
+                            </div>
+                        </div>
+                        {{-- category --}}
+                        <div class="card">
+                            <div class="card-body">
+
+                                <div class="mb-3">
+                                    <label for="category" class="form-label">Category</label>
+                                    <select name="category" id="category" class="form-control" required>
+                                        <option value="" disabled selected>-- Select Category --</option>
                                         @foreach ($categories as $category)
-                                            <label class="selectgroup-item">
-                                                <input type="checkbox" name="categories[]" value="{{ $category->id }}"
-                                                    class="selectgroup-input"
-                                                    {{ in_array($category->id, old('categories', [])) ? 'checked' : '' }}>
-                                                <span class="selectgroup-button">{{ $category->name }}</span>
-                                            </label>
+                                            <option value="{{ $category->id }}"
+                                                {{ old('category') == $category->id ? 'selected' : '' }}>
+                                                {{ $category->name }}
+                                            </option>
                                         @endforeach
-                                    </div>
+                                    </select>
+                                    @error('category')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
-                                <div class="form-group">
-                                    <label class="form-label">Tags</label>
-                                    <br>
-                                    <div class="selectgroup selectgroup-pills">
-                                        @foreach ($categories as $category)
-                                            <label class="selectgroup-item">
-                                                <input type="checkbox" name="categories[]" value="{{ $category->id }}"
-                                                    class="selectgroup-input"
-                                                    {{ in_array($category->id, old('categories', [])) ? 'checked' : '' }}>
-                                                <span class="selectgroup-button">{{ $category->name }}</span>
-                                            </label>
-                                        @endforeach
-                                    </div>
-                                </div>
+
+                            </div>
+                        </div>
+                        {{-- status --}}
+                        <div class="card">
+                            <div class="card-body">
+
                                 <div class="mb-3">
                                     <label for="status" class="form-label">Status</label>
                                     <select name="status" id="status" class="form-control" required>
@@ -105,6 +106,39 @@
                                         </option>
                                     </select>
                                 </div>
+                            </div>
+                        </div>
+                        {{-- comments --}}
+                        <div class="card">
+                            <div class="card-body">
+                                <label for="category" class="form-label">Comments</label>
+                                <div class="mb-3">
+                                    <label class="form-label">Status Komentar</label>
+                                    <div class="d-flex">
+                                        <div class="form-check me-3">
+                                            <input class="form-check-input" type="radio" name="comments_is_active"
+                                                id="commentsActive" value="1"
+                                                {{ old('comments_is_active') == '1' ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="commentsActive">
+                                                Aktif
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="comments_is_active"
+                                                id="commentsInactive" value="0"
+                                                {{ old('comments_is_active') == '0' ? 'checked' : '' }} checked>
+                                            <label class="form-check-label" for="commentsInactive">
+                                                Tidak Aktif
+                                            </label>
+                                        </div>
+                                    </div>
+                                    @error('comments_is_active')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+
+
                             </div>
                         </div>
                     </div>
@@ -131,7 +165,7 @@
         });
 
         function openFileManager() {
-            let route_prefix = "{{ url('laravel-filemanager') }}";
+            let route_prefix = "{{ url('cms-unkhair-filemanager') }}";
             window.open(route_prefix + '?type=file', 'FileManager', 'width=800,height=600');
 
 
@@ -165,7 +199,7 @@
             ],
             file_picker_callback: function(callback, value, meta) {
                 if (meta.filetype === 'image') {
-                    let route_prefix = "{{ url('laravel-filemanager') }}";
+                    let route_prefix = "{{ url('cms-unkhair-filemanager') }}";
                     window.open(route_prefix + '?type=file', 'FileManager', 'width=800,height=600');
                     window.SetUrl = function(items) {
                         let file_url = items[0].url;

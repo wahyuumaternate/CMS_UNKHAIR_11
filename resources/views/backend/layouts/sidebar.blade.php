@@ -25,11 +25,10 @@
      <div class="sidebar-wrapper scrollbar scrollbar-inner">
          <div class="sidebar-content">
              <ul class="nav nav-secondary">
-                 <li class="nav-item active">
+                 <li class="nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
                      <a href="{{ route('dashboard') }}">
                          <i class="fas fa-home"></i>
                          <p>Dashboard</p>
-
                      </a>
                  </li>
 
@@ -37,140 +36,139 @@
                      <span class="sidebar-mini-icon">
                          <i class="fa fa-ellipsis-h"></i>
                      </span>
-                     <h4 class="text-section">Halaman</h4>
+                     <h4 class="text-section">Pages</h4>
                  </li>
-                 <li class="nav-item">
+
+                 <li class="nav-item {{ request()->routeIs('posts.*') ? 'active submenu' : '' }}">
                      <a data-bs-toggle="collapse" href="#base">
                          <i class="fas fa-newspaper"></i>
-                         <p>Post</p>
+                         <p>Posts</p>
                          <span class="caret"></span>
                      </a>
-                     <div class="collapse" id="base">
+                     <div class="collapse {{ request()->routeIs('posts.*') ? 'show' : '' }}" id="base">
                          <ul class="nav nav-collapse">
-                             <li>
+                             <li class="{{ request()->routeIs('posts.index') ? 'active' : '' }}">
                                  <a href="{{ route('posts.index') }}">
-                                     <span class="sub-item">Semua Posts</span>
+                                     <span class="sub-item">All Posts</span>
                                  </a>
                              </li>
-                             <li>
+                             <li class="{{ request()->routeIs('posts.create') ? 'active' : '' }}">
                                  <a href="{{ route('posts.create') }}">
-                                     <span class="sub-item">Tambah Posts</span>
+                                     <span class="sub-item">Add Posts</span>
                                  </a>
                              </li>
                              <li>
-                                 <a href="components/buttons.html">
-                                     <span class="sub-item">Kategori</span>
-                                 </a>
-                             </li>
-                             <li>
-                                 <a href="components/gridsystem.html">
-                                     <span class="sub-item">Tag</span>
+                                 <a href="#">
+                                     <span class="sub-item">Categories</span>
                                  </a>
                              </li>
                          </ul>
                      </div>
                  </li>
 
-                 <li class="nav-item">
+                 <li class="nav-item {{ request()->routeIs('media.index') ? 'active' : '' }}">
                      <a href="{{ route('media.index') }}">
                          <i class="fas fa-camera"></i>
-                         <p>Galeri</p>
-
+                         <p>Gallery</p>
                      </a>
                  </li>
 
-
-                 <li class="nav-item">
+                 <li class="nav-item {{ request()->routeIs('media.index') ? 'active' : '' }}">
                      <a href="{{ route('media.index') }}">
                          <i class="fas fa-folder"></i>
                          <p>Media</p>
-
                      </a>
                  </li>
-                 <li class="nav-item">
-                     <a href="../../documentation/index.html">
+
+                 <li class="nav-item ">
+                     <a href="">
                          <i class="fab fa-facebook-messenger"></i>
-                         <p>Komentar</p>
+                         <p>Comments</p>
                          <span class="badge badge-secondary">1</span>
                      </a>
                  </li>
-                 <li class="nav-item">
+
+                 <li class="nav-item {{ request()->routeIs('tema.index') ? 'active' : '' }}">
                      <a href="{{ route('tema.index') }}">
                          <i class="far fa-window-restore"></i>
-                         <p>Tema</p>
+                         <p>Themes</p>
                      </a>
                  </li>
+
                  <li class="nav-section">
                      <span class="sidebar-mini-icon">
                          <i class="fa fa-ellipsis-h"></i>
                      </span>
-                     <h4 class="text-section">Pengaturan</h4>
+                     <h4 class="text-section">Settings</h4>
                  </li>
-                 <li class="nav-item">
+
+                 <li class="nav-item {{ request()->routeIs('pages.*') ? 'active submenu' : '' }}">
                      <a data-bs-toggle="collapse" href="#laman">
                          <i class="fas fa-file"></i>
-                         <p>Laman</p>
+                         <p>Pages</p>
                          <span class="caret"></span>
                      </a>
-                     <div class="collapse" id="laman">
+                     <div class="collapse {{ request()->routeIs('pages.*') ? 'show' : '' }}" id="laman">
                          <ul class="nav nav-collapse">
-                             <li>
+                             <li class="{{ request()->routeIs('pages.index') ? 'active' : '' }}">
                                  <a href="{{ route('pages.index') }}">
-                                     <span class="sub-item">Semua Laman</span>
+                                     <span class="sub-item">All Pages</span>
                                  </a>
                              </li>
-                             <li>
+                             <li class="{{ request()->routeIs('pages.create') ? 'active' : '' }}">
                                  <a href="{{ route('pages.create') }}">
-                                     <span class="sub-item">Tambah Laman</span>
+                                     <span class="sub-item">Add Page</span>
                                  </a>
                              </li>
                          </ul>
                      </div>
                  </li>
-                 <li class="nav-item">
+
+                 <li class="nav-item {{ request()->routeIs('menus.create') ? 'active' : '' }}">
                      <a href="{{ route('menus.create') }}">
                          <i class="fas fa-caret-square-right"></i>
                          <p>Menu</p>
-
                      </a>
                  </li>
-                 <li class="nav-item">
+
+                 <li class="nav-item {{ request()->routeIs('users.*') ? 'active submenu' : '' }}">
                      <a data-bs-toggle="collapse" href="#charts">
                          <i class="fas fa-user-cog"></i>
-                         <p>Pengguna</p>
+                         <p>Users</p>
                          <span class="caret"></span>
                      </a>
-                     <div class="collapse" id="charts">
+                     <div class="collapse {{ request()->routeIs('users.*') ? 'show' : '' }}" id="charts">
                          <ul class="nav nav-collapse">
                              <li>
-                                 <a href="charts/charts.html">
+                                 <a href="#">
                                      <span class="sub-item">Chart Js</span>
                                  </a>
                              </li>
                              <li>
-                                 <a href="charts/sparkline.html">
+                                 <a href="#">
                                      <span class="sub-item">Sparkline</span>
                                  </a>
                              </li>
                          </ul>
                      </div>
                  </li>
-                 <li class="nav-item">
+
+                 <li class="nav-item {{ request()->routeIs('settings.*') ? 'active submenu' : '' }}">
                      <a data-bs-toggle="collapse" href="#pengaturan">
                          <i class="fas fa-cogs"></i>
-                         <p>Pengaturan</p>
+                         <p>Settings</p>
                          <span class="caret"></span>
                      </a>
-                     <div class="collapse" id="pengaturan">
+                     <div class="collapse {{ request()->routeIs('settings.*') ? 'show' : '' }}" id="pengaturan">
                          <ul class="nav nav-collapse">
                              <li>
-                                 <a href="charts/charts.html">
-                                     <span class="sub-item">Umum</span>
+                                 <a href="#">
+                                     <span class="sub-item">General</span>
                                  </a>
                              </li>
                              <li>
-                                 <a href="charts/sparkline.html">
-                                     <span class="sub-item">Sparkline</span>
+                                 <a href="#">
+                                     <span class="sub-item">Other Settings</span>
                                  </a>
                              </li>
                          </ul>
@@ -179,5 +177,8 @@
              </ul>
          </div>
      </div>
+
+
+
  </div>
  <!-- End Sidebar -->

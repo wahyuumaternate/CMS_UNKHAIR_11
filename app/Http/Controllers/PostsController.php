@@ -39,44 +39,84 @@ class PostsController extends Controller
         $categories = Categories::all();
         return view('backend.posts.create', compact('categories'));
     }
-// Menyimpan post dan gambar
-public function store(Request $request)
+
+    public function store(Request $request)
 {
-    try {
-       // dd($request->all());
-   $validatedData = $request->validate([
-        'title' => 'required|string|max:255|unique:posts',
-        // 'slug' => 'required|string|max:255|unique:posts',
-        // 'excerpt' => 'required|string|max:255',
-        // 'image' => 'required|url|regex:/\.(jpg|jpeg|png)$/i',
-        'content' => 'required',
-        'status' => 'required|in:draft,published,trashed',
-        'categories' => 'array|required',
-        'categories.*' => 'exists:categories,id',
+    // Validasi input
+    $validatedData = $this->validateRequest($request);
+
+    // Buat dan simpan pos baru menggunakan mass assignment
+    $post = Posts::create([
+        'title' => $validatedData['title'],
+        'slug' => Str::slug($validatedData['title']),
+        'excerpt' => Str::limit(strip_tags($validatedData['content']), 150),
+        'status' => $validatedData['status'],
+        'content' => $validatedData['content'],
+        'comments_is_active' => $validatedData['comments_is_active'], // Ambil gambar
+        'views' => 0, // Atur default views
+        'author' => Auth::user()->name, // Ambil nama penulis
+        'image' => $request->input('image'), // Ambil gambar
     ]);
 
-    $post = new Posts();
-    $post->title = $request->input('title');
-    $post->slug = Str::slug($request->input('title'));
-    $post->excerpt = Str::limit(strip_tags($request->content), 150);
-    $post->status = $request->input('status');
-    $post->content = $request->input('content');
-    $post->views = 0;
-    $post->author = Auth::user()->name;
-    $post->image = $request->input('image');
-    $post->save();
-
-     // Attach categories
-     if (!empty($validatedData['categories'])) {
-        $post->categories()->attach($validatedData['categories']);
+    // Lampirkan kategori jika ada
+    if (!empty($validatedData['category'])) {
+        $post->categories()->attach($validatedData['category']);
     }
 
-    return redirect()->route('posts.index')->with('success', 'Post created successfully.');
-} catch (\Throwable $th) {
-        return redirect()->back()->with('error', 'Post created Unsuccessfully. '.$th->getMessage())->withInput();
-        //throw $th;
-    }
+    return redirect()->route('posts.index')->with('success', 'Post created successfully!');
 }
+
+private function validateRequest(Request $request)
+{
+    return $request->validate([
+        'title' => 'required|string|max:255|unique:posts',
+        'content' => 'required',
+        'status' => 'required|in:draft,published,trashed',
+        'comments_is_active' => 'required|boolean',
+        'category' => 'required|exists:categories,id', // Validasi kategori tunggal
+    ]);
+}
+
+
+
+// Menyimpan post dan gambar
+// public function store(Request $request)
+// {
+//     try {
+//        // dd($request->all());
+//    $validatedData = $request->validate([
+//         'title' => 'required|string|max:255|unique:posts',
+//         // 'slug' => 'required|string|max:255|unique:posts',
+//         // 'excerpt' => 'required|string|max:255',
+//         // 'image' => 'required|url|regex:/\.(jpg|jpeg|png)$/i',
+//         'content' => 'required',
+//         'status' => 'required|in:draft,published,trashed',
+//         'comments_is_active' => 'required|boolean',
+//         'categories' => 'exists:categories,id',
+//     ]);
+
+//     $post = new Posts();
+//     $post->title = $request->input('title');
+//     $post->slug = Str::slug($request->input('title'));
+//     $post->excerpt = Str::limit(strip_tags($request->content), 150);
+//     $post->status = $request->input('status');
+//     $post->content = $request->input('content');
+//     $post->views = 0;
+//     $post->author = Auth::user()->name;
+//     $post->image = $request->input('image');
+//     $post->save();
+
+//      // Attach categories
+//      if (!empty($validatedData['categories'])) {
+//         $post->categories()->attach($validatedData['categories']);
+//     }
+
+//     return redirect()->route('posts.index')->with('success', 'Post created successfully.');
+// } catch (\Throwable $th) {
+//         return redirect()->back()->with('error', 'Post created Unsuccessfully. '.$th->getMessage())->withInput();
+//         //throw $th;
+//     }
+// }
 public function show($id)
 {
     // Temukan post berdasarkan ID

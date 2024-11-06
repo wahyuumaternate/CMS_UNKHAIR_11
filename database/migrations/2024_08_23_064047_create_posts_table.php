@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('author');
             $table->integer('views');
             $table->longText('content');
+            $table->boolean('comments_is_active')->default(true); // Menambahkan kolom is_active
             $table->enum('status', ['draft', 'published', 'trashed'])->default('draft');
             $table->timestamps();
             $table->softDeletes(); // Adds the deleted_at column

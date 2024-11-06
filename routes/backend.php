@@ -14,8 +14,10 @@ use Illuminate\Support\Facades\Route;
 //     return view('dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
+
 Route::prefix('/cms-unkhair/cp')->middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    
 
     // profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -100,7 +100,7 @@
                                 <div class="mb-3">
                                     <label for="url" class="form-label">URL (optional)</label>
                                     <input type="text" name="url" id="url" class="form-control"
-                                        maxlength="255">
+                                        maxlength="255" value="#!">
                                     @error('url')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror

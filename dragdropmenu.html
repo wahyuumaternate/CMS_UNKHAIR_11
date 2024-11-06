@@ -1,164 +1,152 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Drag and Drop Menu with Submenus</title>
+        <title>Universitas Khairun</title>
         <link
             rel="stylesheet"
-            href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
         />
+        <link rel="stylesheet" href="styles.css" />
+        <!-- Tambahkan file CSS kustom Anda di sini -->
         <style>
-            /* Basic styling for the menu container and items */
-            ul {
-                list-style-type: none;
-                padding-left: 0;
-                max-width: 300px;
-                border: 1px solid #ccc;
-                padding: 10px;
-                background-color: #f9f9f9;
+            body {
+                background: #f4f4f4; /* Warna latar belakang */
             }
-
-            #menu li {
-                padding: 10px;
-                margin: 5px 0;
-                background-color: #f0f0f0;
-                border: 1px solid #ccc;
-                cursor: move;
+            .banner {
+                background-image: url("banner-image.jpg"); /* Ganti dengan gambar banner yang sesuai */
+                background-size: cover;
+                height: 300px;
+                color: white;
                 display: flex;
-                justify-content: space-between;
                 align-items: center;
-                transition: margin-left 0.2s; /* Smooth transition for indentation */
+                justify-content: center;
+                text-align: center;
             }
-
-            /* Styling for sub-menu items with indentation */
-            .submenu {
-                margin-left: 20px;
+            .card {
+                margin-bottom: 20px;
             }
-
-            /* Highlight style for drag-and-drop */
-            .ui-state-highlight {
-                height: 1.5em;
-                line-height: 1.2em;
-                background: #d9e6f2;
-                border: 1px dashed #0073e6;
-                margin-left: 0 !important;
-                transition: margin-left 0.2s;
-            }
-
-            /* Styling for custom link labels */
-            .label {
-                font-size: 12px;
-                color: #888;
+            .footer {
+                background-color: #007bff;
+                color: white;
+                padding: 20px 0;
             }
         </style>
     </head>
     <body>
-        <h2>Drag and Drop Menu with Submenus</h2>
-        <ul id="menu">
-            <li data-id="1">
-                Home default <span class="label">Custom link</span>
-            </li>
-            <li data-id="2">Home 2 <span class="label">Custom link</span></li>
-            <li data-id="3">Home <span class="label">Custom link</span></li>
-            <li data-id="4">Home 3 <span class="label">Custom link</span></li>
-            <li data-id="5">
-                Galleries <span class="label">Custom link</span>
-            </li>
-            <li data-id="6">Post layouts <span class="label">Post</span></li>
-            <li data-id="7" class="submenu">
-                Default <span class="label">Post</span>
-            </li>
-            <li data-id="8" class="submenu">
-                Full top <span class="label">Post</span>
-            </li>
-            <li data-id="9" class="submenu">
-                Inline <span class="label">Post</span>
-            </li>
-            <li data-id="10">Pages <span class="label">Custom link</span></li>
-        </ul>
+        <header class="banner">
+            <div>
+                <h1>Universitas Khairun</h1>
+                <p>Stepping Forward Together With Science</p>
+            </div>
+        </header>
 
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
-        <script>
-            $(function () {
-                // Initialize sortable with custom handling
-                $("#menu").sortable({
-                    placeholder: "ui-state-highlight",
-                    start: function (event, ui) {
-                        // Store the initial position of the item being dragged
-                        ui.item.data("startPosition", ui.item.index());
-                    },
-                    sort: function (event, ui) {
-                        adjustPlaceholderIndent(ui.placeholder, ui.helper);
-                    },
-                    stop: function (event, ui) {
-                        adjustIndentation(ui.item);
-                        saveMenuStructure();
-                    },
-                });
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container">
+                <a class="navbar-brand" href="#">Universitas Khairun</a>
+                <button
+                    class="navbar-toggler"
+                    type="button"
+                    data-toggle="collapse"
+                    data-target="#navbarNav"
+                    aria-controls="navbarNav"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                >
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Tentang</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Jurusan</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Berita</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Kontak</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
 
-                // Adjust the indentation of the placeholder based on the dragged item's level
-                function adjustPlaceholderIndent(placeholder, helper) {
-                    // Get the left margin of the helper (the dragged item)
-                    let helperMarginLeft = parseInt(helper.css("margin-left"));
+        <main class="container my-5">
+            <section>
+                <h2>Informasi Terkini</h2>
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <img
+                                src="post-image1.jpg"
+                                class="card-img-top"
+                                alt="Post Image"
+                            />
+                            <!-- Ganti dengan gambar yang sesuai -->
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    Prodi Farmasi Unkhair Bikin Kegiatan
+                                    Tingkatkan Kesadaran Konseling Obat
+                                </h5>
+                                <p class="card-text">
+                                    Deskripsi singkat mengenai kegiatan
+                                    tersebut. Kegiatan ini bertujuan untuk
+                                    meningkatkan pemahaman mahasiswa tentang
+                                    pentingnya konseling obat.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <img
+                                src="post-image2.jpg"
+                                class="card-img-top"
+                                alt="Post Image"
+                            />
+                            <!-- Ganti dengan gambar yang sesuai -->
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    Dua Tim Mahasiswa Unkhair Sabet Juara di UMW
+                                    Youth Entrepreneurship Competition 2024
+                                </h5>
+                                <p class="card-text">
+                                    Deskripsi singkat mengenai pencapaian tim
+                                    mahasiswa. Kompetisi ini diadakan untuk
+                                    mendorong jiwa kewirausahaan di kalangan
+                                    mahasiswa.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <aside class="col-md-4">
+                        <h2>Berita Lainnya</h2>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                FB Unkhair Sosialisasi PPK Ormawa Tahun 2024
+                            </li>
+                            <li class="list-group-item">
+                                Mengadakan Tridharma Perguruan Tinggi
+                            </li>
+                        </ul>
+                    </aside>
+                </div>
+            </section>
+        </main>
 
-                    // Check if dragged item is moving right (to become a submenu)
-                    if (helperMarginLeft >= 20) {
-                        // Apply the same margin to the placeholder to match the dragged item
-                        placeholder.css("margin-left", "20px");
-                    } else {
-                        // Reset margin if moving to the main level
-                        placeholder.css("margin-left", "0px");
-                    }
-                }
+        <footer class="footer text-center">
+            <div class="container">
+                <p>&copy; 2024 Universitas Khairun. All rights reserved.</p>
+            </div>
+        </footer>
 
-                // Function to adjust indentation based on position
-                function adjustIndentation(item) {
-                    let startPosition = item.data("startPosition");
-                    let endPosition = item.index();
-
-                    // Check if item was dragged to the right (down in hierarchy)
-                    if (endPosition > startPosition) {
-                        // Indent the item as a sub-menu
-                        item.addClass("submenu");
-                        item.css("margin-left", "20px");
-                    } else {
-                        // Remove indent if moved back to main level
-                        item.removeClass("submenu");
-                        item.css("margin-left", "0px");
-                    }
-                }
-
-                // Function to save and print menu structure
-                function saveMenuStructure() {
-                    let menuStructure = [];
-                    let parent = null;
-
-                    $("#menu li").each(function () {
-                        let menuItem = {
-                            id: $(this).data("id"),
-                            text: $(this).text().trim(),
-                            parent_id: parent,
-                        };
-
-                        // If item is indented, set it as a sub-menu item
-                        if ($(this).hasClass("submenu")) {
-                            menuItem.parent_id = parent;
-                        } else {
-                            parent = menuItem.id; // Update parent for next items
-                        }
-
-                        menuStructure.push(menuItem);
-                    });
-
-                    // Print menu structure in console for verification
-                    console.log(
-                        "Menu Structure:",
-                        JSON.stringify(menuStructure)
-                    );
-                }
-            });
-        </script>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     </body>
 </html>
