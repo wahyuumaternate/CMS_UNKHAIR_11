@@ -99,8 +99,8 @@
                                 <!-- URL Field -->
                                 <div class="mb-3">
                                     <label for="url" class="form-label">URL (optional)</label>
-                                    <input type="text" name="url" id="url" class="form-control"
-                                        maxlength="255" value="#!">
+                                    <input type="text" name="url" id="url" class="form-control" maxlength="255"
+                                        value="#!">
                                     @error('url')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
@@ -136,7 +136,7 @@
                                     @enderror
                                 </div>
 
-                                <button type="submit" class="btn btn-secondary">Save Menu Item</button>
+                                <button type="submit" class="btn btn-secondary">Save Menu</button>
                             </form>
 
                         </div>
