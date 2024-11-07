@@ -22,37 +22,35 @@
     </div>
     <!-- Navbar Header -->
     <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
-        <div class="container-fluid">
-            <nav class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <button type="submit" class="btn btn-search pe-1">
-                            <i class="fa fa-search search-icon"></i>
-                        </button>
-                    </div>
-                    <input type="text" placeholder="Search ..." class="form-control" />
-                </div>
-            </nav>
-
-            <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
-                <li class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none">
-                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
-                        aria-expanded="false" aria-haspopup="true">
-                        <i class="fa fa-search"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-search animated fadeIn">
-                        <form class="navbar-left navbar-form nav-search">
-                            <div class="input-group">
-                                <input type="text" placeholder="Search ..." class="form-control" />
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <!-- Centered Search Icon Trigger for Modal -->
+            <div class="d-flex justify-content-center flex-grow-1">
+                <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#searchModal">
+                    <nav class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <button type="submit" class="btn btn-search pe-1">
+                                    <i class="fa fa-search search-icon"></i>
+                                </button>
                             </div>
-                        </form>
-                    </ul>
+                            <input type="text" placeholder="Search ..." class="form-control">
+                        </div>
+                    </nav>
+                </a>
+            </div>
+
+            <!-- Right Aligned User Profile Dropdown -->
+            <ul class="navbar-nav align-items-center">
+                <li class="nav-item">
+                    <a class="btn btn-primary" href="/" target="_blank" role="button">
+                        <i class="fa fa-globe me-1"></i> Visit Website
+                    </a>
                 </li>
+
                 <li class="nav-item topbar-icon dropdown hidden-caret">
                     <a class="nav-link dropdown-toggle" href="#" id="messageDropdown" role="button"
                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-envelope"></i>
-                        <span class="notification">4</span>
                     </a>
                     <ul class="dropdown-menu messages-notif-box animated fadeIn" aria-labelledby="messageDropdown">
                         <li>
@@ -62,50 +60,68 @@
                             </div>
                         </li>
                         <li>
-                            <div class="message-notif-scroll scrollbar-outer">
-                                <div class="notif-center">
-                                    <a href="#">
-                                        <div class="notif-img">
-                                            <img src="assets/img/jm_denis.jpg" alt="Img Profile" />
-                                        </div>
-                                        <div class="notif-content">
-                                            <span class="subject">Jimmy Denis</span>
-                                            <span class="block"> How are you ? </span>
-                                            <span class="time">5 minutes ago</span>
-                                        </div>
-                                    </a>
-                                    <a href="#">
-                                        <div class="notif-img">
-                                            <img src="assets/img/chadengle.jpg" alt="Img Profile" />
-                                        </div>
-                                        <div class="notif-content">
-                                            <span class="subject">Chad</span>
-                                            <span class="block"> Ok, Thanks ! </span>
-                                            <span class="time">12 minutes ago</span>
-                                        </div>
-                                    </a>
-                                    <a href="#">
-                                        <div class="notif-img">
-                                            <img src="assets/img/mlane.jpg" alt="Img Profile" />
-                                        </div>
-                                        <div class="notif-content">
-                                            <span class="subject">Jhon Doe</span>
-                                            <span class="block">
-                                                Ready for the meeting today...
-                                            </span>
-                                            <span class="time">12 minutes ago</span>
-                                        </div>
-                                    </a>
-                                    <a href="#">
-                                        <div class="notif-img">
-                                            <img src="assets/img/talha.jpg" alt="Img Profile" />
-                                        </div>
-                                        <div class="notif-content">
-                                            <span class="subject">Talha</span>
-                                            <span class="block"> Hi, Apa Kabar ? </span>
-                                            <span class="time">17 minutes ago</span>
-                                        </div>
-                                    </a>
+                            <div class="scroll-wrapper message-notif-scroll scrollbar-outer"
+                                style="position: relative;">
+                                <div class="message-notif-scroll scrollbar-outer scroll-content"
+                                    style="height: auto; margin-bottom: 0px; margin-right: 0px; max-height: 0px;">
+                                    <div class="notif-center">
+                                        <a href="#">
+                                            <div class="notif-img">
+                                                <img src="../assets/img/jm_denis.jpg" alt="Img Profile">
+                                            </div>
+                                            <div class="notif-content">
+                                                <span class="subject">Jimmy Denis</span>
+                                                <span class="block"> How are you ? </span>
+                                                <span class="time">5 minutes ago</span>
+                                            </div>
+                                        </a>
+                                        <a href="#">
+                                            <div class="notif-img">
+                                                <img src="../assets/img/chadengle.jpg" alt="Img Profile">
+                                            </div>
+                                            <div class="notif-content">
+                                                <span class="subject">Chad</span>
+                                                <span class="block"> Ok, Thanks ! </span>
+                                                <span class="time">12 minutes ago</span>
+                                            </div>
+                                        </a>
+                                        <a href="#">
+                                            <div class="notif-img">
+                                                <img src="../assets/img/mlane.jpg" alt="Img Profile">
+                                            </div>
+                                            <div class="notif-content">
+                                                <span class="subject">Jhon Doe</span>
+                                                <span class="block">
+                                                    Ready for the meeting today...
+                                                </span>
+                                                <span class="time">12 minutes ago</span>
+                                            </div>
+                                        </a>
+                                        <a href="#">
+                                            <div class="notif-img">
+                                                <img src="../assets/img/talha.jpg" alt="Img Profile">
+                                            </div>
+                                            <div class="notif-content">
+                                                <span class="subject">Talha</span>
+                                                <span class="block"> Hi, Apa Kabar ? </span>
+                                                <span class="time">17 minutes ago</span>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="scroll-element scroll-x">
+                                    <div class="scroll-element_outer">
+                                        <div class="scroll-element_size"></div>
+                                        <div class="scroll-element_track"></div>
+                                        <div class="scroll-bar"></div>
+                                    </div>
+                                </div>
+                                <div class="scroll-element scroll-y">
+                                    <div class="scroll-element_outer">
+                                        <div class="scroll-element_size"></div>
+                                        <div class="scroll-element_track"></div>
+                                        <div class="scroll-bar"></div>
+                                    </div>
                                 </div>
                             </div>
                         </li>
@@ -117,65 +133,85 @@
                     </ul>
                 </li>
                 <li class="nav-item topbar-icon dropdown hidden-caret">
-                    <a class="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button"
+                    <a class="nav-link dropdown-toggle" href="#" id="messageDropdown" role="button"
                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fa fa-bell"></i>
-                        <span class="notification">4</span>
+                        <i class="fa fa-envelope"></i>
                     </a>
-                    <ul class="dropdown-menu notif-box animated fadeIn" aria-labelledby="notifDropdown">
+                    <ul class="dropdown-menu messages-notif-box animated fadeIn" aria-labelledby="messageDropdown">
                         <li>
-                            <div class="dropdown-title">
-                                You have 4 new notification
+                            <div class="dropdown-title d-flex justify-content-between align-items-center">
+                                Messages
+                                <a href="#" class="small">Mark all as read</a>
                             </div>
                         </li>
                         <li>
-                            <div class="notif-scroll scrollbar-outer">
-                                <div class="notif-center">
-                                    <a href="#">
-                                        <div class="notif-icon notif-primary">
-                                            <i class="fa fa-user-plus"></i>
-                                        </div>
-                                        <div class="notif-content">
-                                            <span class="block"> New user registered </span>
-                                            <span class="time">5 minutes ago</span>
-                                        </div>
-                                    </a>
-                                    <a href="#">
-                                        <div class="notif-icon notif-success">
-                                            <i class="fa fa-comment"></i>
-                                        </div>
-                                        <div class="notif-content">
-                                            <span class="block">
-                                                Rahmad commented on Admin
-                                            </span>
-                                            <span class="time">12 minutes ago</span>
-                                        </div>
-                                    </a>
-                                    <a href="#">
-                                        <div class="notif-img">
-                                            <img src="assets/img/profile2.jpg" alt="Img Profile" />
-                                        </div>
-                                        <div class="notif-content">
-                                            <span class="block">
-                                                Reza send messages to you
-                                            </span>
-                                            <span class="time">12 minutes ago</span>
-                                        </div>
-                                    </a>
-                                    <a href="#">
-                                        <div class="notif-icon notif-danger">
-                                            <i class="fa fa-heart"></i>
-                                        </div>
-                                        <div class="notif-content">
-                                            <span class="block"> Farrah liked Admin </span>
-                                            <span class="time">17 minutes ago</span>
-                                        </div>
-                                    </a>
+                            <div class="scroll-wrapper message-notif-scroll scrollbar-outer"
+                                style="position: relative;">
+                                <div class="message-notif-scroll scrollbar-outer scroll-content"
+                                    style="height: auto; margin-bottom: 0px; margin-right: 0px; max-height: 0px;">
+                                    <div class="notif-center">
+                                        <a href="#">
+                                            <div class="notif-img">
+                                                <img src="../assets/img/jm_denis.jpg" alt="Img Profile">
+                                            </div>
+                                            <div class="notif-content">
+                                                <span class="subject">Jimmy Denis</span>
+                                                <span class="block"> How are you ? </span>
+                                                <span class="time">5 minutes ago</span>
+                                            </div>
+                                        </a>
+                                        <a href="#">
+                                            <div class="notif-img">
+                                                <img src="../assets/img/chadengle.jpg" alt="Img Profile">
+                                            </div>
+                                            <div class="notif-content">
+                                                <span class="subject">Chad</span>
+                                                <span class="block"> Ok, Thanks ! </span>
+                                                <span class="time">12 minutes ago</span>
+                                            </div>
+                                        </a>
+                                        <a href="#">
+                                            <div class="notif-img">
+                                                <img src="../assets/img/mlane.jpg" alt="Img Profile">
+                                            </div>
+                                            <div class="notif-content">
+                                                <span class="subject">Jhon Doe</span>
+                                                <span class="block">
+                                                    Ready for the meeting today...
+                                                </span>
+                                                <span class="time">12 minutes ago</span>
+                                            </div>
+                                        </a>
+                                        <a href="#">
+                                            <div class="notif-img">
+                                                <img src="../assets/img/talha.jpg" alt="Img Profile">
+                                            </div>
+                                            <div class="notif-content">
+                                                <span class="subject">Talha</span>
+                                                <span class="block"> Hi, Apa Kabar ? </span>
+                                                <span class="time">17 minutes ago</span>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="scroll-element scroll-x">
+                                    <div class="scroll-element_outer">
+                                        <div class="scroll-element_size"></div>
+                                        <div class="scroll-element_track"></div>
+                                        <div class="scroll-bar"></div>
+                                    </div>
+                                </div>
+                                <div class="scroll-element scroll-y">
+                                    <div class="scroll-element_outer">
+                                        <div class="scroll-element_size"></div>
+                                        <div class="scroll-element_track"></div>
+                                        <div class="scroll-bar"></div>
+                                    </div>
                                 </div>
                             </div>
                         </li>
                         <li>
-                            <a class="see-all" href="javascript:void(0);">See all notifications<i
+                            <a class="see-all" href="javascript:void(0);">See all messages<i
                                     class="fa fa-angle-right"></i>
                             </a>
                         </li>
@@ -221,9 +257,151 @@
                             </li>
                         </div>
                     </ul>
+
                 </li>
             </ul>
         </div>
     </nav>
     <!-- End Navbar -->
 </div>
+
+<!-- Search Modal -->
+<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="searchModalLabel">Search</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group mb-3">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Type to search..."
+                        aria-label="Search" autocomplete="off">
+                </div>
+                <ul id="searchResults" class="list-group list-group-item-action">
+                    <!-- Dynamic search results will appear here -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+@push('css')
+    <style>
+        .modal-body {
+            position: relative;
+        }
+
+        #searchInput {
+            font-size: 16px;
+            padding: 10px;
+            border-radius: 6px;
+        }
+
+        #searchResults {
+            max-height: 300px;
+            overflow-y: auto;
+            list-style-type: none;
+            margin-top: 10px;
+            padding: 0;
+        }
+
+        #searchResults .search-item {
+            padding: 10px 15px;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        #searchResults .search-item a {
+            text-decoration: none;
+            color: #333;
+            font-size: 15px;
+            display: block;
+        }
+
+        #searchResults .search-item:hover {
+            background-color: #f9f9f9;
+        }
+
+        #searchResults .list-group-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border: none;
+            /* Remove borders for a cleaner look */
+            border-bottom: 1px solid #e6e6e6;
+            /* Divider between items */
+        }
+
+        #searchResults .list-group-item:last-child {
+            border-bottom: none;
+            /* Remove border for the last item */
+        }
+
+        #searchResults .list-group-item i {
+            color: #007bff;
+            /* Customize icon color */
+        }
+
+        #searchResults .list-group-item:hover {
+            background-color: #f8f9fa;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        #searchResults .list-group-item span {
+            font-size: 15px;
+            color: #333;
+        }
+    </style>
+@endpush
+
+@push('scripts')
+    <!-- JavaScript for Dynamic Search -->
+    <script>
+        document.getElementById('searchInput').addEventListener('input', function() {
+            let query = this.value.trim();
+
+            if (query.length > 0) {
+                // Make an AJAX request to fetch search results
+                fetch(`/search-menu?q=${encodeURIComponent(query)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        let searchResults = document.getElementById('searchResults');
+                        searchResults.innerHTML = ''; // Clear previous results
+
+                        if (data.length > 0) {
+                            data.forEach(item => {
+                                let a = document.createElement('a');
+                                a.href = item.url;
+                                a.classList.add('list-group-item', 'list-group-item-action', 'd-flex',
+                                    'align-items-center', 'justify-content-between');
+
+                                // Create icon element
+                                let icon = document.createElement('i');
+                                icon.classList.add('fa', 'fa-hashtag',
+                                    'me-3'
+                                ); // Icon style (e.g., hashtag) and margin adjustment
+                                a.appendChild(icon);
+
+                                // Create title text
+                                let text = document.createElement('span');
+                                text.textContent = item.name;
+                                text.style.flex = '1';
+                                a.appendChild(text);
+
+                                searchResults.appendChild(a);
+                            });
+                        } else {
+                            let noResults = document.createElement('div');
+                            noResults.classList.add('list-group-item', 'list-group-item-action', 'disabled');
+                            noResults.textContent = 'No results found';
+                            searchResults.appendChild(noResults);
+                        }
+                    })
+                    .catch(error => console.error('Error fetching search results:', error));
+            } else {
+                document.getElementById('searchResults').innerHTML = ''; // Clear results when query is empty
+            }
+        });
+    </script>
+@endpush

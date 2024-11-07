@@ -2,13 +2,14 @@
 
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ThemeController;
 use App\Models\Posts;
 use App\Models\Theme;
 use Illuminate\Support\Facades\Route;
 // use UniSharp\LaravelFilemanager\Lfm;
 
-
+Route::get('/search-menu', [SearchController::class, 'searchMenu'])->name('search-menu');
 
 Route::get('/', function () {
     $theme = Theme::where('active', true)->first()->path;
