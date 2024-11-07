@@ -47,7 +47,7 @@
                     </a>
                 </li>
 
-                <li class="nav-item topbar-icon dropdown hidden-caret">
+                {{-- <li class="nav-item topbar-icon dropdown hidden-caret">
                     <a class="nav-link dropdown-toggle" href="#" id="messageDropdown" role="button"
                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-envelope"></i>
@@ -216,7 +216,7 @@
                             </a>
                         </li>
                     </ul>
-                </li>
+                </li> --}}
                 <li class="nav-item topbar-user dropdown hidden-caret">
                     <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#"
                         aria-expanded="false">
@@ -276,11 +276,28 @@
             <div class="modal-body">
                 <div class="input-group mb-3">
                     <input type="text" id="searchInput" class="form-control" placeholder="Type to search..."
-                        aria-label="Search" autocomplete="off">
+                        aria-label="Search" autocomplete="off" autofocus>
                 </div>
+
                 <ul id="searchResults" class="list-group list-group-item-action">
                     <!-- Dynamic search results will appear here -->
                 </ul>
+                <!-- Helper text for keyboard shortcuts -->
+                <div class="shortcut-helper text-muted mt-3 small mb-3">
+                    Press <kbd
+                        style="margin: 0 8px; padding: 2px 5px; background-color: #e9ecef; border-radius: 3px; color:#000;">Enter</kbd>
+                    to select,
+                    <kbd
+                        style="margin: 0 8px; padding: 2px 5px; background-color: #e9ecef; border-radius: 3px; color:#000;">↑</kbd>/
+                    <kbd
+                        style="margin: 0 8px; padding: 2px 5px; background-color: #e9ecef; border-radius: 3px; color:#000;">↓</kbd>
+                    to navigate,
+                    <kbd
+                        style="margin: 0 8px; padding: 2px 5px; background-color: #e9ecef; border-radius: 3px; color:#000;">Esc</kbd>
+                    to close
+                </div>
+
+
             </div>
         </div>
     </div>
@@ -352,6 +369,23 @@
             font-size: 15px;
             color: #333;
         }
+
+        .shortcut-helper {
+            font-size: 0.85em;
+            color: #6c757d;
+            /* Text-muted color */
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .shortcut-helper kbd {
+            background-color: #e9ecef;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 0.85em;
+            font-weight: 500;
+        }
     </style>
 @endpush
 
@@ -378,6 +412,7 @@
 
                                 // Create icon element
                                 let icon = document.createElement('i');
+                                icon.style.color = '#007bff'; // Set color to blue
                                 icon.classList.add('fa', 'fa-hashtag',
                                     'me-3'
                                 ); // Icon style (e.g., hashtag) and margin adjustment
@@ -402,6 +437,45 @@
             } else {
                 document.getElementById('searchResults').innerHTML = ''; // Clear results when query is empty
             }
+        });
+
+        document.getElementById('searchInput').addEventListener('keydown', function(e) {
+            const results = document.querySelectorAll('#searchResults .list-group-item');
+            let activeIndex = Array.from(results).findIndex(item => item.classList.contains('active'));
+
+            switch (e.key) {
+                case 'ArrowDown':
+                    e.preventDefault();
+                    if (activeIndex < results.length - 1) {
+                        if (activeIndex >= 0) results[activeIndex].classList.remove('active');
+                        results[activeIndex + 1].classList.add('active');
+                    }
+                    break;
+
+                case 'ArrowUp':
+                    e.preventDefault();
+                    if (activeIndex > 0) {
+                        results[activeIndex].classList.remove('active');
+                        results[activeIndex - 1].classList.add('active');
+                    }
+                    break;
+
+                case 'Enter':
+                    e.preventDefault();
+                    if (activeIndex >= 0) {
+                        window.location.href = results[activeIndex].getAttribute('href');
+                    }
+                    break;
+
+                case 'Escape':
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('searchModal'));
+                    modal.hide();
+                    break;
+            }
+        });
+
+        document.getElementById('searchModal').addEventListener('shown.bs.modal', function() {
+            document.getElementById('searchInput').focus();
         });
     </script>
 @endpush
