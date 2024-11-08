@@ -113,6 +113,24 @@
     <script src="{{ asset('vendor/laravel-filemanager/js/filemanager.js') }}"></script>
     <script src="{{ asset('vendor/laravel-filemanager/js/dropzone.min.js') }}"></script>
     <script>
+        // sweetalert
+        function confirmDelete(id) {
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Anda tidak dapat mengembalikan data yang telah dihapus!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            })
+        }
+
         // Handle file selection
         window.addEventListener('message', function(event) {
             if (event.origin === "{{ url('/') }}") {
@@ -126,7 +144,7 @@
         }, false);
     </script>
 
-    
+
 </body>
 
 </html>

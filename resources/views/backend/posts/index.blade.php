@@ -1,4 +1,4 @@
-@extends('backend.layouts.main', ['title' => 'Dashboard'])
+@extends('backend.layouts.main', ['title' => 'Posts'])
 
 @section('body')
     <div class="container">

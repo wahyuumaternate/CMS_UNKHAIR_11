@@ -57,8 +57,8 @@
                                      <span class="sub-item">Add Posts</span>
                                  </a>
                              </li>
-                             <li>
-                                 <a href="#">
+                             <li class="{{ request()->routeIs('posts.categories.index') ? 'active' : '' }}">
+                                 <a href="{{ route('posts.categories.index') }}">
                                      <span class="sub-item">Categories</span>
                                  </a>
                              </li>

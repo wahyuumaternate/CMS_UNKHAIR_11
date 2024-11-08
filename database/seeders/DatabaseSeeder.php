@@ -25,12 +25,12 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('admin123'), // Hash the password
         ]);
         Categories::create([
-            'slug' => 'Berita',
-            'name' => 'berita',
+            'slug' => 'berita',
+            'name' => 'Berita',
         ]);
         Categories::create([
-            'slug' => 'News',
-            'name' => 'news',
+            'slug' => 'news',
+            'name' => 'News',
         ]);
 
         Theme::create([

@@ -49,4 +49,33 @@ class PageController extends Controller
         
         return view($theme . '.pages', compact('data','page'));
     }
+
+    public function edit($id)
+    {
+        $page = Page::findOrFail($id); // Mendapatkan halaman berdasarkan ID
+        return view('backend.pages.edit', compact('page')); // Mengembalikan view edit dengan data halaman
+    }
+
+    public function update(Request $request, $id)
+    {
+        $page = Page::findOrFail($id); // Mendapatkan halaman berdasarkan ID
+
+       $data = $request->validate([
+            'title' => 'required|string|max:255',
+            'slug' => 'required|string',
+            'content' => 'required',
+            'status' => 'required|boolean',
+        ]);
+
+        $page->update($data); // Memperbarui halaman
+        return redirect()->route('pages.index')->with('success', 'Halaman berhasil diperbarui.');
+    }
+
+    public function destroy($id)
+    {
+        $page = Page::findOrFail($id); // Mendapatkan halaman berdasarkan ID
+        $page->delete(); // Menghapus halaman
+
+        return redirect()->route('pages.index')->with('success', 'Halaman berhasil dihapus.');
+    }
 }
