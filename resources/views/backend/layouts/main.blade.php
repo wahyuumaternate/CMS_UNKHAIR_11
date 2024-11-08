@@ -41,8 +41,32 @@
 
     {{-- summernote --}}
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
+    @notifyCss
+    <style>
+        .notify {
+            z-index: 99999999 !important;
+            /* Pastikan menggunakan !important jika ada aturan lain yang mempengaruhi */
+            position: fixed;
+            /* Mengatur posisi menjadi tetap */
+            bottom: 20px;
+            /* Jarak dari bagian bawah */
+            right: 20px;
+            /* Jarak dari sisi kanan */
+        }
+
+        /* Menetapkan ukuran maksimal untuk logo */
+        .navbar-brand {
+            max-height: 20px;
+            /* Atur tinggi maksimum logo */
+            height: auto;
+            /* Memastikan proporsional */
+            width: auto;
+            /* Memastikan proporsional */
+            display: block;
+            /* Menghindari efek whitespace */
+        }
+    </style>
     @stack('css')
     <link rel="stylesheet" href="{{ asset('vendor/laravel-filemanager/css/lfm.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/laravel-filemanager/css/dropzone.min.css') }}">
@@ -144,6 +168,8 @@
         }, false);
     </script>
 
+    <x-notify::notify />
+    @notifyJs
 
 </body>
 

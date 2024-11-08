@@ -61,8 +61,8 @@
                                                         <input type="checkbox" name="selected_posts[]"
                                                             value="{{ $post->id }}">
                                                     </td>
-                                                    <td><a
-                                                            href="{{ route('posts.show', $post->id) }}">{{ $post->title }}</a>
+                                                    <td>
+                                                        <a href="{{ route('posts.edit', $post->id) }}">{{ $post->title }}</a>
                                                     </td>
                                                     <td>
                                                         @if (\App\Enums\PostStatus::isPublished($post->status))
@@ -112,9 +112,6 @@
 @endsection
 
 @push('scripts')
-    <!-- Skrip notifikasi -->
-    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> --}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/notify.js/0.4.2/notify.min.js"></script>
     <script>
         $(document).ready(function() {
             document.getElementById('select-all').onclick = function() {

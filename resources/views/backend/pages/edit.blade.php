@@ -18,17 +18,17 @@
                                 <!-- Title Field -->
                                 <div class="mb-3">
                                     <label for="title" class="form-label">Judul</label>
-                                    <input type="text" name="title" id="title" value="{{ old('title', $page->title) }}"
-                                        class="form-control" required>
+                                    <input type="text" name="title" id="title"
+                                        value="{{ old('title', $page->title) }}" class="form-control" required>
                                 </div>
 
                                 <!-- Slug Field -->
                                 <div class="mb-3">
                                     <label for="slug" class="form-label">Slug</label>
-                                    <input type="text" id="slug-display" class="form-control" value="{{ old('slug', $page->slug) }}"
-                                        readonly>
-                                    <input type="hidden" name="slug" id="slug" value="{{ old('slug', $page->slug) }}"
-                                        required>
+                                    <input type="text" id="slug-display" class="form-control"
+                                        value="{{ old('slug', $page->slug) }}" readonly>
+                                    <input type="hidden" name="slug" id="slug"
+                                        value="{{ old('slug', $page->slug) }}" required>
                                 </div>
 
                                 <!-- Content Field -->
@@ -41,8 +41,12 @@
                                 <div class="mb-3">
                                     <label for="status" class="form-label">Status</label>
                                     <select name="status" id="status" class="form-control" required>
-                                        <option value="1" {{ $page->status == '1' ? 'selected' : '' }}>Aktif</option>
-                                        <option value="0" {{ $page->status == '0' ? 'selected' : '' }}>Nonaktif</option>
+                                        <option value="aktif"
+                                            {{ old('status') == 'aktif' || $page->status == 'aktif' ? 'selected' : '' }}>
+                                            Aktif</option>
+                                        <option value="nonaktif"
+                                            {{ old('status') == 'nonaktif' || $page->status == 'nonaktif' ? 'selected' : '' }}>
+                                            Nonaktif</option>
                                     </select>
                                 </div>
 

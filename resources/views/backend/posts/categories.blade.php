@@ -8,10 +8,10 @@
                     <h3 class="fw-bold mb-3">Kategori</h3>
                 </div>
                 <div class="ms-md-auto py-2 py-md-0">
-                    <button type="button" class="btn btn-label-info btn-round me-2" data-bs-toggle="modal"
+                    <a href="javascript:void(0);" class="btn btn-label-info btn-round me-2" data-bs-toggle="modal"
                         data-bs-target="#createCategoryModal">
                         <i class="fa fa-plus"></i> Tambah Kategori
-                    </button>
+                    </a>
                 </div>
             </div>
             <div class="row">
@@ -85,10 +85,6 @@
                             <label for="name" class="form-label">Nama Kategori</label>
                             <input type="text" class="form-control" id="name" name="name" required>
                         </div>
-                        <div class="mb-3">
-                            <label for="slug" class="form-label">Slug</label>
-                            <input type="text" class="form-control" id="slug" name="slug" required>
-                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -116,10 +112,6 @@
                             <label for="edit_name" class="form-label">Nama Kategori</label>
                             <input type="text" class="form-control" id="edit_name" name="name" required>
                         </div>
-                        <div class="mb-3">
-                            <label for="edit_slug" class="form-label">Slug</label>
-                            <input type="text" class="form-control" id="edit_slug" name="slug" required>
-                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -138,11 +130,10 @@
         function editCategory(category) {
             // Set data ke modal edit
             document.getElementById('edit_name').value = category.name;
-            document.getElementById('edit_slug').value = category.slug;
 
             // Set form action URL
             const form = document.getElementById('editCategoryForm');
-            form.action = `/categories/${category.id}`;
+            form.action = `/cms-unkhair/cp/posts/categories/all/${category.id}`;
 
             // Tampilkan modal edit
             var editModal = new bootstrap.Modal(document.getElementById('editCategoryModal'));

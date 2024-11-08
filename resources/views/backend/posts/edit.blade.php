@@ -1,44 +1,42 @@
-@extends('backend.layouts.main', ['title' => 'Tambah Post'])
+@extends('backend.layouts.main', ['title' => 'Edit Post'])
 
 @section('body')
     <div class="container">
         <div class="page-inner">
             <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
                 <div>
-                    <h3 class="fw-bold mb-3">Tambah Post</h3>
-                    {{-- <h6 class="op-7 mb-2">Tambah Post</h6> --}}
+                    <h3 class="fw-bold mb-3">Edit Post</h3>
                 </div>
                 <div class="ms-md-auto py-2 py-md-0">
-                    {{-- <a href="#" class="btn btn-label-info btn-round me-2">Manage</a> --}}
-                    {{-- <a href="#" class="btn btn-primary btn-round"><i class="fa fa-plus"></i> Tambah User</a> --}}
+                    {{-- Jika perlu, Anda bisa menambahkan tombol atau link lain di sini --}}
                 </div>
             </div>
-            <form method="POST" action="{{ route('posts.store') }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('posts.update', $post->id) }}" enctype="multipart/form-data">
+                @csrf
+                @method('PUT') <!-- Tambahkan metode PUT untuk pembaruan -->
                 <div class="row">
                     <div class="col-md-9">
                         <div class="card">
                             <div class="card-body">
-                                @csrf
                                 <div class="mb-3">
                                     <label for="title" class="form-label">Judul</label>
-                                    <input type="text" value="{{ old('title') }}" name="title" id="title"
-                                        class="form-control" required>
+                                    <input type="text" value="{{ old('title', $post->title) }}" name="title"
+                                        id="title" class="form-control" required>
                                 </div>
                                 <div class="mb-3">
                                     <div class="mb-3">
                                         <label for="slug" class="form-label">Slug</label>
                                         <input type="text" id="slug-display" class="form-control"
-                                            value="{{ old('slug') }}" readonly>
+                                            value="{{ old('slug', $post->slug) }}" readonly>
                                         <input type="hidden" name="slug" id="slug" required
-                                            value="{{ old('slug') }}">
+                                            value="{{ old('slug', $post->slug) }}">
                                     </div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="content" class="form-label">Konten</label>
-                                    <textarea name="content" id="editor" class="form-control" rows="10">{{ old('content') }}</textarea>
+                                    <textarea name="content" id="editor" class="form-control" rows="10">{{ old('content', $post->content) }}</textarea>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Simpan</button>
-
                             </div>
                         </div>
                     </div>
@@ -46,13 +44,12 @@
                         {{-- gambar --}}
                         <div class="card">
                             <div class="card-body">
-
                                 <div class="mb-3">
                                     <label for="image" class="form-label">Gambar</label>
                                     <div class="input-group">
                                         <input type="hidden" name="image" id="fileUrl"
                                             class="form-control @error('image') is-invalid @enderror"
-                                            value="{{ old('image') }}" readonly>
+                                            value="{{ old('image', $post->image) }}" readonly>
                                         <button type="button" class="btn btn-secondary" onclick="openFileManager()">Pilih
                                             Gambar</button>
                                     </div>
@@ -63,47 +60,45 @@
 
                                 <!-- Preview Gambar -->
                                 <div class="mb-3">
-                                    <img id="imagePreview" src="" alt="Preview Gambar"
-                                        style="max-width: 100%; height: auto; display: none;">
+                                    <img id="imagePreview" src="{{ asset($post->image) }}" alt="Preview Gambar"
+                                        style="max-width: 100%; height: auto; display: block;">
                                 </div>
-
                             </div>
                         </div>
                         {{-- category --}}
                         <div class="card">
                             <div class="card-body">
-
                                 <div class="mb-3">
-                                    <label for="category_id" class="form-label">Category</label>
-                                    <select name="category_id" id="category_id" class="form-control" required>
+                                    <label for="category" class="form-label">Category</label>
+                                    <select name="category_id" id="category" class="form-control" required>
                                         <option value="" disabled selected>-- Select Category --</option>
                                         @foreach ($categories as $category)
                                             <option value="{{ $category->id }}"
-                                                {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                                {{ old('category', $post->category_id) == $category->id ? 'selected' : '' }}>
                                                 {{ $category->name }}
                                             </option>
                                         @endforeach
                                     </select>
-                                    @error('category_id')
-                                        <!-- Ganti 'category' menjadi 'category_id' di sini -->
+                                    @error('category')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
-
                             </div>
                         </div>
+
                         {{-- status --}}
                         <div class="card">
                             <div class="card-body">
-
                                 <div class="mb-3">
                                     <label for="status" class="form-label">Status</label>
                                     <select name="status" id="status" class="form-control" required>
-                                        <option value="draft" {{ old('status') == 'draft' ? 'selected' : '' }}>Draft
+                                        <option value="draft"
+                                            {{ old('status', $post->status) == 'draft' ? 'selected' : '' }}>Draft</option>
+                                        <option value="published"
+                                            {{ old('status', $post->status) == 'published' ? 'selected' : '' }}>Published
                                         </option>
-                                        <option value="published" {{ old('status') == 'published' ? 'selected' : '' }}>
-                                            Published</option>
-                                        <option value="trashed" {{ old('status') == 'trashed' ? 'selected' : '' }}>Trashed
+                                        <option value="trashed"
+                                            {{ old('status', $post->status) == 'trashed' ? 'selected' : '' }}>Trashed
                                         </option>
                                     </select>
                                 </div>
@@ -112,34 +107,27 @@
                         {{-- comments --}}
                         <div class="card">
                             <div class="card-body">
-                                <label for="category" class="form-label">Comments</label>
+                                <label for="comments_is_active" class="form-label">Comments</label>
                                 <div class="mb-3">
                                     <label class="form-label">Status Komentar</label>
                                     <div class="d-flex">
                                         <div class="form-check me-3">
                                             <input class="form-check-input" type="radio" name="comments_is_active"
                                                 id="commentsActive" value="1"
-                                                {{ old('comments_is_active') == '1' ? 'checked' : '' }}>
-                                            <label class="form-check-label" for="commentsActive">
-                                                Aktif
-                                            </label>
+                                                {{ old('comments_is_active', $post->comments_is_active) == '1' ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="commentsActive">Aktif</label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="comments_is_active"
                                                 id="commentsInactive" value="0"
-                                                {{ old('comments_is_active') == '0' ? 'checked' : '' }} checked>
-                                            <label class="form-check-label" for="commentsInactive">
-                                                Tidak Aktif
-                                            </label>
+                                                {{ old('comments_is_active', $post->comments_is_active) == '0' ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="commentsInactive">Tidak Aktif</label>
                                         </div>
                                     </div>
                                     @error('comments_is_active')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
-
-
-
                             </div>
                         </div>
                     </div>
@@ -168,17 +156,13 @@
         function openFileManager() {
             let route_prefix = "{{ url('cms-unkhair-filemanager') }}";
             window.open(route_prefix + '?type=file', 'FileManager', 'width=800,height=600');
-
-
         }
 
         window.SetUrl = function(items) {
             if (items.length > 0) {
                 let file_url = items[0].url;
                 document.getElementById('fileUrl').value = file_url;
-                // Optionally, update a preview of the selected image
-                // document.getElementById('filePreview').src = file_url;
-                // Show the image preview
+                // Tampilkan preview gambar
                 const imagePreview = document.getElementById('imagePreview');
                 imagePreview.src = file_url;
                 imagePreview.style.display = 'block';

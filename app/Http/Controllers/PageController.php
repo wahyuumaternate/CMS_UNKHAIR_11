@@ -26,15 +26,16 @@ class PageController extends Controller
                 'title' => 'required|string|max:255',
                 'slug' => 'required|string|unique:pages,slug|max:255',
                 'content' => 'required',
-                'status' => 'required|boolean',
+                'status' => 'required|in:aktif,nonaktif',
             ]);
     
             Page::create($request->all());
     
-            return redirect()->back()->with('success', 'Page created successfully.');
+            notify()->success('Page created successfully.');
+            return redirect()->route('pages.index');
         } catch (\Throwable $th) {
-            return redirect()->back()->with('error', $th->getMessage());
-            //throw $th;
+            notify()->error($th->getMessage());
+            return redirect()->back();
         }
     }
 
@@ -58,24 +59,31 @@ class PageController extends Controller
 
     public function update(Request $request, $id)
     {
+       try {
         $page = Page::findOrFail($id); // Mendapatkan halaman berdasarkan ID
 
-       $data = $request->validate([
-            'title' => 'required|string|max:255',
-            'slug' => 'required|string',
-            'content' => 'required',
-            'status' => 'required|boolean',
-        ]);
-
-        $page->update($data); // Memperbarui halaman
-        return redirect()->route('pages.index')->with('success', 'Halaman berhasil diperbarui.');
+        $data = $request->validate([
+             'title' => 'required|string|max:255',
+             'slug' => 'required|string',
+             'content' => 'required',
+             'status' => 'required|in:aktif,nonaktif',
+         ]);
+ 
+         $page->update($data); // Memperbarui halaman
+         notify()->success('Halaman berhasil diperbaharui');
+        } catch (\Throwable $th) {
+           notify()->error($th->getMessage());
+           return redirect()->back();
+        //throw $th;
+       }
+        return redirect()->route('pages.index');
     }
 
     public function destroy($id)
     {
         $page = Page::findOrFail($id); // Mendapatkan halaman berdasarkan ID
         $page->delete(); // Menghapus halaman
-
-        return redirect()->route('pages.index')->with('success', 'Halaman berhasil dihapus.');
+        notify()->success('Halaman berhasil dihapus.');
+        return redirect()->route('pages.index');
     }
 }

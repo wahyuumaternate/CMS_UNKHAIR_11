@@ -8,6 +8,7 @@ use App\Models\Posts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+
 class PostsController extends Controller
 {
     public function index(Request $request)
@@ -35,151 +36,145 @@ class PostsController extends Controller
         return view('backend.posts.index', compact('posts', 'status', 'hasTrashed', 'totalPosts', 'totalTrashed'));
     }
     
-    public function create(){
+    public function create()
+    {
         $categories = Categories::all();
         return view('backend.posts.create', compact('categories'));
     }
 
     public function store(Request $request)
-{
-    // Validasi input
-    $validatedData = $this->validateRequest($request);
+    {
+        // dd($request->input('category_id'));
+        // Validasi input
+        $validatedData = $this->validateRequest($request);
+        // dd($validatedData['category_id']);
 
-    // Buat dan simpan pos baru menggunakan mass assignment
-    $post = Posts::create([
-        'title' => $validatedData['title'],
-        'slug' => Str::slug($validatedData['title']),
-        'excerpt' => Str::limit(strip_tags($validatedData['content']), 150),
-        'status' => $validatedData['status'],
-        'content' => $validatedData['content'],
-        'comments_is_active' => $validatedData['comments_is_active'], // Ambil gambar
-        'views' => 0, // Atur default views
-        'author' => Auth::user()->name, // Ambil nama penulis
-        'image' => $request->input('image'), // Ambil gambar
-    ]);
+        // Buat dan simpan pos baru menggunakan mass assignment
+        $post = Posts::create([
+            'title' => $validatedData['title'],
+            'slug' => Str::slug($validatedData['title']),
+            'excerpt' => Str::limit(strip_tags($validatedData['content']), 150),
+            'status' => $validatedData['status'],
+            'content' => $validatedData['content'],
+            'comments_is_active' => $validatedData['comments_is_active'],
+            'views' => 0,
+            'author' => Auth::user()->name,
+            'image' => $request->input('image'),
+            'category_id' => $request->input('category_id'),
+        ]);
 
-    // Lampirkan kategori jika ada
-    if (!empty($validatedData['category'])) {
-        $post->categories()->attach($validatedData['category']);
+        // // Lampirkan kategori jika ada
+        // if (!empty($validatedData['category'])) {
+        //     $post->categories()->attach($validatedData['category']);
+        // }
+
+        // Menggunakan notifikasi notify()
+        notify()->success('Post created successfully!');
+
+        return redirect()->route('posts.index');
     }
 
-    return redirect()->route('posts.index')->with('success', 'Post created successfully!');
-}
+    private function validateRequest(Request $request)
+    {
+        //  dd($request->category_id);
+        return $request->validate([
+            'title' => 'required|string|max:255|unique:posts',
+            'content' => 'required',
+            'status' => 'required|in:draft,published,trashed',
+            'comments_is_active' => 'required|boolean',
+            'category_id' => 'required|exists:categories,id',
+        ]);
+    }
 
-private function validateRequest(Request $request)
-{
-    return $request->validate([
-        'title' => 'required|string|max:255|unique:posts',
-        'content' => 'required',
-        'status' => 'required|in:draft,published,trashed',
-        'comments_is_active' => 'required|boolean',
-        'category' => 'required|exists:categories,id', // Validasi kategori tunggal
-    ]);
-}
-
-
-
-// Menyimpan post dan gambar
-// public function store(Request $request)
-// {
-//     try {
-//        // dd($request->all());
-//    $validatedData = $request->validate([
-//         'title' => 'required|string|max:255|unique:posts',
-//         // 'slug' => 'required|string|max:255|unique:posts',
-//         // 'excerpt' => 'required|string|max:255',
-//         // 'image' => 'required|url|regex:/\.(jpg|jpeg|png)$/i',
-//         'content' => 'required',
-//         'status' => 'required|in:draft,published,trashed',
-//         'comments_is_active' => 'required|boolean',
-//         'categories' => 'exists:categories,id',
-//     ]);
-
-//     $post = new Posts();
-//     $post->title = $request->input('title');
-//     $post->slug = Str::slug($request->input('title'));
-//     $post->excerpt = Str::limit(strip_tags($request->content), 150);
-//     $post->status = $request->input('status');
-//     $post->content = $request->input('content');
-//     $post->views = 0;
-//     $post->author = Auth::user()->name;
-//     $post->image = $request->input('image');
-//     $post->save();
-
-//      // Attach categories
-//      if (!empty($validatedData['categories'])) {
-//         $post->categories()->attach($validatedData['categories']);
-//     }
-
-//     return redirect()->route('posts.index')->with('success', 'Post created successfully.');
-// } catch (\Throwable $th) {
-//         return redirect()->back()->with('error', 'Post created Unsuccessfully. '.$th->getMessage())->withInput();
-//         //throw $th;
-//     }
-// }
-public function show($id)
-{
-    // Temukan post berdasarkan ID
-    $post = Posts::findOrFail($id);
-     // Convert the enum value to string before passing to the view
-    //  $post->status = ucfirst((string) $post->status);
-    // Kembalikan tampilan dengan data post
-    return view('backend.posts.show', compact('post'));
-}
-
-//     public function uploadImage(Request $request)
-// {
-//     $request->validate([
-//         'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-//     ]);
-
-//     $image = $request->file('image');
-//     $imageName = time() . '.' . $image->getClientOriginalExtension();
-//     $image->storeAs('public/images', $imageName);
-
-//     return response()->json(['location' => asset('storage/images/' . $imageName)]);
-// }
-
+    public function show($id)
+    {
+        // Temukan post berdasarkan ID
+        $post = Posts::findOrFail($id);
+        return view('backend.posts.show', compact('post'));
+    }
 
     public function bulk(Request $request)
     {
         $action = $request->input('action');
         $selectedPosts = $request->input('selected_posts', []);
         
-        // Log::info('Bulk action received: ' . $action);
-        // Log::info('Selected posts: ' . implode(', ', $selectedPosts));
         if ($selectedPosts) {
             if ($action === 'trash') {
                 Posts::whereIn('id', $selectedPosts)
                     ->update(['status' => PostStatus::Trashed->value, 'deleted_at' => now()]);
-                // Soft delete tidak perlu mengatur deleted_at secara manual
+                notify()->success('Tindakan bulk berhasil dilakukan: Posts dihapus.');
             } elseif ($action === 'delete') {
-                Posts::whereIn('id', $selectedPosts)
-                    ->forceDelete(); // Menghapus permanen
+                Posts::whereIn('id', $selectedPosts)->forceDelete();
+                notify()->success('Tindakan bulk berhasil dilakukan: Posts dihapus permanen.');
             } elseif ($action === 'publish') {
                 Posts::whereIn('id', $selectedPosts)
                     ->update(['status' => PostStatus::Published->value]);
-                // Menghapus timestamp deleted_at tidak diperlukan
+                notify()->success('Tindakan bulk berhasil dilakukan: Posts diterbitkan.');
             } elseif ($action === 'draft') {
                 Posts::whereIn('id', $selectedPosts)
                     ->update(['status' => PostStatus::Draft->value]);
-                // Menghapus timestamp deleted_at tidak diperlukan
+                notify()->success('Tindakan bulk berhasil dilakukan: Posts dijadikan draft.');
             } elseif ($action === 'kembalikan') {
                 Posts::whereIn('id', $selectedPosts)
                     ->restore(); // Mengembalikan dari soft delete
                 Posts::whereIn('id', $selectedPosts)
                     ->update(['status' => PostStatus::Published->value]);
-            }else{
-                return redirect()->back()
-                         ->with('error', 'Pilih Tindakan!');
+                notify()->success('Tindakan bulk berhasil dilakukan: Posts dikembalikan.');
+            } else {
+                notify()->error('Pilih Tindakan!');
+                return redirect()->back();
             }
     
-            return redirect()->route('posts.index', ['status' => $request->query('status')])
-                         ->with('success', 'Tindakan bulk berhasil dilakukan!');
-        }else{
-            return redirect()->back()
-            ->with('error', 'Pilih Post Terlebih Dahulu!');
+            return redirect()->route('posts.index', ['status' => $request->query('status')]);
+        } else {
+            notify()->error('Pilih Post Terlebih Dahulu!');
+            return redirect()->back();
         }
-        
+    }
+
+    public function edit($id)
+{
+    // Temukan post berdasarkan ID
+    $post = Posts::findOrFail($id);
+    $categories = Categories::all(); // Mengambil semua kategori untuk dropdown
+
+    return view('backend.posts.edit', compact('post', 'categories'));
+}
+
+
+    public function update(Request $request, $id)
+    {
+        $post = Posts::findOrFail($id);
+
+        // Validasi input
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required',
+            'status' => 'required|in:draft,published,trashed',
+            'comments_is_active' => 'required|boolean',
+            'category_id' => 'required|exists:categories,id',
+        ]);
+
+        // Menghasilkan slug dari judul
+        $slug = Str::slug($request->title);
+
+        // Memperbarui post dengan data yang baru
+        $post->update([
+            'title' => $request->title,
+            'slug' => $slug,
+            'content' => $request->content,
+            'status' => $request->status,
+            'category_id' => $request->category_id,
+            'comments_is_active' => $request->comments_is_active,
+            // Tambahkan kategori jika diperlukan
+        ]);
+
+        // // Lampirkan kategori jika ada
+        // if ($request->has('category')) {
+        //     $post->categories()->sync($request->category);
+        // }
+
+        notify()->success('Post berhasil diperbarui.');
+        return redirect()->route('posts.index');
     }
 }

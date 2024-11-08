@@ -32,13 +32,15 @@ Route::prefix('/cms-unkhair/cp')->middleware('auth')->group(function () {
     Route::get('/create-post', [PostsController::class, 'create'])->name('posts.create');
     Route::get('/posts/{id}', [PostsController::class, 'show'])->name('posts.show');
     Route::post('/posts/store', [PostsController::class, 'store'])->name('posts.store');
+    Route::get('/post/{id}/edit', [PostsController::class, 'edit'])->name('posts.edit'); // Menampilkan form untuk edit post
+    Route::put('/post/{id}', [PostsController::class, 'update'])->name('posts.update'); // Memperbarui post
     // Route::post('/upload-image', [PostsController::class, 'uploadImage'])->name('upload.image');
     Route::post('/posts/bulk', [PostsController::class, 'bulk'])->name('posts.bulk_action');
     // categories
     Route::get('/posts/categories/all', [PostsCategoriesController::class, 'index'])->name('posts.categories.index');
     Route::post('/categories', [PostsCategoriesController::class, 'store'])->name('categories.store');
     Route::get('/categories/{id}/edit', [PostsCategoriesController::class, 'edit'])->name('categories.edit');
-    Route::put('/categories/{id}', [PostsCategoriesController::class, 'update'])->name('categories.update');
+    Route::put('/posts/categories/all/{id}', [PostsCategoriesController::class, 'update'])->name('categories.update');
     Route::delete('/categories/{id}', [PostsCategoriesController::class, 'destroy'])->name('categories.destroy');
     // themes
     Route::get('/tema', [ThemeController::class, 'index'])->name('tema.index');

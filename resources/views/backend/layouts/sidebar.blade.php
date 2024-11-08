@@ -4,8 +4,8 @@
          <!-- Logo Header -->
          <div class="logo-header" data-background-color="dark">
              <a href="{{ route('dashboard') }}" class="logo">
-                 <img src="{{ asset('backend/assets/img/logo-unkhair.png') }}" alt="navbar brand" class="navbar-brand"
-                     height="20" />
+                 <img src="{{ asset('backend/assets/img/logo-unkhair.png') }}" alt="navbar brand"
+                     class="navbar-brand img-fluid" />
                  <h5 class="text-white m-2">CMS UNKHAIR</h5>
              </a>
              <div class="nav-toggle">

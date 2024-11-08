@@ -37,7 +37,7 @@
                                                 </td>
                                                 <td>{{ $page->slug }}</td>
                                                 <td>
-                                                    @if ($page->status === 'published')
+                                                    @if ($page->status === 'aktif')
                                                         <span
                                                             class="badge badge-success">{{ ucfirst($page->status) }}</span>
                                                     @else
