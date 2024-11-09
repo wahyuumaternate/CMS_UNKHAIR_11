@@ -62,7 +62,8 @@
                                                             value="{{ $post->id }}">
                                                     </td>
                                                     <td>
-                                                        <a href="{{ route('posts.edit', $post->id) }}">{{ $post->title }}</a>
+                                                        <a
+                                                            href="{{ route('posts.edit', $post->id) }}">{{ $post->title }}</a>
                                                     </td>
                                                     <td>
                                                         @if (\App\Enums\PostStatus::isPublished($post->status))
@@ -74,9 +75,15 @@
 
                                                     <td>{{ $post->author }}</td>
                                                     <td>
-                                                        @foreach ($post->categories as $category)
-                                                            {{ $category->name }}
+                                                        {{-- @foreach ($post->categories as $category)
+                                                            {{ $category->name }}{{ !$loop->last ? ', ' : '' }}
+                                                        @endforeach --}}
+                                                        @foreach ($categories as $category)
+                                                            @if ($category->id == $post->category_id)
+                                                                {{ $category->name }}
+                                                            @endif
                                                         @endforeach
+                                                        {{-- {{ $post->categories->name }} --}}
                                                     </td>
                                                     <td>
                                                         @php

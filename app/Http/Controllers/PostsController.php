@@ -24,16 +24,18 @@ class PostsController extends Controller
         
         // Memilih posts berdasarkan status
         if ($status === 'trashed') {
-            $posts = Posts::onlyTrashed()->get();
+            $posts = Posts::onlyTrashed()->with('categories')->get();
         } else {
-            $posts = Posts::whereNull('deleted_at')->get();
+            $posts = Posts::whereNull('deleted_at')->with('categories')->get();
         }
-        
+        // dd($posts);
         // Menentukan apakah ada posts yang dihapus
         $hasTrashed = $totalTrashed > 0;
     
+        $categories = Categories::all();
+
         // Mengembalikan tampilan dengan data yang diperlukan
-        return view('backend.posts.index', compact('posts', 'status', 'hasTrashed', 'totalPosts', 'totalTrashed'));
+        return view('backend.posts.index', compact('posts','categories', 'status', 'hasTrashed', 'totalPosts', 'totalTrashed'));
     }
     
     public function create()
@@ -80,6 +82,7 @@ class PostsController extends Controller
         return $request->validate([
             'title' => 'required|string|max:255|unique:posts',
             'content' => 'required',
+            'image' => 'required',
             'status' => 'required|in:draft,published,trashed',
             'comments_is_active' => 'required|boolean',
             'category_id' => 'required|exists:categories,id',
@@ -138,6 +141,8 @@ class PostsController extends Controller
     $post = Posts::findOrFail($id);
     $categories = Categories::all(); // Mengambil semua kategori untuk dropdown
 
+    // dd($post);
+    // dd($post->status); // This will halt execution and display the status
     return view('backend.posts.edit', compact('post', 'categories'));
 }
 
@@ -152,6 +157,7 @@ class PostsController extends Controller
             'content' => 'required',
             'status' => 'required|in:draft,published,trashed',
             'comments_is_active' => 'required|boolean',
+            // 'image' => 'required',
             'category_id' => 'required|exists:categories,id',
         ]);
 
@@ -162,6 +168,7 @@ class PostsController extends Controller
         $post->update([
             'title' => $request->title,
             'slug' => $slug,
+            'image' => $request->input('image'),
             'content' => $request->content,
             'status' => $request->status,
             'category_id' => $request->category_id,

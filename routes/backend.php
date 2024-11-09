@@ -30,7 +30,7 @@ Route::prefix('/cms-unkhair/cp')->middleware('auth')->group(function () {
     // posts
     Route::get('/posts', [PostsController::class, 'index'])->name('posts.index');
     Route::get('/create-post', [PostsController::class, 'create'])->name('posts.create');
-    Route::get('/posts/{id}', [PostsController::class, 'show'])->name('posts.show');
+    // Route::get('/posts/{id}', [PostsController::class, 'show'])->name('posts.show');
     Route::post('/posts/store', [PostsController::class, 'store'])->name('posts.store');
     Route::get('/post/{id}/edit', [PostsController::class, 'edit'])->name('posts.edit'); // Menampilkan form untuk edit post
     Route::put('/post/{id}', [PostsController::class, 'update'])->name('posts.update'); // Memperbarui post

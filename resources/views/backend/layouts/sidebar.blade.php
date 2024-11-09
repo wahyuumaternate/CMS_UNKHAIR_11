@@ -47,7 +47,7 @@
                      </a>
                      <div class="collapse {{ request()->routeIs('posts.*') ? 'show' : '' }}" id="base">
                          <ul class="nav nav-collapse">
-                             <li class="{{ request()->routeIs('posts.index') ? 'active' : '' }}">
+                             <li class="{{ request()->routeIs(['posts.index', 'posts.edit']) ? 'active' : '' }}">
                                  <a href="{{ route('posts.index') }}">
                                      <span class="sub-item">All Posts</span>
                                  </a>

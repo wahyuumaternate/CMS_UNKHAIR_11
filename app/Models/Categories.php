@@ -13,8 +13,13 @@ class Categories extends Model
     protected $guarded = ['id'];
 
     // A category can have a parent category
+    // public function posts()
+    // {
+    //     return $this->belongsToMany(Posts::class, 'posts_categories', 'category_id', 'post_id');
+    // }
     public function posts()
     {
         return $this->belongsToMany(Posts::class, 'posts_categories', 'category_id', 'post_id');
     }
+
 }

@@ -60,9 +60,12 @@
 
                                 <!-- Preview Gambar -->
                                 <div class="mb-3">
-                                    <img id="imagePreview" src="{{ asset($post->image) }}" alt="Preview Gambar"
-                                        style="max-width: 100%; height: auto; display: block;">
+                                    <img id="imagePreview"
+                                        src="{{ asset(old('image', $post->image) ?: 'path/to/default-image.jpg') }}"
+                                        alt="Preview Gambar"
+                                        style="max-width: 100%; height: auto; display: {{ old('image', $post->image) ? 'block' : 'none' }};">
                                 </div>
+
                             </div>
                         </div>
                         {{-- category --}}
@@ -92,18 +95,28 @@
                                 <div class="mb-3">
                                     <label for="status" class="form-label">Status</label>
                                     <select name="status" id="status" class="form-control" required>
-                                        <option value="draft"
-                                            {{ old('status', $post->status) == 'draft' ? 'selected' : '' }}>Draft</option>
-                                        <option value="published"
-                                            {{ old('status', $post->status) == 'published' ? 'selected' : '' }}>Published
-                                        </option>
-                                        <option value="trashed"
-                                            {{ old('status', $post->status) == 'trashed' ? 'selected' : '' }}>Trashed
-                                        </option>
+                                        @php
+                                            $statuses = [
+                                                \App\Enums\PostStatus::Published->value => 'Published',
+                                                \App\Enums\PostStatus::Trashed->value => 'Trashed',
+                                                \App\Enums\PostStatus::Draft->value => 'Draft',
+                                            ];
+                                        @endphp
+
+                                        @foreach ($statuses as $enumValue => $label)
+                                            <option value="{{ $enumValue }}"
+                                                {{ $post->status->value === $enumValue ? 'selected' : '' }}>
+                                                {{ $label }}
+                                            </option>
+                                        @endforeach
                                     </select>
+                                    @error('status')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
+
                         {{-- comments --}}
                         <div class="card">
                             <div class="card-body">
@@ -200,5 +213,28 @@
                 });
             }
         });
+
+        function openFileManager() {
+            let route_prefix = "{{ url('cms-unkhair-filemanager') }}";
+            window.open(route_prefix + '?type=file', 'FileManager', 'width=800,height=600');
+        }
+
+        window.SetUrl = function(items) {
+            if (items.length > 0) {
+                let file_url = items[0].url;
+                document.getElementById('fileUrl').value = file_url;
+
+                // Update preview image
+                const imagePreview = document.getElementById('imagePreview');
+                imagePreview.src = file_url;
+                imagePreview.style.display = 'block';
+            } else {
+                // If no image selected, reset preview
+                document.getElementById('fileUrl').value = '';
+                const imagePreview = document.getElementById('imagePreview');
+                imagePreview.src = '';
+                imagePreview.style.display = 'none';
+            }
+        };
     </script>
 @endsection

@@ -15,8 +15,16 @@ class Posts extends Model
         'status' => PostStatus::class,
     ];
 
+    // public function categories()
+    // {
+    //     return $this->belongsToMany(Categories::class, 'posts_categories', 'post_id', 'category_id');
+    // }
+
     public function categories()
     {
         return $this->belongsToMany(Categories::class, 'posts_categories', 'post_id', 'category_id');
+
     }
+
+
 }

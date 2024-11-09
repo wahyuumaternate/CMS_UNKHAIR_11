@@ -95,7 +95,6 @@
                         {{-- status --}}
                         <div class="card">
                             <div class="card-body">
-
                                 <div class="mb-3">
                                     <label for="status" class="form-label">Status</label>
                                     <select name="status" id="status" class="form-control" required>
