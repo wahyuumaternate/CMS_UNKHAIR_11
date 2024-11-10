@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\GeneralSettingsController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\MenuItemController;
 use App\Http\Controllers\PageController;
@@ -14,6 +15,9 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/dashboard', function () {
 //     return view('dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard/setting', function () {
+//     return view('backend.settings.index');
+// })->middleware(['auth', 'verified'])->name('settings');
 
 
 Route::prefix('/cms-unkhair/cp')->middleware('auth')->group(function () {
@@ -59,4 +63,11 @@ Route::prefix('/cms-unkhair/cp')->middleware('auth')->group(function () {
     Route::post('/menu/update-order', [MenuItemController::class, 'updateOrder'])->name('menu.updateOrder');
     Route::delete('/menu-items/{id}', [MenuItemController::class, 'destroy'])->name('menu-items.destroy');
     Route::patch('/menus/{menu}/update', [MenuItemController::class, 'update'])->name('menus.update');
+    // backup
+    Route::get('/backup/download', [GeneralSettingsController::class, 'downloadBackup'])->name('backup.download');
+    Route::get('/backup/storage',[GeneralSettingsController::class, 'downloadStorageBackup'])->name('backup.storage');
+    // settings
+    Route::get('/settings', [GeneralSettingsController::class, 'index'])->name('settings.index');
+    Route::post('/settings', [GeneralSettingsController::class, 'update'])->name('settings.update');
+
 });

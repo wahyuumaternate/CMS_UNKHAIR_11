@@ -10,18 +10,18 @@ class SearchController extends Controller
     {
         $query = $request->input('q');
 
-        // Sample data for menu items
+        // data for menu items
         $menuItems = [
-            ['name' => 'Blog > Post collections', 'url' => route('posts.index')],
-            ['name' => 'Galleries', 'url' => '/galleries'],
-            ['name' => 'Contact > Custom Fields', 'url' => '/contact/custom-fields'],
-            ['name' => 'Newsletters', 'url' => '/newsletters'],
-            ['name' => 'Appearance > Custom HTML', 'url' => '/appearance/custom-html'],
-            ['name' => 'Plugins > Installed Plugins', 'url' => '/plugins/installed-plugins'],
-            ['name' => 'Plugins > Add New Plugin', 'url' => '/plugins/add-new-plugin'],
-            ['name' => 'Platform Administration', 'url' => '/platform-administration'],
-            ['name' => 'Settings > Common > General', 'url' => '/settings/common/general'],
-            ['name' => 'Settings > Common > Email', 'url' => '/settings/common/email'],
+            ['name' => 'Dashboard', 'url' => route('dashboard')],
+            ['name' => 'Posts', 'url' => route('posts.index')],
+            ['name' => 'Posts > Add Posts', 'url' => route('posts.create')],
+            ['name' => 'Categories', 'url' => route('posts.categories.index')],
+            ['name' => 'Themes', 'url' => route('tema.index')],
+            ['name' => 'Media', 'url' => route('media.index')],
+            ['name' => 'Pages', 'url' => route('pages.index')],
+            ['name' => 'Pages > Add Pages', 'url' => route('pages.create')],
+            ['name' => 'Menu', 'url' => route('menus.create')],
+            
         ];
 
         // Filter menu items based on the query

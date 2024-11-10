@@ -153,7 +153,13 @@
                      </div>
                  </li>
 
-                 <li class="nav-item {{ request()->routeIs('settings.*') ? 'active submenu' : '' }}">
+                 <li class="nav-item {{ request()->routeIs('settings.*') ? 'active' : '' }}">
+                     <a href="{{ route('settings.index') }}">
+                         <i class="fas fa-cogs"></i>
+                         <p>Settings</p>
+                     </a>
+                 </li>
+                 {{-- <li class="nav-item {{ request()->routeIs('settings.*') ? 'active submenu' : '' }}">
                      <a data-bs-toggle="collapse" href="#pengaturan">
                          <i class="fas fa-cogs"></i>
                          <p>Settings</p>
@@ -173,7 +179,7 @@
                              </li>
                          </ul>
                      </div>
-                 </li>
+                 </li> --}}
              </ul>
          </div>
      </div>
