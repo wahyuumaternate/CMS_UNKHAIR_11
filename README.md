@@ -1,5 +1,4 @@
-<p align="center"><a href="https://www.unkhair.ac.id" target="_blank"><img src="public/backend/assets/img/logo-unkhair.png" width="200" alt="Logo Unkhair CMS"></a></p>
-
+<p align="center"><a href="https://www.unkhair.ac.id" target="_blank"><img src="public/backend/assets/img/logo-unkhair.png" width="200" alt="Logo Unkhair CMS"></a></p> <p align="center"> <a href="#"><img src="https://img.shields.io/badge/build-passing-brightgreen" alt="Status Build"></a> <a href="#"><img src="https://img.shields.io/badge/coverage-90%25-brightgreen" alt="Status Cakupan"></a> <a href="#"><img src="https://img.shields.io/badge/version-1.0-blue" alt="Versi"></a> <a href="#"><img src="https://img.shields.io/badge/license-MIT-green" alt="Lisensi"></a> </p>
 ---
 
 # Unkhair CMS
