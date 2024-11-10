@@ -22,8 +22,8 @@ Selamat datang di proyek **Unkhair CMS**, sebuah Sistem Manajemen Konten (CMS) k
 ## Teknologi yang Digunakan
 
 - **Framework Backend**: PHP (Laravel)
-- **Frontend**: HTML, CSS, JavaScript (menggunakan Bootstrap atau Vue.js/React jika perlu)
-- **Database**: MySQL atau basis data kompatibel lainnya
+- **Frontend**: HTML, CSS, JavaScript (menggunakan Bootstrap)
+- **Database**: MySQL
 - **Manajer Paket**: Composer untuk PHP, npm untuk pengelolaan frontend
 
 ## Instalasi
