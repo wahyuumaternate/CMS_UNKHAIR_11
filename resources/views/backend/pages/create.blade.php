@@ -4,8 +4,27 @@
     <div class="container">
         <div class="page-inner">
             <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
-                <div>
-                    <h3 class="fw-bold mb-3">Tambah Page</h3>
+                <div class="page-header">
+                    <h3 class="fw-bold mb-3 fs-3">Create Pages</h3>
+                    <ul class="breadcrumbs mb-3">
+                        <li class="nav-home">
+                            <a href="{{ route('dashboard') }}">
+                                <i class="icon-home"></i>
+                            </a>
+                        </li>
+                        <li class="separator">
+                            <i class="icon-arrow-right"></i>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('pages.index') }}">Pages</a>
+                        </li>
+                        <li class="separator">
+                            <i class="icon-arrow-right"></i>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#">Create Pages</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
             <form method="POST" action="{{ route('pages.store') }}">
@@ -89,7 +108,7 @@
             ],
             file_picker_callback: function(callback, value, meta) {
                 if (meta.filetype === 'image') {
-                    let route_prefix = "{{ url('laravel-filemanager') }}";
+                    let route_prefix = "{{ url('cms-unkhair-filemanager') }}";
                     window.open(route_prefix + '?type=file', 'FileManager', 'width=800,height=600');
                     window.SetUrl = function(items) {
                         let file_url = items[0].url;

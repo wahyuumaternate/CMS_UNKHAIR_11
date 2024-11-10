@@ -4,9 +4,28 @@
     <div class="container">
         <div class="page-inner">
             <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
-                <div>
-                    <h3 class="fw-bold mb-3">Tambah Post</h3>
-                    {{-- <h6 class="op-7 mb-2">Tambah Post</h6> --}}
+                <div class="page-header">
+                    <h3 class="fw-bold mb-3 fs-3">Add Post</h3>
+                    <ul class="breadcrumbs mb-3">
+                        <li class="nav-home">
+                            <a href="{{ route('dashboard') }}">
+                                <i class="icon-home"></i>
+                            </a>
+                        </li>
+                        <li class="separator">
+                            <i class="icon-arrow-right"></i>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('posts.index') }}">Posts</a>
+                        </li>
+                        <li class="separator">
+                            <i class="icon-arrow-right"></i>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#">Add Post</a>
+                        </li>
+                    </ul>
+                    </ul>
                 </div>
                 <div class="ms-md-auto py-2 py-md-0">
                     {{-- <a href="#" class="btn btn-label-info btn-round me-2">Manage</a> --}}

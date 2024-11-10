@@ -110,14 +110,14 @@
                      </a>
                      <div class="collapse {{ request()->routeIs('pages.*') ? 'show' : '' }}" id="laman">
                          <ul class="nav nav-collapse">
-                             <li class="{{ request()->routeIs('pages.index') ? 'active' : '' }}">
+                             <li class="{{ request()->routeIs(['pages.index', 'pages.edit']) ? 'active' : '' }}">
                                  <a href="{{ route('pages.index') }}">
                                      <span class="sub-item">All Pages</span>
                                  </a>
                              </li>
                              <li class="{{ request()->routeIs('pages.create') ? 'active' : '' }}">
                                  <a href="{{ route('pages.create') }}">
-                                     <span class="sub-item">Add Page</span>
+                                     <span class="sub-item">Create Page</span>
                                  </a>
                              </li>
                          </ul>

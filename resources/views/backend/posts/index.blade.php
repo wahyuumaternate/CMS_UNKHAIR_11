@@ -5,7 +5,33 @@
         <div class="page-inner">
             <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
                 <div>
-                    <h3 class="fw-bold mb-3">Post</h3>
+                    <div class="page-header">
+                        <h3 class="fw-bold mb-3 fs-3">All Posts</h3>
+                        <ul class="breadcrumbs mb-3">
+                            <li class="nav-home">
+                                <a href="{{ route('dashboard') }}">
+                                    <i class="icon-home"></i>
+                                </a>
+                            </li>
+                            <li class="separator">
+                                <i class="icon-arrow-right"></i>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#">All Posts</a>
+                            </li>
+                            {{-- <li class="separator">
+                                <i class="icon-arrow-right"></i>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#">Basic Form</a>
+                            </li> --}}
+                        </ul>
+                        </ul>
+                        <div class="ms-md-auto py-2 py-md-0">
+                            {{-- <a href="#" class="btn btn-label-info btn-round me-2">Manage</a> --}}
+                            {{-- <a href="#" class="btn btn-primary btn-round"><i class="fa fa-plus"></i> Tambah User</a> --}}
+                        </div>
+                    </div>
                     <a href="{{ route('posts.index') }}" class="me-2">
                         <i class="fa fa-list"></i> Semua ({{ $totalPosts }})
                     </a>

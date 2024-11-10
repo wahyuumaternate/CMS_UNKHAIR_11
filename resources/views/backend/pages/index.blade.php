@@ -4,8 +4,27 @@
     <div class="container">
         <div class="page-inner">
             <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
-                <div>
-                    <h3 class="fw-bold mb-3">Halaman</h3>
+                <div class="page-header">
+                    <h3 class="fw-bold mb-3 fs-3">All Pages</h3>
+                    <ul class="breadcrumbs mb-3">
+                        <li class="nav-home">
+                            <a href="{{ route('dashboard') }}">
+                                <i class="icon-home"></i>
+                            </a>
+                        </li>
+                        <li class="separator">
+                            <i class="icon-arrow-right"></i>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#">All Pages</a>
+                        </li>
+                        {{-- <li class="separator">
+                            <i class="icon-arrow-right"></i>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#">Basic Form</a>
+                        </li> --}}
+                    </ul>
                 </div>
                 <div class="ms-md-auto py-2 py-md-0">
                     <a href="{{ route('pages.create') }}" class="btn btn-label-info btn-round me-2">
