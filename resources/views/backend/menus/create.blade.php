@@ -107,35 +107,35 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="card">
-                        <div class="card-body">
-                            <h2 class="card-title">Tambah Menu</h2>
-                            <form action="{{ route('menus.store') }}" method="POST" class="p-4 border rounded">
-                                @csrf
+                        {{-- <div class="card-body"> --}}
+                        {{-- <h2 class="card-title">Tambah Menu</h2> --}}
+                        <form action="{{ route('menus.store') }}" method="POST" class="p-4 border rounded">
+                            @csrf
 
 
-                                <!-- Label Field -->
-                                <div class="mb-3">
-                                    <label for="label" class="form-label">Label</label>
-                                    <input type="text" name="label" id="label" class="form-control" required
-                                        maxlength="255">
-                                    @error('label')
-                                        <div class="text-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
+                            <!-- Label Field -->
+                            <div class="mb-3">
+                                <label for="label" class="form-label">Label</label>
+                                <input type="text" name="label" id="label" class="form-control" required
+                                    maxlength="255">
+                                @error('label')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
 
-                                <!-- URL Field -->
-                                <div class="mb-3">
-                                    <label for="url" class="form-label">URL (optional)</label>
-                                    <input type="text" name="url" id="url" class="form-control" maxlength="255"
-                                        value="#!">
-                                    @error('url')
-                                        <div class="text-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
+                            <!-- URL Field -->
+                            <div class="mb-3">
+                                <label for="url" class="form-label">URL (optional)</label>
+                                <input type="text" name="url" id="url" class="form-control" maxlength="255"
+                                    value="#!">
+                                @error('url')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
 
 
 
-                                {{-- <!-- Parent ID Field -->
+                            {{-- <!-- Parent ID Field -->
                                 <div class="mb-3">
                                     <label for="parent_id" class="form-label">Parent (optional)</label>
                                     <select name="parent_id" id="parent_id" class="form-select">
@@ -149,24 +149,24 @@
                                     @enderror
                                 </div> --}}
 
-                                <!-- Page ID Field -->
-                                <div class="mb-3">
-                                    <label for="page_id" class="form-label">Page (optional)</label>
-                                    <select name="page_id" id="page_id" class="form-select">
-                                        <option value="" selected>-- Select Page --</option>
-                                        @foreach ($pages as $page)
-                                            <option value="{{ $page->id }}">{{ $page->title }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('page_id')
-                                        <div class="text-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
+                            <!-- Page ID Field -->
+                            <div class="mb-3">
+                                <label for="page_id" class="form-label">Page (optional)</label>
+                                <select name="page_id" id="page_id" class="form-select">
+                                    <option value="" selected>-- Select Page --</option>
+                                    @foreach ($pages as $page)
+                                        <option value="{{ $page->id }}">{{ $page->title }}</option>
+                                    @endforeach
+                                </select>
+                                @error('page_id')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
 
-                                <button type="submit" class="btn btn-secondary">Save Menu</button>
-                            </form>
+                            <button type="submit" class="btn btn-secondary">Add Menu</button>
+                        </form>
 
-                        </div>
+                        {{-- </div> --}}
                     </div>
 
                 </div>

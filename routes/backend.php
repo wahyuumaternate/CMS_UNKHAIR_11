@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\GalleriesController;
 use App\Http\Controllers\GeneralSettingsController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\MenuItemController;
@@ -69,5 +70,14 @@ Route::prefix('/cms-unkhair/cp')->middleware('auth')->group(function () {
     // settings
     Route::get('/settings', [GeneralSettingsController::class, 'index'])->name('settings.index');
     Route::post('/settings', [GeneralSettingsController::class, 'update'])->name('settings.update');
+    // galleries
+    // Route untuk Galleries
+    Route::get('galleries', [GalleriesController::class, 'index'])->name('galleries.index');
+    Route::get('galleries/create', [GalleriesController::class, 'create'])->name('galleries.create');
+    Route::post('galleries', [GalleriesController::class, 'store'])->name('galleries.store');
+    Route::get('galleries/{id}', [GalleriesController::class, 'show'])->name('galleries.show');
+    Route::get('galleries/{id}/edit', [GalleriesController::class, 'edit'])->name('galleries.edit');
+    Route::put('galleries/{id}', [GalleriesController::class, 'update'])->name('galleries.update');
+    Route::delete('galleries/{id}', [GalleriesController::class, 'destroy'])->name('galleries.destroy');
 
 });

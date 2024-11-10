@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
         $this->call(MenuSeeder::class);
+       
 
         User::create([
             'name' => 'admin',
@@ -46,6 +47,8 @@ class DatabaseSeeder extends Seeder
             'image' => 'themes/nextpage-lite.png',
             'active' => 0,
         ]);
+
+        $this->call(GalleriesSeeder::class);
         
     }
 }

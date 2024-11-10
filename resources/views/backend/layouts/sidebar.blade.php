@@ -66,10 +66,10 @@
                      </div>
                  </li>
 
-                 <li class="nav-item {{ request()->routeIs('media.index') ? 'active' : '' }}">
-                     <a href="{{ route('media.index') }}">
+                 <li class="nav-item {{ request()->routeIs('galleries.*') ? 'active' : '' }}">
+                     <a href="{{ route('galleries.index') }}">
                          <i class="fas fa-camera"></i>
-                         <p>Gallery</p>
+                         <p>Galleries</p>
                      </a>
                  </li>
 

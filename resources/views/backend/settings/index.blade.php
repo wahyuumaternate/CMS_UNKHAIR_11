@@ -17,11 +17,11 @@
             </div>
             <div class="row">
                 <div class="card">
-                    <div class="card-header">
+                    {{-- <div class="card-header">
                         <h4 class="card-title">Settings</h4>
-                    </div>
+                    </div> --}}
                     <div class="card-body">
-                        <div class="row">
+                        <div class="row py-2">
                             <div class="col-5 col-md-4">
                                 <div class="nav flex-column nav-pills nav-secondary nav-pills-no-bd"
                                     id="v-pills-tab-without-border" role="tablist" aria-orientation="vertical">
