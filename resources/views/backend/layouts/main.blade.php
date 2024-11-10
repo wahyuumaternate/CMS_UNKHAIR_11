@@ -66,6 +66,33 @@
             display: block;
             /* Menghindari efek whitespace */
         }
+
+        .loader-overlay {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            display: none;
+            /* Default hidden */
+        }
+
+        .custom-loader {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .loader-logo {
+            width: 100px;
+            /* Sesuaikan ukuran logo */
+            height: auto;
+        }
     </style>
     @stack('css')
     <link rel="stylesheet" href="{{ asset('vendor/laravel-filemanager/css/lfm.css') }}">
@@ -88,6 +115,19 @@
             @include('backend.layouts.footer')
         </div>
     </div>
+
+    <!-- Custom Loader -->
+    <div id="loader" class="loader-overlay">
+        <div class="custom-loader">
+            <img src="{{ asset('backend\assets\img\logo-unkhair.png') }}" alt="Universitas Khairun Logo"
+                class="loader-logo">
+            <div class="spinner-border text-primary mt-3" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </div>
+
+
 
     <!--   Core JS Files   -->
     <script src="{{ asset('backend/assets/js/core/jquery-3.7.1.min.js') }}"></script>
@@ -138,6 +178,10 @@
     <script src="{{ asset('vendor/laravel-filemanager/js/dropzone.min.js') }}"></script>
     <script>
         // sweetalert
+        function showLoader() {
+            document.getElementById('loader').style.display = 'flex';
+        }
+
         function confirmDelete(id) {
             Swal.fire({
                 title: 'Apakah Anda yakin?',
@@ -150,6 +194,7 @@
                 cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.isConfirmed) {
+                    showLoader();
                     document.getElementById('delete-form-' + id).submit();
                 }
             })
@@ -167,6 +212,71 @@
             }
         }, false);
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sembunyikan loader setelah halaman selesai dimuat
+            document.getElementById('loader').style.display = 'none';
+
+            // Menampilkan loader saat pengiriman form
+            document.querySelectorAll('form').forEach(function(form) {
+                form.addEventListener('submit', function() {
+                    showLoader();
+                });
+            });
+
+            // // Menampilkan loader saat tautan diklik, hanya jika benar-benar memindahkan halaman dan bukan dropdown/tab
+            // document.querySelectorAll('a').forEach(function(link) {
+            //     link.addEventListener('click', function(event) {
+            //         const href = link.getAttribute('href');
+            //         const isDropdown = link.hasAttribute('data-toggle') && (link.getAttribute(
+            //                 'data-toggle') === 'dropdown' || link.getAttribute(
+            //             'data-bs-toggle') === 'dropdown');
+            //         const isTab = link.hasAttribute('data-toggle') && (link.getAttribute(
+            //                 'data-toggle') === 'tab' || link.getAttribute('data-bs-toggle') ===
+            //             'tab');
+
+            //         // Tampilkan loader hanya jika:
+            //         // - href ada dan bukan '#' atau kosong
+            //         // - bukan dropdown atau tab navigasi
+            //         // - tidak memiliki target="_blank"
+            //         if (href && href !== '#' && href.trim() !== '' && !isDropdown && !isTab && !link
+            //             .hasAttribute('target')) {
+            //             showLoader();
+            //         }
+            //     });
+            // });
+
+            // Menampilkan loader saat tombol dengan data-action="delete" diklik
+            document.querySelectorAll('[data-action="delete"]').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    showLoader();
+                });
+            });
+
+            // Menampilkan loader saat AJAX request dibuat (contoh menggunakan fetch)
+            function showLoaderOnFetch() {
+                const originalFetch = window.fetch;
+                window.fetch = function() {
+                    showLoader(); // Tampilkan loader sebelum request
+                    return originalFetch.apply(this, arguments)
+                        .finally(() => {
+                            document.getElementById('loader').style.display =
+                                'none'; // Sembunyikan loader setelah request selesai
+                        });
+                };
+            }
+
+            // Panggil fungsi untuk memonitor AJAX menggunakan fetch API
+            showLoaderOnFetch();
+        });
+
+        // Fungsi untuk menampilkan loader
+        function showLoader() {
+            document.getElementById('loader').style.display = 'flex';
+        }
+    </script>
+
+
 
     <x-notify::notify />
     @notifyJs
