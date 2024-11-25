@@ -66,6 +66,13 @@
             display: block;
             /* Menghindari efek whitespace */
         }
+
+        .form-control,
+        .form-check-input,
+        .search-input {
+            border: 1px solid rgba(116, 115, 115, 0.504) !important;
+            /* Example of a bold border */
+        }
     </style>
     @stack('css')
     <link rel="stylesheet" href="{{ asset('vendor/laravel-filemanager/css/lfm.css') }}">

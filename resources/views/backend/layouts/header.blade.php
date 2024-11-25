@@ -27,13 +27,13 @@
             <div class="d-flex justify-content-center flex-grow-1">
                 <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#searchModal">
                     <nav class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
-                        <div class="input-group">
+                        <div class="input-group search-input">
                             <div class="input-group-prepend">
                                 <button type="submit" class="btn btn-search pe-1">
                                     <i class="fa fa-search search-icon"></i>
                                 </button>
                             </div>
-                            <input type="text" placeholder="Search ..." class="form-control">
+                            <input type="text" placeholder="Search ..." class="fl">
                         </div>
                     </nav>
                 </a>

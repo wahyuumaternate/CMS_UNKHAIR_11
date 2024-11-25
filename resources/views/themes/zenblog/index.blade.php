@@ -58,13 +58,20 @@
                 cursor: pointer;
             }
         }
+
+        .navbar {
+            border-top: 6px solid #FFB200 !important;
+            border-bottom: 1px solid #FFB200 !important;
+        }
     </style>
 </head>
 
 <body class="index-page">
-
-    <header id="header" class="header d-flex align-items-center sticky-top">
-        <div class="container position-relative d-flex align-items-center justify-content-between">
+    <div class="container section">
+        <img class="img-fluid" src="{{ asset('hero.jpg') }}" alt="">
+    </div>
+    <header id="header" class="header d-flex align-items-center sticky-top ">
+        <div class="container navbar position-relative d-flex align-items-center justify-content-between p-2">
 
             <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
                 <!-- Uncomment the line below if you also wish to use an image logo -->
@@ -117,7 +124,6 @@
                             </li>
                         @endforeach
                     @endforeach --}}
-
                     @foreach ($menus as $menu)
                         @foreach ($menu->items as $item)
                             <li class="{{ $item->children->isNotEmpty() ? 'dropdown' : '' }}">
@@ -191,10 +197,10 @@
             </nav>
 
             <div class="header-social-links">
-                <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
+                {{-- <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
                 <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
                 <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-                <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+                <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a> --}}
             </div>
 
         </div>
@@ -605,7 +611,7 @@
                         <!-- Recent Posts Widget -->
                         <div class="recent-posts-widget widget-item">
 
-                            <h3 class="widget-title">Recent Posts</h3>
+                            <h3 class="widget-title">Trending Posts</h3>
 
                             <div class="post-item">
                                 <img src="{{ asset('themes/zenblog/img/blog/blog-recent-1.jpg') }}" alt=""

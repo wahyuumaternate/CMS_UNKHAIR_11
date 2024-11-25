@@ -52,21 +52,23 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
-                            <form action="{{ route('posts.bulk_action') }}" method="POST">
+                            <form id="bulk-action-form" action="{{ route('posts.bulk_action') }}" method="POST">
+
                                 @csrf
                                 <div class="d-flex mb-3">
-                                    <select name="action" class="form-select me-2" style="width: 200px;">
+                                    <select id="bulkActionSelect" name="action" class="form-select me-2"
+                                        style="width: 200px;">
                                         <option value="" disabled selected>Pilih Tindakan Bulk</option>
                                         @if ($status !== 'trashed')
                                             <option value="trash">Pindahkan ke Sampah</option>
-                                            <option value="publish">Terbitkan </option>
-                                            <option value="draft">Buat Menjadi Draft </option>
+                                            <option value="publish">Terbitkan</option>
+                                            <option value="draft">Buat Menjadi Draft</option>
                                         @else
                                             <option value="delete">Hapus Permanen</option>
                                             <option value="kembalikan">Kembalikan</option>
                                         @endif
                                     </select>
-                                    <button type="submit" class="btn btn-primary">Terapkan</button>
+                                    <button type="button" id="applyAction" class="btn btn-primary">Terapkan</button>
                                 </div>
                                 <div class="table-responsive">
                                     <table id="basic-datatables" class="display table table-striped table-hover">
@@ -152,6 +154,45 @@
                 for (var checkbox of checkboxes) {
                     checkbox.checked = this.checked;
                 }
+            }
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const applyButton = document.getElementById('applyAction');
+
+            if (applyButton) {
+                applyButton.addEventListener('click', function() {
+                    const selectedAction = document.getElementById('bulkActionSelect').value;
+
+                    if (selectedAction === 'delete') {
+                        Swal.fire({
+                            title: 'Apakah Anda yakin?',
+                            text: "Anda tidak dapat mengembalikan data yang telah dihapus!",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#d33',
+                            cancelButtonColor: '#3085d6',
+                            confirmButtonText: 'Ya, Hapus!',
+                            cancelButtonText: 'Batal'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                document.getElementById('bulk-action-form').submit();
+                            }
+                        });
+                    } else if (selectedAction) {
+                        document.getElementById('bulk-action-form').submit();
+                    } else {
+                        Swal.fire({
+                            title: 'Pilih Tindakan',
+                            text: 'Anda harus memilih tindakan sebelum menerapkan!',
+                            icon: 'info',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                });
             }
         });
     </script>

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Posts extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes,HasFactory;
     protected $guarded = ['id'];
     protected $casts = [
         'status' => PostStatus::class,

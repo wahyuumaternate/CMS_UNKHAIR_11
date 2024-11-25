@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Categories;
+use App\Models\Posts;
 use App\Models\Theme;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -18,6 +19,10 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
         $this->call(MenuSeeder::class);
+        $this->call([
+            CategoriesSeeder::class,
+            PostSeeder::class, // Pastikan PostSeeder juga ditambahkan di sini
+        ]);
        
 
         User::create([
