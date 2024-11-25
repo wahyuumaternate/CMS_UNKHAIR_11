@@ -27,7 +27,38 @@
 
     <!-- Main CSS File -->
     <link href="{{ asset('themes/zenblog/css/main.css') }}" rel="stylesheet">
+    <style>
+        /* Default Dropdown Menu Style */
+        ul.dropdown-menu {
+            display: none;
+            position: absolute;
+            background-color: #fff;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
 
+        li.dropdown:hover>ul.dropdown-menu {
+            display: block;
+        }
+
+        /* Mobile Devices */
+        @media (max-width: 768px) {
+            .dropdown-menu {
+                position: static;
+                /* Make it position as part of the flow */
+                display: none;
+            }
+
+            .dropdown.show>.dropdown-menu {
+                display: block;
+                /* Show the menu when the parent is active */
+            }
+
+            .toggle-dropdown {
+                cursor: pointer;
+            }
+        }
+    </style>
 </head>
 
 <body class="index-page">
@@ -44,10 +75,10 @@
             <nav id="navmenu" class="navmenu">
                 <ul>
 
-                    @foreach ($menus as $menu)
+                    {{-- @foreach ($menus as $menu)
                         @foreach ($menu->items as $item)
-                            <li class="nav-item {{ ($item->children ?? collect())->isNotEmpty() ? 'dropdown' : '' }}">
-                                <a class="nav-link {{ ($item->children ?? collect())->isNotEmpty() ? 'dropdown-toggle' : '' }}"
+                            <li class="{{ ($item->children ?? collect())->isNotEmpty() ? 'dropdown' : '' }}">
+                                <a class=" {{ ($item->children ?? collect())->isNotEmpty() ? 'dropdown-toggle' : '' }}"
                                     href="{{ $item->page ? url($item->page->slug) : $item->url }}"
                                     {{ ($item->children ?? collect())->isNotEmpty() ? 'data-toggle=dropdown' : '' }}>
                                     {{ $item->label }}
@@ -58,21 +89,65 @@
                                     <ul class="dropdown-menu">
                                         @foreach ($item->children as $child)
                                             <li
-                                                class="dropdown-submenu {{ ($child->children ?? collect())->isNotEmpty() ? 'dropdown' : '' }}">
-                                                <a class="dropdown-item {{ ($child->children ?? collect())->isNotEmpty() ? 'dropdown-toggle' : '' }}"
+                                                class="{{ ($child->children ?? collect())->isNotEmpty() ? 'dropdown' : '' }}">
+                                                <a class=" {{ ($child->children ?? collect())->isNotEmpty() ? 'dropdown-toggle' : '' }}"
                                                     href="{{ $child->page ? url($child->page->slug) : $child->url }}"
                                                     {{ ($child->children ?? collect())->isNotEmpty() ? 'data-toggle=dropdown' : '' }}>
                                                     {{ $child->label }}
+
                                                 </a>
 
                                                 <!-- Second-level dropdown menu -->
                                                 @if (($child->children ?? collect())->isNotEmpty())
-                                                    <ul class="dropdown-menu">
+                                                    <ul>
                                                         @foreach ($child->children as $subchild)
-                                                            <li><a class="dropdown-item"
+                                                            <li>
+                                                                <a
                                                                     href="{{ $subchild->page ? url($subchild->page->slug) : $subchild->url }}">
                                                                     {{ $subchild->label }}
-                                                                </a></li>
+                                                                </a>
+                                                            </li>
+                                                        @endforeach
+                                                    </ul>
+                                                @endif
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                @endif
+                            </li>
+                        @endforeach
+                    @endforeach --}}
+
+                    @foreach ($menus as $menu)
+                        @foreach ($menu->items as $item)
+                            <li class="{{ $item->children->isNotEmpty() ? 'dropdown' : '' }}">
+                                <a href="{{ $item->page ? url($item->page->slug) : $item->url }}"
+                                    class="{{ $item->children->isNotEmpty() ? 'dropdown-toggle' : '' }}"
+                                    {{ $item->children->isNotEmpty() ? 'data-toggle=dropdown' : '' }}>
+                                    {{ $item->label }}
+                                </a>
+
+                                <!-- First-level dropdown menu -->
+                                @if ($item->children->isNotEmpty())
+                                    <ul class="dropdown-menu">
+                                        @foreach ($item->children as $child)
+                                            <li class="{{ $child->children->isNotEmpty() ? 'dropdown' : '' }}">
+                                                <a href="{{ $child->page ? url($child->page->slug) : $child->url }}"
+                                                    class="{{ $child->children->isNotEmpty() ? 'dropdown-toggle' : '' }}"
+                                                    {{ $child->children->isNotEmpty() ? 'data-toggle=dropdown' : '' }}>
+                                                    {{ $child->label }}
+                                                </a>
+
+                                                <!-- Second-level dropdown menu -->
+                                                @if ($child->children->isNotEmpty())
+                                                    <ul>
+                                                        @foreach ($child->children as $subchild)
+                                                            <li>
+                                                                <a
+                                                                    href="{{ $subchild->page ? url($subchild->page->slug) : $subchild->url }}">
+                                                                    {{ $subchild->label }}
+                                                                </a>
+                                                            </li>
                                                         @endforeach
                                                     </ul>
                                                 @endif
@@ -83,6 +158,8 @@
                             </li>
                         @endforeach
                     @endforeach
+
+
 
 
 
@@ -226,7 +303,12 @@
 
         <div class="container">
             <div class="row">
+                <div class="container section-title aos-init aos-animate" data-aos="fade-up">
+                    <div class="section-title-container d-flex align-items-center justify-content-between">
+                        <h2>Informasi Terkini</h2>
 
+                    </div>
+                </div>
                 <div class="col-lg-8">
 
                     <!-- Blog Posts Section -->
@@ -630,6 +712,32 @@
 
     <!-- Main JS File -->
     <script src="{{ asset('themes/zenblog/js/main.js') }}"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Get all toggle buttons for the dropdowns
+            var dropdownToggles = document.querySelectorAll('.dropdown .toggle-dropdown');
+
+            dropdownToggles.forEach(function(toggle) {
+                toggle.addEventListener('click', function(e) {
+                    e.preventDefault(); // Prevent default link behavior
+                    var dropdownMenu = this.closest('li').querySelector('.dropdown-menu');
+
+                    // Toggle the 'show' class on the dropdown menu
+                    dropdownMenu.classList.toggle('show');
+
+                    // Close other dropdowns when opening a new one
+                    // Optionally, you can close other open dropdowns
+                    var otherDropdowns = document.querySelectorAll('.dropdown-menu');
+                    otherDropdowns.forEach(function(menu) {
+                        if (menu !== dropdownMenu) {
+                            menu.classList.remove('show');
+                        }
+                    });
+                });
+            });
+        });
+    </script>
 
 </body>
 
