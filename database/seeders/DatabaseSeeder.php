@@ -40,7 +40,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Theme::create([
-            'name' => 'nextpage-lite',
+            'name' => 'Retmu',
             'path' => 'themes/zenblog',
             'image' => 'themes/zenblog.png',
             'active' => 1,

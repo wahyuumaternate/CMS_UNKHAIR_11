@@ -17,7 +17,7 @@ class GalleriesSeeder extends Seeder
         DB::table('galleries')->insert([
             [
                 'image' => 'image',
-                'slug' => 'image',
+                'slug' => 'Gallery One',
                 'name' => 'Gallery One',
                 'description' => 'This is a description for Gallery One.',
                 'is_featured' => true,
@@ -29,7 +29,7 @@ class GalleriesSeeder extends Seeder
             ],
             [
                 'image' => 'image',
-                'slug' => 'image',
+                'slug' => 'Gallery Two',
                 'name' => 'Gallery Two',
                 'description' => 'This is a description for Gallery Two.',
                 'is_featured' => false,
@@ -41,7 +41,7 @@ class GalleriesSeeder extends Seeder
             ],
             [
                 'image' => 'image',
-                'slug' => 'image',
+                'slug' => 'Gallery Three',
                 'name' => 'Gallery Three',
                 'description' => 'This is a description for Gallery Three.',
                 'is_featured' => true,

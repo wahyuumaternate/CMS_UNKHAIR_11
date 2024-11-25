@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GalleriesController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SearchController;
@@ -21,6 +22,7 @@ Route::group(['prefix' => 'cms-unkhair-filemanager', 'middleware' => ['web', 'au
     \UniSharp\LaravelFilemanager\Lfm::routes();
 });
 
+Route::get('/galleries', [GalleriesController::class, 'front'])->name('galleries.front');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

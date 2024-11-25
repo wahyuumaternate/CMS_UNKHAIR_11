@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Galleries;
 use App\Models\GalleriesMeta;
+use App\Models\Theme;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Notify;
@@ -150,13 +151,19 @@ class GalleriesController extends Controller
     }
 
     public function destroy_image($id)
-{
-    $image = GalleriesMeta::find($id);
+    {
+        $image = GalleriesMeta::find($id);
 
-    // dd($image);
-    $image->delete();
+        // dd($image);
+        $image->delete();
 
-    return response()->json(['message' => 'Image deleted successfully']);
-}
+        return response()->json(['message' => 'Image deleted successfully']);
+    }
 
+    function front() {
+        $theme = Theme::where('active', true)->first()->path;
+        $data = []; // Data yang diperlukan
+        $galleries = Galleries::latest()->get();
+        return view($theme . '.galleries', compact('data','galleries'));
+    }
 }

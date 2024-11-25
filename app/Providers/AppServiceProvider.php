@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Categories;
 use App\Models\Menu;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -26,6 +27,11 @@ class AppServiceProvider extends ServiceProvider
             $query->whereNull('parent_id')->with(['children', 'page'])->orderBy('order');
         }])->where('status', 'aktif')->get();
 
+        // Ambil semua kategori
+        $categoriesAll = Categories::all();
+
+        // Bagikan ke semua view
+        View::share('categoriesAll', $categoriesAll);
         // Membagikan variabel $menus ke semua view
         View::share('menus', $menus);
     }

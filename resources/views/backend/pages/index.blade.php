@@ -52,7 +52,7 @@
                                         @foreach ($pages as $page)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
-                                                <td><a href="{{ route('pages.show', $page->id) }}">{{ $page->title }}</a>
+                                                <td><a href="{{ route('pages.edit', $page->id) }}">{{ $page->title }}</a>
                                                 </td>
                                                 <td>{{ $page->slug }}</td>
                                                 <td>
