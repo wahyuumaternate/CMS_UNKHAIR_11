@@ -324,6 +324,8 @@ lll</textarea
             inputDesc.value = ""; // Set deskripsi default sebagai kosong
             imgContainer.appendChild(inputDesc);
 
+            console.log(inputDesc);
+
             let img = document.createElement("img");
             img.src = file_url;
             img.classList.add("img-thumbnail");
@@ -342,26 +344,48 @@ lll</textarea
         });
     };
 
-    function openDescriptionModal(container, imagePath) {
-        selectedImageContainer = container;
-        document.getElementById("imagePath").value = imagePath;
+    // function openDescriptionModal(inputDesc) {
+    //     selectedDescriptionInput = inputDesc;
+    //     document.getElementById("imageDescription").value = inputDesc.value || "";
+    //     // console.log(selectedDescriptionInput)
+    //     const modal = new bootstrap.Modal(document.getElementById("descriptionModal"));
+    //     modal.show();
+    // }
+
+    function openDescriptionModal(imgContainer, file_url) {
+        selectedImageContainer = imgContainer; // Simpan container gambar yang sedang dipilih
+        selectedDescriptionInput = imgContainer.querySelector(
+            'input[name$="[description]"]'
+        ); // Cari input deskripsi di dalam container
         document.getElementById("imageDescription").value =
-            container.title || ""; // Load previous description
+            selectedDescriptionInput.value || ""; // Ambil nilai deskripsi
         const modal = new bootstrap.Modal(
-            document.getElementById("descriptionModal"),
-            {}
+            document.getElementById("descriptionModal")
         );
         modal.show();
     }
 
     function updateDescription() {
         const description = document.getElementById("imageDescription").value;
-        selectedImageContainer.title = description; // Add description as a tooltip
+        selectedDescriptionInput.value = description; // Perbarui deskripsi
+        // if (selectedDescriptionInput) {
+        //     console.log("Deskripsi diperbarui:", description); // Debugging
+        // } else {
+        //     console.error("Tidak ada elemen deskripsi yang dipilih.");
+        // }
         const modal = bootstrap.Modal.getInstance(
             document.getElementById("descriptionModal")
         );
         modal.hide();
     }
+
+    // function updateDescription() {
+    //     const description = document.getElementById("imageDescription").value;
+    //     selectedDescriptionInput.value = description;
+    //     console.log(description)
+    //     const modal = bootstrap.Modal.getInstance(document.getElementById("descriptionModal"));
+    //     modal.hide();
+    // }
 
     function deleteSelectedImage() {
         selectedImageContainer.remove();

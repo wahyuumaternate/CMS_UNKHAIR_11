@@ -35,10 +35,16 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Theme::create([
+            'name' => 'nextpage-lite',
+            'path' => 'themes/zenblog',
+            'image' => 'themes/zenblog.png',
+            'active' => 1,
+        ]);
+        Theme::create([
             'name' => 'news-master',
             'path' => 'themes/news-master',
             'image' => 'themes/news-master.png',
-            'active' => 1,
+            'active' => 0,
         ]);
 
         Theme::create([
@@ -47,6 +53,7 @@ class DatabaseSeeder extends Seeder
             'image' => 'themes/nextpage-lite.png',
             'active' => 0,
         ]);
+        
 
         $this->call(GalleriesSeeder::class);
         

@@ -1,14 +1,19 @@
-@extends('backend.layouts.main', ['title' => 'Create Gallery']) @section('body')
+@extends('backend.layouts.main', ['title' => 'Edit Gallery'])
+@section('body')
     <div class="container">
         <div class="page-inner">
             <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
                 <div>
-                    <h3 class="fw-bold mb-3 fs-3">Create New Gallery</h3>
+                    <h3 class="fw-bold mb-3 fs-3">Edit Gallery</h3>
                 </div>
             </div>
 
-            <form id="formGallery" action="{{ route('galleries.store') }}" method="POST" enctype="multipart/form-data">
+            <!-- Form untuk update gallery -->
+            <form id="formGallery" action="{{ route('galleries.update', $gallery->id) }}" method="POST"
+                enctype="multipart/form-data">
                 @csrf
+                @method('PUT') <!-- Gunakan metode PUT untuk update -->
+                <input type="hidden" value="hh" name="image">
                 <div class="row">
                     <!-- Main Form Section -->
                     <div class="col-md-8">
@@ -17,30 +22,31 @@
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Name *</label>
                                     <input type="text" class="form-control" id="name" name="name" required
-                                        value="ll">
+                                        value="{{ old('name', $gallery->name) }}">
                                 </div>
-                                <input type="hidden" value="hh" name="image">
+
                                 <div class="mb-3">
                                     <label for="permalink" class="form-label">Permalink *</label>
                                     <input type="text" class="form-control" id="permalink" name="slug" required
-                                        value="ll">
+                                        value="{{ old('slug', $gallery->slug) }}">
                                     <small class="form-text text-muted">Preview:
-                                        http://localhost/galleries/your-permalink</small>
+                                        http://localhost/galleries/{{ old('slug', $gallery->slug) }}</small>
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="description" class="form-label">Description *</label>
-                                    <textarea class="form-control" id="description" name="description" rows="3" required>lll</textarea>
+                                    <textarea class="form-control" id="description" name="description" rows="3" required>{{ old('description', $gallery->description) }}</textarea>
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="sort_order" class="form-label">Sort Order</label>
                                     <input type="number" class="form-control" id="sort_order" name="sort_order"
-                                        value="0">
+                                        value="{{ old('sort_order', $gallery->sort_order) }}">
                                 </div>
 
                                 <div class="mb-3 form-check">
-                                    <input type="checkbox" class="form-check-input" id="is_featured" name="is_featured">
+                                    <input type="checkbox" class="form-check-input" id="is_featured" name="is_featured"
+                                        {{ old('is_featured', $gallery->is_featured) ? 'checked' : '' }}>
                                     <label class="form-check-label" for="is_featured">Is featured?</label>
                                 </div>
                             </div>
@@ -63,14 +69,17 @@
                             <div class="card-body">
                                 <label for="status" class="form-label">Status *</label>
                                 <select class="form-select" id="status" name="status" required>
-                                    <option value="active">Published</option>
-                                    <option value="inactive">Draft</option>
+                                    <option value="active"
+                                        {{ old('status', $gallery->status) == 'active' ? 'selected' : '' }}>Published
+                                    </option>
+                                    <option value="inactive"
+                                        {{ old('status', $gallery->status) == 'inactive' ? 'selected' : '' }}>Draft</option>
                                 </select>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Gallery Images Section for Create -->
+                    <!-- Gallery Images Section -->
                     <div class="col-md-8">
                         <div class="card mt-3">
                             <div class="card-body">
@@ -82,48 +91,71 @@
                                     Reset Gallery
                                 </button>
 
-                                <!-- Image preview container -->
-                                <div id="imagePreviewContainer" class="d-flex gap-2 flex-wrap"></div>
+                                <div id="imagePreviewContainer" class="d-flex gap-2 flex-wrap">
+                                    @foreach ($gallery->metas as $index => $meta)
+                                        <div class="image-container">
+                                            <!-- Input hidden untuk URL gambar -->
+                                            <input type="hidden" name="gallery_images[{{ $index }}][image]"
+                                                value="{{ $meta->image }}">
+
+                                            <!-- Input hidden untuk deskripsi gambar -->
+                                            <input type="hidden" name="gallery_images[{{ $index }}][description]"
+                                                value="{{ $meta->description }}">
+
+                                            <!-- Pratinjau gambar -->
+                                            <img src="{{ asset($meta->image) }}" alt="Gallery Image {{ $index + 1 }}"
+                                                class="img-thumbnail" onclick="openDescriptionModal(this.parentElement)">
+                                            <span class="edit-icon"><i class="fa fa-edit"></i></span>
+                                        </div>
+
+                                        <!-- Modal for Adding or Updating Image Description -->
+                                        <div class="modal fade" id="descriptionModal" tabindex="-1"
+                                            aria-labelledby="descriptionModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="descriptionModalLabel">
+                                                            Update Photo's Description
+                                                        </h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <input type="hidden" id="imagePath" />
+                                                        <input type="text" class="form-control" id="imageDescription"
+                                                            placeholder="Photo's description..." />
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-danger"
+                                                            onclick="deleteSelectedImage({{ $meta->id }})">
+                                                            Delete this photo
+                                                        </button>
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">
+                                                            Cancel
+                                                        </button>
+                                                        <button type="button" class="btn btn-primary"
+                                                            onclick="updateDescription()">
+                                                            Update
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+
                             </div>
                         </div>
                     </div>
 
-                    <!-- Modal for Adding or Updating Image Description -->
-                    <div class="modal fade" id="descriptionModal" tabindex="-1" aria-labelledby="descriptionModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="descriptionModalLabel">
-                                        Update Photo's Description
-                                    </h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <input type="hidden" id="imagePath" />
-                                    <input type="text" class="form-control" id="imageDescription"
-                                        placeholder="Photo's description..." />
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-danger" onclick="deleteSelectedImage()">
-                                        Delete this photo
-                                    </button>
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                        Cancel
-                                    </button>
-                                    <button type="button" class="btn btn-primary" onclick="updateDescription()">
-                                        Update
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
             </form>
         </div>
     </div>
 @endsection
+
 @push('css')
     <style>
         .image-container {
@@ -186,6 +218,13 @@
 @endpush
 @push('scripts')
     <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const imageContainers = document.querySelectorAll(".image-container");
+            imageContainers.forEach((imgContainer) => {
+                imgContainer.onclick = () => openDescriptionModal(imgContainer);
+            });
+        });
+
         let selectedImageContainer;
 
         function openFileManager() {
@@ -247,14 +286,32 @@
 
 
         function openDescriptionModal(imgContainer, file_url) {
+
             selectedImageContainer = imgContainer; // Simpan container gambar yang sedang dipilih
             selectedDescriptionInput = imgContainer.querySelector(
                 'input[name$="[description]"]'); // Cari input deskripsi di dalam container
+
             document.getElementById("imageDescription").value = selectedDescriptionInput.value ||
                 ""; // Ambil nilai deskripsi
             const modal = new bootstrap.Modal(document.getElementById("descriptionModal"));
             modal.show();
         }
+
+        // function openDescriptionModal(imgContainer) {
+        //     selectedImageContainer = imgContainer; // Simpan container gambar yang sedang dipilih
+        //     selectedDescriptionInput = imgContainer.querySelector(
+        //         'input[name$="[description]"]'); // Cari input deskripsi di dalam container
+
+        //     if (selectedDescriptionInput) {
+        //         document.getElementById("imageDescription").value = selectedDescriptionInput.value ||
+        //             ""; // Ambil nilai deskripsi
+        //     } else {
+        //         console.error("Input deskripsi tidak ditemukan.");
+        //     }
+
+        //     const modal = new bootstrap.Modal(document.getElementById("descriptionModal"));
+        //     modal.show();
+        // }
 
         function updateDescription() {
             const description = document.getElementById("imageDescription").value;
@@ -269,12 +326,32 @@
         }
 
 
-        function deleteSelectedImage() {
+        function deleteSelectedImage(imageId) {
+            console.log()
             selectedImageContainer.remove();
             const modal = bootstrap.Modal.getInstance(
                 document.getElementById("descriptionModal")
             );
             modal.hide();
+
+            // Kirim request untuk menghapus gambar dari database
+            fetch(`/cms-unkhair/cp/delete-image/${imageId}`, {
+                    method: 'get',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': "csrf-token" // CSRF token Laravel
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Image deleted successfully.');
+                    } else {
+                        console.log('Failed to delete image.');
+                    }
+                })
+                .catch(error => {
+                    console.log('Error:', error);
+                });
         }
 
         function resetGallery() {

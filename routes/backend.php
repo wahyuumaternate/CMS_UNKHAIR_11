@@ -79,5 +79,6 @@ Route::prefix('/cms-unkhair/cp')->middleware('auth')->group(function () {
     Route::get('galleries/{id}/edit', [GalleriesController::class, 'edit'])->name('galleries.edit');
     Route::put('galleries/{id}', [GalleriesController::class, 'update'])->name('galleries.update');
     Route::delete('galleries/{id}', [GalleriesController::class, 'destroy'])->name('galleries.destroy');
+    Route::get('/delete-image/{id}', [GalleriesController::class, 'destroy_image']);
 
 });
