@@ -216,6 +216,8 @@
                 'https://www.tiny.cloud/css/codepen.min.css'
             ],
             file_picker_callback: function(callback, value, meta) {
+                console.log(meta.filetype);
+
                 if (meta.filetype === 'image') {
                     let route_prefix = "{{ url('cms-unkhair-filemanager') }}";
                     window.open(route_prefix + '?type=file', 'FileManager', 'width=800,height=600');
@@ -224,6 +226,35 @@
                         callback(file_url, {
                             alt: items[0].name
                         });
+                    };
+                }
+                if (meta.filetype === 'media') {
+                    let route_prefix = "{{ url('cms-unkhair-filemanager') }}";
+                    window.open(route_prefix + '?type=file', 'FileManager', 'width=800,height=600');
+                    window.SetUrl = function(items) {
+                        let file_url = items[0].url;
+                        callback(file_url, {
+                            alt: items[0].name
+                        });
+                    };
+                }
+                if (meta.filetype === 'file') {
+                    let route_prefix = "{{ url('cms-unkhair-filemanager') }}";
+                    window.open(route_prefix + '?type=file', 'FileManager', 'width=800,height=600');
+                    window.SetUrl = function(items) {
+                        // Memeriksa apakah ada file yang dipilih
+                        if (items.length > 0) {
+                            let file_url = items[0].url; // URL dari file yang dipilih
+
+                            // Memastikan file yang dipilih adalah PDF
+                            if (file_url.endsWith('.pdf')) {
+                                callback(file_url, {
+                                    alt: items[0].name
+                                });
+                            } else {
+                                alert('Silakan pilih file PDF.');
+                            }
+                        }
                     };
                 }
             },

@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Categories;
+use App\Models\GeneralSettings;
 use App\Models\Menu;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -29,6 +30,15 @@ class AppServiceProvider extends ServiceProvider
 
         // Ambil semua kategori
         $categoriesAll = Categories::all();
+
+        // Ambil data dari model Setting
+        $site_name = GeneralSettings::where('key','site_name')->firstOrFail();
+        // Bagikan data ke semua view
+        View::share('site_name', $site_name);
+
+        $site_logo = GeneralSettings::where('key','site_logo')->firstOrFail();
+        // Bagikan data ke semua view
+        View::share('site_logo', $site_logo);
 
         // Bagikan ke semua view
         View::share('categoriesAll', $categoriesAll);

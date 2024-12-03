@@ -6,8 +6,8 @@
 
         <a href="/" class="logo d-flex align-items-center me-auto me-xl-0">
             <!-- Uncomment the line below if you also wish to use an image logo -->
-            <img src="{{ asset('backend/assets/img/logo-unkhair.png') }}" alt="">
-            <h1 class="sitename">UNIVERSITAS KHAIRUN</h1>
+            <img src="{{ asset('storage/' . $site_logo->value) }}" alt="">
+            <h1 class="sitename">{{ $site_name->value }}</h1>
         </a>
 
         <nav id="navmenu" class="navmenu">

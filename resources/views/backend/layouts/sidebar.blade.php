@@ -133,32 +133,32 @@
 
                  <li class="nav-item {{ request()->routeIs('users.*') ? 'active submenu' : '' }}">
                      <a data-bs-toggle="collapse" href="#charts">
-                         <i class="fas fa-user-cog"></i>
-                         <p>Users</p>
+                         <i class="fas fa-cogs"></i>
+                         <p>Settings</p>
                          <span class="caret"></span>
                      </a>
-                     <div class="collapse {{ request()->routeIs('users.*') ? 'show' : '' }}" id="charts">
+                     <div class="collapse {{ request()->routeIs('settings.*') ? 'show' : '' }}" id="charts">
                          <ul class="nav nav-collapse">
-                             <li>
-                                 <a href="#">
-                                     <span class="sub-item">Chart Js</span>
+                             <li class="{{ request()->routeIs('settings.index') ? 'active' : '' }}">
+                                 <a href="{{ route('settings.index') }}">
+                                     <span class="sub-item">General</span>
                                  </a>
                              </li>
                              <li>
                                  <a href="#">
-                                     <span class="sub-item">Sparkline</span>
+                                     <span class="sub-item">Users</span>
                                  </a>
                              </li>
                          </ul>
                      </div>
                  </li>
 
-                 <li class="nav-item {{ request()->routeIs('settings.*') ? 'active' : '' }}">
+                 {{-- <li class="nav-item {{ request()->routeIs('settings.*') ? 'active' : '' }}">
                      <a href="{{ route('settings.index') }}">
                          <i class="fas fa-cogs"></i>
                          <p>Settings</p>
                      </a>
-                 </li>
+                 </li> --}}
                  {{-- <li class="nav-item {{ request()->routeIs('settings.*') ? 'active submenu' : '' }}">
                      <a data-bs-toggle="collapse" href="#pengaturan">
                          <i class="fas fa-cogs"></i>

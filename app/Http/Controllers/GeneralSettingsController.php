@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Auth;
 use ZipArchive;
 
 class GeneralSettingsController extends Controller
@@ -30,12 +32,12 @@ class GeneralSettingsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request)
+        public function update(Request $request)
     {
+        // dd($request->site_logo);
         try {
             // Tentukan tab yang sedang diupdate
             $tab = $request->input('tab');
-
             // Definisikan keys untuk setiap tab
             $tabKeys = [
                 'site' => ['site_name', 'site_logo', 'app_url'],
@@ -47,7 +49,7 @@ class GeneralSettingsController extends Controller
             $validationRules = [
                 'site' => [
                     'site_name' => 'string|max:255',
-                    'site_logo' => 'string|max:255',
+                    'site_logo' => 'image|mimes:jpeg,png,jpg|max:2048', // Maksimal 2MB
                     'app_url' => 'string|max:255',
                 ],
                 'email' => [
@@ -67,19 +69,33 @@ class GeneralSettingsController extends Controller
                     'database_name' => 'string|max:255',
                 ]
             ];
+           
+             // Lakukan validasi
+        $validatedData = $request->validate($validationRules[$tab]);
 
-            // Lakukan validasi
-            $request->validate($validationRules[$tab]);
+        // Proses upload logo jika ada
+        if ($request->hasFile('site_logo')) {
+            // Ambil path logo yang lama dari database
+            $existingLogo = DB::table('general_settings')->where('key', 'site_logo')->value('value');
 
-            // Update hanya keys yang ada di tab saat ini
-            foreach ($tabKeys[$tab] as $key) {
-                if ($request->has($key)) {
-                    DB::table('general_settings')->where('key', $key)->update([
-                        'value' => $request->input($key),
-                        'updated_at' => now()
-                    ]);
-                }
+            // Hapus file lama jika ada
+            if ($existingLogo && Storage::disk('public')->exists($existingLogo)) {
+                Storage::disk('public')->delete($existingLogo);
             }
+
+            $logoPath = $request->file('site_logo')->store('logo', 'public');
+            $validatedData['site_logo'] = $logoPath; // Simpan path logo untuk diupdate ke database
+        }
+
+        // Update hanya keys yang ada di tab saat ini
+        foreach ($tabKeys[$tab] as $key) {
+            if (array_key_exists($key, $validatedData)) { // Pastikan key ada dalam validated data
+                DB::table('general_settings')->where('key', $key)->update([
+                    'value' => $validatedData[$key],
+                    'updated_at' => now()
+                ]);
+            }
+        }
 
             // Redirect dengan pesan sukses
             notify()->success('Settings berhasil diperbarui.');
@@ -92,7 +108,35 @@ class GeneralSettingsController extends Controller
         }
     }
 
-    public function downloadStorageBackup()
+
+   
+
+    // protected function updateEnv($key, $value)
+    // {
+    //     $path = base_path('.env');
+    
+    //     // Ambil isi dari file .env
+    //     $content = file_get_contents($path);
+    
+    //     // Pastikan nilai dibungkus dengan kutip jika ada spasi
+    //     if (strpos($value, ' ') !== false) {
+    //         $value = '"' . $value . '"';
+    //     }
+    
+    //     // Setiap key yang diupdate
+    //     $pattern = '/' . preg_quote($key) . '=.*/';
+    //     $content = preg_replace($pattern, $key . '=' . $value, $content);
+    
+    //     // Simpan kembali ke file .env
+    //     file_put_contents($path, $content);
+    
+    //     // Refresh konfigurasi
+    //     Artisan::call('config:cache'); // Refresh konfigurasi untuk mengambil nilai baru
+        
+    //     return redirect()->back();
+    // }
+
+public function downloadStorageBackup()
 {
     try {
         // Nama file zip yang akan diunduh
@@ -138,6 +182,5 @@ class GeneralSettingsController extends Controller
         return response()->json(['error' => 'Terjadi kesalahan saat membuat backup storage: ' . $e->getMessage()], 500);
     }
 }
-
 
 }

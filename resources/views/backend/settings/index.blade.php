@@ -22,7 +22,42 @@
                     </div> --}}
                     <div class="card-body">
                         <div class="row py-2">
-                            <div class="col-5 col-md-4">
+                            <div class="col-lg-8">
+                                <form action="{{ route('settings.update') }}" method="POST" enctype="multipart/form-data">
+                                    <div class="tab-content" id="v-pills-without-border-tabContent">
+                                        @csrf
+                                        <div class="tab-pane fade active show" id="v-pills-site-settings" role="tabpanel"
+                                            aria-labelledby="v-pills-site-settings-tab">
+                                            <input type="hidden" name="tab" id="activeTab" value="site">
+                                            <div class="mb-3">
+                                                <label for="site_name" class="form-label">Nama Situs</label>
+                                                <input type="text" name="site_name" id="site_name"
+                                                    value="{{ $settings['site_name'] ?? '' }}" class="form-control">
+                                            </div>
+                                            <div class="mb-3 row">
+                                                <div class="col-6">
+                                                    <label for="site_logo" class="form-label">Upload Logo Situs</label>
+                                                    <input type="file" name="site_logo" id="site_logo" accept="image/*"
+                                                        class="form-control">
+                                                </div>
+                                                <div class="col-6">
+                                                    @if (isset($settings['site_logo']))
+                                                        <img src="{{ asset('storage/' . $settings['site_logo']) }}"
+                                                            alt="Logo" class="mt-2" style="max-width: 100px;">
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="app_url" class="form-label">App URL</label>
+                                                <input type="text" name="app_url" id="app_url"
+                                                    value="{{ $settings['app_url'] ?? '' }}" class="form-control">
+                                            </div>
+                                            <button type="submit" class="btn btn-primary mt-3">Simpan Pengaturan</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            {{-- <div class="col-5 col-md-4">
                                 <div class="nav flex-column nav-pills nav-secondary nav-pills-no-bd"
                                     id="v-pills-tab-without-border" role="tablist" aria-orientation="vertical">
                                     <a class="nav-link active" id="v-pills-site-settings-tab" data-bs-toggle="pill"
@@ -38,34 +73,50 @@
                                 </div>
                             </div>
                             <div class="col-7 col-md-8">
-                                <form action="{{ route('settings.update') }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="tab" id="activeTab" value="site">
-                                    <!-- Hidden input untuk tab yang aktif -->
+                                <!-- Hidden input untuk tab yang aktif -->
+                                <!-- Site Settings Tab -->
+                                <form action="{{ route('settings.update') }}" method="POST" enctype="multipart/form-data">
                                     <div class="tab-content" id="v-pills-without-border-tabContent">
-                                        <!-- Site Settings Tab -->
+                                        @csrf
                                         <div class="tab-pane fade active show" id="v-pills-site-settings" role="tabpanel"
                                             aria-labelledby="v-pills-site-settings-tab">
+                                            <input type="hidden" name="tab" id="activeTab" value="site">
                                             <div class="mb-3">
                                                 <label for="site_name" class="form-label">Nama Situs</label>
                                                 <input type="text" name="site_name" id="site_name"
                                                     value="{{ $settings['site_name'] ?? '' }}" class="form-control">
                                             </div>
-                                            <div class="mb-3">
-                                                <label for="site_logo" class="form-label">URL Logo Situs</label>
-                                                <input type="text" name="site_logo" id="site_logo"
-                                                    value="{{ $settings['site_logo'] ?? '' }}" class="form-control">
+                                            <div class="mb-3 row">
+                                                <div class="col-6">
+                                                    <label for="site_logo" class="form-label">Upload Logo Situs</label>
+                                                    <input type="file" name="site_logo" id="site_logo" accept="image/*"
+                                                        class="form-control">
+                                                </div>
+                                                <div class="col-6">
+                                                    @if (isset($settings['site_logo']))
+                                                        <img src="{{ asset('storage/' . $settings['site_logo']) }}"
+                                                            alt="Logo" class="mt-2" style="max-width: 100px;">
+                                                    @endif
+                                                </div>
                                             </div>
                                             <div class="mb-3">
                                                 <label for="app_url" class="form-label">App URL</label>
                                                 <input type="text" name="app_url" id="app_url"
                                                     value="{{ $settings['app_url'] ?? '' }}" class="form-control">
                                             </div>
+                                            <button type="submit" class="btn btn-primary mt-3">Simpan Pengaturan</button>
                                         </div>
+                                    </div>
+                                </form>
 
-                                        <!-- Email Settings Tab -->
+                                <!-- Email Settings Tab -->
+                                <form action="{{ route('settings.update') }}" method="POST">
+                                    <div class="tab-content" id="v-pills-without-border-tabContent">
+                                        @csrf
                                         <div class="tab-pane fade" id="v-pills-email-settings" role="tabpanel"
                                             aria-labelledby="v-pills-email-settings-tab">
+                                            <!-- Site Settings Tab -->
+                                            <input type="hidden" name="tab" id="activeTab" value="email">
                                             <div class="mb-3">
                                                 <label for="mail_mailer" class="form-label">Mailer</label>
                                                 <input type="text" name="mail_mailer" id="mail_mailer"
@@ -94,7 +145,8 @@
                                             <div class="mb-3">
                                                 <label for="mail_encryption" class="form-label">Mail Encryption</label>
                                                 <input type="text" name="mail_encryption" id="mail_encryption"
-                                                    value="{{ $settings['mail_encryption'] ?? '' }}" class="form-control">
+                                                    value="{{ $settings['mail_encryption'] ?? '' }}"
+                                                    class="form-control">
                                             </div>
                                             <div class="mb-3">
                                                 <label for="mail_from_address" class="form-label">Mail From
@@ -108,11 +160,18 @@
                                                 <input type="text" name="mail_from_name" id="mail_from_name"
                                                     value="{{ $settings['mail_from_name'] ?? '' }}" class="form-control">
                                             </div>
+                                            <button type="submit" class="btn btn-primary mt-3">Simpan Pengaturan</button>
                                         </div>
+                                    </div>
+                                </form>
 
-                                        <!-- Database Settings Tab -->
+                                <!-- Database Settings Tab -->
+                                <form action="{{ route('settings.update') }}" method="POST">
+                                    <div class="tab-content" id="v-pills-without-border-tabContent">
+                                        @csrf
                                         <div class="tab-pane fade" id="v-pills-database-settings" role="tabpanel"
                                             aria-labelledby="v-pills-database-settings-tab">
+                                            <input type="hidden" name="tab" id="activeTab" value="database">
                                             <div class="mb-3">
                                                 <label for="database_connection" class="form-label">Database
                                                     Connection</label>
@@ -135,11 +194,13 @@
                                                 <input type="text" name="database_name" id="database_name"
                                                     value="{{ $settings['database_name'] ?? '' }}" class="form-control">
                                             </div>
+                                            <button type="submit" class="btn btn-primary mt-3">Simpan Pengaturan</button>
                                         </div>
                                     </div>
-                                    <button type="submit" class="btn btn-primary mt-3">Simpan Pengaturan</button>
                                 </form>
-                            </div>
+                            </div> --}}
+
+
                         </div>
                     </div>
                 </div>
