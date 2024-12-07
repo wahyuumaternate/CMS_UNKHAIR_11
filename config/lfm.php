@@ -47,7 +47,7 @@ return [
 
     'folder_categories'        => [
         'file'  => [
-            'folder_name'  => 'files',
+            'folder_name'  => 'uploads',
             'startup_view' => 'list',
             'max_size'     => 50000, // size in KB
             'thumb' => true,
@@ -95,6 +95,7 @@ return [
      */
 
     'disk'                     => 'public',
+    // 'disk'                     => 's3',
 
     'rename_file'              => false,
 
