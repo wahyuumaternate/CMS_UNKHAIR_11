@@ -21,5 +21,8 @@ class Categories extends Model
     {
         return $this->belongsToMany(Posts::class, 'posts_categories', 'category_id', 'post_id');
     }
-
+    public function menuItems()
+    {
+        return $this->hasMany(MenuItem::class);
+    }
 }

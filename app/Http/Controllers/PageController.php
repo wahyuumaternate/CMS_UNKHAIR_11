@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Page;
-use App\Models\Theme;
+
 use Illuminate\Http\Request;
 
 class PageController extends Controller
@@ -39,17 +39,6 @@ class PageController extends Controller
         }
     }
 
-    public function show($slug)
-
-    {
-        $theme = Theme::where('active', true)->first()->path;
-        $data = []; // Data yang diperlukan
-    
-        // Temukan halaman berdasarkan slug
-        $page = Page::where('slug', $slug)->firstOrFail();
-        
-        return view($theme . '.pages', compact('data','page'));
-    }
 
     public function edit($id)
     {

@@ -13,35 +13,37 @@
         <nav id="navmenu" class="navmenu">
             <ul>
 
+                <li><a href="/">Home</a></li>
+
                 {{-- @foreach ($menus as $menu)
                     @foreach ($menu->items as $item)
-                        <li class="{{ ($item->children ?? collect())->isNotEmpty() ? 'dropdown' : '' }}">
-                            <a class=" {{ ($item->children ?? collect())->isNotEmpty() ? 'dropdown-toggle' : '' }}"
-                                href="{{ $item->page ? url($item->page->slug) : $item->url }}"
-                                {{ ($item->children ?? collect())->isNotEmpty() ? 'data-toggle=dropdown' : '' }}>
+                        <li class="{{ $item->children->isNotEmpty() ? 'dropdown' : '' }}">
+                            <!-- Link to page or external URL -->
+                            <a href="{{ $item->page ? url($item->page->slug) : ($item->url ?: '#') }}"
+                                class="{{ $item->children->isNotEmpty() ? 'dropdown-toggle' : '' }}"
+                                {{ $item->children->isNotEmpty() ? 'data-toggle=dropdown' : '' }}>
                                 {{ $item->label }}
                             </a>
 
                             <!-- First-level dropdown menu -->
-                            @if (($item->children ?? collect())->isNotEmpty())
+                            @if ($item->children->isNotEmpty())
                                 <ul class="dropdown-menu">
                                     @foreach ($item->children as $child)
-                                        <li
-                                            class="{{ ($child->children ?? collect())->isNotEmpty() ? 'dropdown' : '' }}">
-                                            <a class=" {{ ($child->children ?? collect())->isNotEmpty() ? 'dropdown-toggle' : '' }}"
-                                                href="{{ $child->page ? url($child->page->slug) : $child->url }}"
-                                                {{ ($child->children ?? collect())->isNotEmpty() ? 'data-toggle=dropdown' : '' }}>
+                                        <li class="{{ $child->children->isNotEmpty() ? 'dropdown' : '' }}">
+                                            <!-- Link to page or external URL -->
+                                            <a href="{{ $child->page ? url($child->page->slug) : ($child->url ?: '#') }}"
+                                                class="{{ $child->children->isNotEmpty() ? 'dropdown-toggle' : '' }}"
+                                                {{ $child->children->isNotEmpty() ? 'data-toggle=dropdown' : '' }}>
                                                 {{ $child->label }}
-
                                             </a>
 
                                             <!-- Second-level dropdown menu -->
-                                            @if (($child->children ?? collect())->isNotEmpty())
+                                            @if ($child->children->isNotEmpty())
                                                 <ul>
                                                     @foreach ($child->children as $subchild)
                                                         <li>
                                                             <a
-                                                                href="{{ $subchild->page ? url($subchild->page->slug) : $subchild->url }}">
+                                                                href="{{ $subchild->page ? url($subchild->page->slug) : ($subchild->url ?: '#') }}">
                                                                 {{ $subchild->label }}
                                                             </a>
                                                         </li>
@@ -55,12 +57,17 @@
                         </li>
                     @endforeach
                 @endforeach --}}
-                <li><a href="/">Home</a></li>
-
                 @foreach ($menus as $menu)
                     @foreach ($menu->items as $item)
                         <li class="{{ $item->children->isNotEmpty() ? 'dropdown' : '' }}">
-                            <a href="{{ $item->page ? url($item->page->slug) : $item->url }}"
+                            <!-- Conditional logic for page, post, or custom link -->
+                            <a href="{{ $item->page
+                                ? route('pages.show', $item->page->slug)
+                                : ($item->post
+                                    ? route('posts.show', $item->post->slug)
+                                    : ($item->category
+                                        ? route('categories.show', $item->category->slug)
+                                        : $item->url)) }}"
                                 class="{{ $item->children->isNotEmpty() ? 'dropdown-toggle' : '' }}"
                                 {{ $item->children->isNotEmpty() ? 'data-toggle=dropdown' : '' }}>
                                 {{ $item->label }}
@@ -71,7 +78,14 @@
                                 <ul class="dropdown-menu">
                                     @foreach ($item->children as $child)
                                         <li class="{{ $child->children->isNotEmpty() ? 'dropdown' : '' }}">
-                                            <a href="{{ $child->page ? url($child->page->slug) : $child->url }}"
+                                            <!-- Conditional logic for child items (page, post, category) -->
+                                            <a href="{{ $child->page
+                                                ? route('pages.show', $child->page->slug)
+                                                : ($child->post
+                                                    ? route('posts.show', $child->post->slug)
+                                                    : ($child->category
+                                                        ? route('categories.show', $child->category->slug)
+                                                        : $child->url)) }}"
                                                 class="{{ $child->children->isNotEmpty() ? 'dropdown-toggle' : '' }}"
                                                 {{ $child->children->isNotEmpty() ? 'data-toggle=dropdown' : '' }}>
                                                 {{ $child->label }}
@@ -83,7 +97,13 @@
                                                     @foreach ($child->children as $subchild)
                                                         <li>
                                                             <a
-                                                                href="{{ $subchild->page ? url($subchild->page->slug) : $subchild->url }}">
+                                                                href="{{ $subchild->page
+                                                                    ? route('pages.show', $subchild->page->slug)
+                                                                    : ($subchild->post
+                                                                        ? route('posts.show', $subchild->post->slug)
+                                                                        : ($subchild->category
+                                                                            ? route('categories.show', $subchild->category->slug)
+                                                                            : $subchild->url)) }}">
                                                                 {{ $subchild->label }}
                                                             </a>
                                                         </li>
@@ -97,6 +117,7 @@
                         </li>
                     @endforeach
                 @endforeach
+
 
                 <li><a href="{{ route('galleries.front') }}">Galleries</a></li>
 

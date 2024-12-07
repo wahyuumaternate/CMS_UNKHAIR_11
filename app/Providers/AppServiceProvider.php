@@ -25,9 +25,13 @@ class AppServiceProvider extends ServiceProvider
     {
          // Ambil menu aktif beserta itemnya untuk dibagikan ke seluruh view
          $menus = Menu::with(['items' => function ($query) {
-            $query->whereNull('parent_id')->with(['children', 'page'])->orderBy('order');
-        }])->where('status', 'aktif')->get();
-
+            $query->whereNull('parent_id')  // Only top-level items
+                  ->with(['children', 'page', 'post', 'category'])  // Eager load relationships
+                  ->orderBy('order');  // Optional: Order by 'order' column
+        }])
+        ->where('status', 'aktif')  // Only fetch active menus
+        ->get();
+         
         // Ambil semua kategori
         $categoriesAll = Categories::all();
 

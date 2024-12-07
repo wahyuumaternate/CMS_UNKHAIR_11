@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FrontEndController;
 use App\Http\Controllers\GalleriesController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
@@ -30,7 +31,17 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 // 
-Route::get('{slug}', [PageController::class, 'show'])->name('pages.show');
+// Route::get('{slug}', [PageController::class, 'show'])->name('pages.show');
+// Route for Pages
+Route::get('pages/{slug}', [FrontEndController::class, 'showPage'])->name('pages.show');
+
+// Route for Posts
+Route::get('posts/{slug}', [FrontEndController::class, 'showPost'])->name('posts.show');
+
+// Route for Categories
+Route::get('categories/{slug}', [FrontEndController::class, 'showCategories'])->name('categories.show');
+// Route::get('{slug}', [FrontEndController::class, 'showUrl'])->name('url.show');
+
 
 require __DIR__.'/auth.php';
 require __DIR__.'/backend.php';

@@ -14,5 +14,11 @@ class CategoriesSeeder extends Seeder
     public function run(): void
     {
         Categories::factory()->count(10)->create();
+        Categories::create(
+            ['name' => 'Pengumuman', 'slug' => 'pengumuman'
+        ]);
+        Categories::create(
+            ['name' => 'Agenda', 'slug' => 'agenda'
+        ]);
     }
 }
