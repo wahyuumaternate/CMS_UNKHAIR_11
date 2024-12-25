@@ -5,6 +5,8 @@ namespace App\Providers;
 use App\Models\Categories;
 use App\Models\GeneralSettings;
 use App\Models\Menu;
+use App\Models\Posts;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -48,5 +50,19 @@ class AppServiceProvider extends ServiceProvider
         View::share('categoriesAll', $categoriesAll);
         // Membagikan variabel $menus ke semua view
         View::share('menus', $menus);
+
+
+        // Ambil bulan dan tahun saat ini
+        $currentMonth = Carbon::now()->month;
+        $currentYear = Carbon::now()->year;
+
+        // Mengambil 5 post teratas berdasarkan views dalam bulan dan tahun ini
+        $trendingPosts = Posts::whereMonth('created_at', $currentMonth)
+                             ->whereYear('created_at', $currentYear)
+                             ->orderBy('views', 'desc')
+                             ->take(5)
+                             ->get();
+         // Membagikan data trending posts ke semua view
+         View::share('trendingPosts', $trendingPosts);
     }
 }

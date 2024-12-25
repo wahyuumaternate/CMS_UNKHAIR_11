@@ -46,6 +46,41 @@
   scroll-behavior: smooth;
 }
 
+.share-buttons {
+    display: flex;
+    gap: 10px;
+}
+.btn-social-icon {
+  font-size: 20px;
+  color: white;
+  background-color: #007bff;
+  padding: 15px;
+  border-radius: 50%; 
+  transition: background-color 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+}
+/* Hover effect for all buttons */
+.btn-social-icon:hover {
+  color: #fff; /* Pastikan teks tetap putih saat hover */
+  transform: scale(1.1); /* Efek sedikit membesar saat di-hover */
+}
+
+/* Button Colors */
+.btn-facebook { background-color: #3b5998; }
+.btn-twitter { background-color: #1da1f2; }
+.btn-whatsapp { background-color: #25d366; }
+.btn-instagram { background-color: #E4405F; }
+
+/* Hover effect for individual buttons */
+.btn-facebook:hover { background-color: #3b5998; color: #fff; }  /* Facebook */
+.btn-twitter:hover { background-color: #1da1f2; color: #fff; }  /* Twitter */
+.btn-whatsapp:hover { background-color: #128C7E; color: #fff; }  /* WhatsApp (modified for better contrast) */
+.btn-instagram:hover { background-color: #C13584; color: #fff; }  /* Instagram */
+
 /*--------------------------------------------------------------
 # General Styling & Shared Classes
 --------------------------------------------------------------*/

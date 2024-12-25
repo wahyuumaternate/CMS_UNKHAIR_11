@@ -40,45 +40,17 @@
                                     <textarea class="form-control" id="description" name="description" rows="3" required>{{ old('description', $gallery->description) }}</textarea>
                                 </div>
 
-                                {{-- <div class="mb-3">
+                                <div class="mb-3">
                                     <label for="sort_order" class="form-label">Sort Order</label>
                                     <input type="number" class="form-control" id="sort_order" name="sort_order"
                                         value="{{ old('sort_order', $gallery->sort_order) }}">
-                                </div> --}}
+                                </div>
 
-                                <div class="form-check">
+                                <div class="mb-3 form-check">
                                     <input type="checkbox" class="form-check-input" id="is_featured" name="is_featured"
                                         {{ old('is_featured', $gallery->is_featured) ? 'checked' : '' }}>
                                     <label class="form-check-label" for="is_featured">Is featured?</label>
                                 </div>
-                            </div>
-                        </div>
-                        <!-- Gallery Images Section -->
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="mt-4">Gallery Images</h5>
-                                <button type="button" class="btn btn-secondary mb-3" onclick="openFileManager()">Select
-                                    Images</button>
-                                {{-- <button type="button" class="btn btn-danger mb-3" onclick="resetGallery()">Reset
-                            Gallery</button> --}}
-
-                                <div id="imagePreviewContainer" class="d-flex gap-3 flex-wrap">
-                                    @foreach ($gallery->metas as $index => $meta)
-                                        <div class="image-container">
-                                            <input type="hidden" name="gallery_images[{{ $index }}][id]"
-                                                value="{{ $meta->id }}">
-                                            <input type="hidden" name="gallery_images[{{ $index }}][image]"
-                                                value="{{ $meta->image }}">
-                                            <input type="hidden" name="gallery_images[{{ $index }}][description]"
-                                                value="{{ $meta->description }}">
-
-                                            <img src="{{ asset($meta->image) }}" alt="Gallery Image {{ $index + 1 }}"
-                                                class="img-thumbnail" onclick="openDescriptionModal(this)">
-                                            <span class="edit-icon"><i class="fa fa-edit"></i></span>
-                                        </div>
-                                    @endforeach
-                                </div>
-
                             </div>
                         </div>
                     </div>
@@ -92,26 +64,6 @@
                                 <a href="{{ route('galleries.index') }}" class="btn btn-secondary w-100">Cancel</a>
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="image" class="form-label">Gambar</label>
-                            <div class="input-group">
-                                <input type="hidden" name="image" id="fileUrl"
-                                    class="form-control @error('image') is-invalid @enderror" value="{{ old('image') }}"
-                                    readonly>
-                                <button type="button" class="btn btn-secondary" onclick="openFileManager()">Pilih
-                                    Gambar</button>
-                            </div>
-                            @error('image')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <!-- Preview Gambar -->
-                        <div class="mb-3">
-                            <img id="imagePreview"
-                                src="{{ asset(old('image', $gallery->image) ?: 'path/to/default-image.jpg') }}"
-                                alt="Preview Gambar"
-                                style="max-width: 100%; height: auto; display: {{ old('image', $gallery->image) ? 'block' : 'none' }};">
-                        </div>
 
                         <div class="card mb-3">
                             <div class="card-body">
@@ -121,22 +73,45 @@
                                         {{ old('status', $gallery->status) == 'active' ? 'selected' : '' }}>Published
                                     </option>
                                     <option value="inactive"
-                                        {{ old('status', $gallery->status) == 'inactive' ? 'selected' : '' }}>Draft
-                                    </option>
+                                        {{ old('status', $gallery->status) == 'inactive' ? 'selected' : '' }}>Draft</option>
                                 </select>
                             </div>
                         </div>
                     </div>
 
-                </div>
+                    <!-- Gallery Images Section -->
+                    <div class="col-md-8">
+                        <div class="card mt-3">
+                            <div class="card-body">
+                                <h5 class="mt-4">Gallery Images</h5>
+                                <button type="button" class="btn btn-secondary mb-3" onclick="openFileManager()">Select
+                                    Images</button>
+                                <button type="button" class="btn btn-danger mb-3" onclick="resetGallery()">Reset
+                                    Gallery</button>
 
+                                <div id="imagePreviewContainer" class="d-flex gap-2 flex-wrap">
+                                    @foreach ($gallery->metas as $index => $meta)
+                                        <div class="image-container">
+                                            <input type="hidden" name="gallery_images[{{ $index }}][image]"
+                                                value="{{ $meta->image }}">
+                                            <input type="hidden" name="gallery_images[{{ $index }}][description]"
+                                                value="{{ $meta->description }}">
+                                            <img src="{{ asset($meta->image) }}" alt="Gallery Image {{ $index + 1 }}"
+                                                class="img-thumbnail" onclick="openDescriptionModal(this)">
+                                            <span class="edit-icon"><i class="fa fa-edit"></i></span>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </form>
         </div>
     </div>
 
     <!-- Modal untuk menambah atau memperbarui deskripsi gambar -->
-    <div class="modal fade" id="descriptionModal" tabindex="-1" aria-labelledby="descriptionModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="descriptionModal" tabindex="-1" aria-labelledby="descriptionModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -219,59 +194,10 @@
 
         // Fungsi untuk menghapus gambar yang dipilih
         function deleteSelectedImage() {
-            console.log(selectedImageContainer); // Debugging untuk memastikan container yang benar dipilih
-
-            const imageIdInput = selectedImageContainer.querySelector('input[name$="[id]"]');
-            if (!imageIdInput) {
-                console.error("ID input tidak ditemukan");
-                return;
-            }
-
-            const imageId = imageIdInput.value; // Ambil ID gambar dari input tersembunyi
-            if (!imageId) {
-                console.error("ID gambar tidak ditemukan");
-                return;
-            }
-
-            // Ambil token CSRF dari halaman (terdapat dalam meta tag atau hidden field)
-            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-            // Mengirim permintaan DELETE ke server dengan CSRF Token
-            fetch(`/cms-unkhair/cp/gallery/image/${imageId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': csrfToken, // Pastikan CSRF token disertakan
-                    },
-                })
-                .then(response => {
-                    if (response.ok) {
-                        return response.json();
-                    }
-                    throw new Error('Gagal menghapus gambar');
-                })
-                .then(data => {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Gambar Terhapus!',
-                        text: data.message, // Pesan dari server
-                        timer: 2000, // Modal akan otomatis menghilang setelah 3 detik
-                        showConfirmButton: false // Menyembunyikan tombol konfirmasi
-                    });
-
-                    selectedImageContainer.remove(); // Hapus gambar dari tampilan
-                })
-                .catch(error => {
-                    alert('Error deleting image');
-                    console.error(error);
-                });
-
             selectedImageContainer.remove();
             const modal = bootstrap.Modal.getInstance(document.getElementById("descriptionModal"));
             modal.hide();
         }
-
-
 
         // Fungsi untuk membuka file manager
         function openFileManager() {
@@ -285,21 +211,7 @@
 
             items.forEach((item) => {
                 let file_url = item.url;
-                if (items.length > 0) {
-                    let file_url = items[0].url;
-                    document.getElementById('fileUrl').value = file_url;
 
-                    // Update preview image
-                    const imagePreview = document.getElementById('imagePreview');
-                    imagePreview.src = file_url;
-                    imagePreview.style.display = 'block';
-                } else {
-                    // If no image selected, reset preview
-                    document.getElementById('fileUrl').value = '';
-                    const imagePreview = document.getElementById('imagePreview');
-                    imagePreview.src = '';
-                    imagePreview.style.display = 'none';
-                }
                 // Cek apakah gambar sudah ada di dalam form
                 const existingImages = Array.from(imageContainer.children).map(child => child.querySelector(
                     'input[name$="[image]"]').value);
@@ -343,25 +255,7 @@
 
         // Fungsi untuk mereset galeri (menghapus semua gambar)
         function resetGallery() {
-            if (confirm('Are you sure you want to reset the gallery? All images will be deleted.')) {
-                const galleryId = "{{ $gallery->id }}";
-                fetch(`/gallery/${galleryId}/reset`, {
-                        method: 'DELETE',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        alert(data.message);
-                        document.getElementById('imagePreviewContainer').innerHTML = ''; // Hapus semua gambar
-                    })
-                    .catch(error => {
-                        alert('Error resetting gallery');
-                        console.error(error);
-                    });
-            }
-            // document.getElementById('imagePreviewContainer').innerHTML = '';
+            document.getElementById('imagePreviewContainer').innerHTML = '';
         }
     </script>
 @endpush

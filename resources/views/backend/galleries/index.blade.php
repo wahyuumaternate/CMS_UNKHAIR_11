@@ -38,9 +38,8 @@
                                                 <!-- Menampilkan gambar -->
                                                 <td>
                                                     @if ($gallery->image)
-                                                        <img src="{{ asset('storage/' . $gallery->image) }}"
-                                                            alt="{{ $gallery->name }}" class="img-fluid"
-                                                            style="max-height: 50px;">
+                                                        <img src="{{ $gallery->image }}" alt="{{ $gallery->name }}"
+                                                            class="img-fluid" style="max-height: 50px;">
                                                     @else
                                                         <span>No Image</span>
                                                     @endif

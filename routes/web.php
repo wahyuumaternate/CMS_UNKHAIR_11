@@ -11,12 +11,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/search-menu', [SearchController::class, 'searchMenu'])->name('search-menu')->middleware('auth');
 
-Route::get('/', function () {
-    $theme = Theme::where('active', true)->first()->path;
-    $data = []; // Data yang diperlukan
+Route::get('/', [FrontEndController::class, 'index']);
 
-    return view($theme . '.index', compact('data'));
-});
+// Route::get('/', function () {
+//     $theme = Theme::where('active', true)->first()->path;
+//     $data = []; // Data yang diperlukan
+
+//     return view($theme . '.index', compact('data'));
+// });
 
 // Daftarkan rute-rute Laravel File Manager secara terpisah
 Route::group(['prefix' => 'cms-unkhair-filemanager', 'middleware' => ['web', 'auth']], function () {
@@ -41,6 +43,7 @@ Route::get('posts/{slug}', [FrontEndController::class, 'showPost'])->name('posts
 // Route for Categories
 Route::get('categories/{slug}', [FrontEndController::class, 'showCategories'])->name('categories.show');
 // Route::get('{slug}', [FrontEndController::class, 'showUrl'])->name('url.show');
+// 
 
 
 require __DIR__.'/auth.php';
