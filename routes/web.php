@@ -26,6 +26,7 @@ Route::group(['prefix' => 'cms-unkhair-filemanager', 'middleware' => ['web', 'au
 });
 
 Route::get('/galleries', [GalleriesController::class, 'front'])->name('galleries.front');
+Route::get('/gallery/{slug}', [GalleriesController::class, 'detail'])->name('gallery.detail');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

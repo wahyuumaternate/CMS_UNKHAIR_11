@@ -25,6 +25,8 @@
     <link href="{{ asset('themes/zenblog/vendor/aos/aos.css') }}" rel="stylesheet">
     <link href="{{ asset('themes/zenblog/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
 
+    @stack('styles')
+
     <!-- Main CSS File -->
     <link href="{{ asset('themes/zenblog/css/main.css') }}" rel="stylesheet">
     <style>
@@ -77,6 +79,42 @@
             background-color: #FFB200;
             color: black;
         }
+
+        .post-img img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .post-img img:hover {
+            transform: scale(1.05);
+            /* Efek zoom saat hover */
+        }
+
+        .post-title {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .gallery-meta ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .gallery-meta ul li {
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .related-gallery h3 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
     </style>
 </head>
 
@@ -108,7 +146,7 @@
     <script src="{{ asset('themes/zenblog/vendor/php-email-form/validate.js') }}"></script>
     <script src="{{ asset('themes/zenblog/vendor/aos/aos.js') }}"></script>
     <script src="{{ asset('themes/zenblog/vendor/swiper/swiper-bundle.min.js') }}"></script>
-
+    @stack('scripts')
     <!-- Main JS File -->
     <script src="{{ asset('themes/zenblog/js/main.js') }}"></script>
 

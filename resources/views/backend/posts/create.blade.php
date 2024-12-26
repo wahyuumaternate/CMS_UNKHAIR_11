@@ -179,7 +179,7 @@
                 .replace(/\s+/g, '-') // Ganti spasi dengan tanda hubung
                 .replace(/-+/g, '-'); // Hapus tanda hubung ganda
 
-            document.getElementById('slug-display').value = baseURL + slug; // Tampilkan URL lengkap
+            document.getElementById('slug-display').value = baseURL + 'posts/' + slug; // Tampilkan URL lengkap
             document.getElementById('slug').value = slug; // Simpan hanya slug
         });
 

@@ -207,4 +207,19 @@ class GalleriesController extends Controller
         $galleries = Galleries::latest()->get();
         return view($theme . '.galleries', compact('data','galleries'));
     }
+
+    public function detail($slug)
+    {
+        // Ambil data gallery berdasarkan slug
+        $gallery = Galleries::where('slug', $slug)->firstOrFail();
+    
+        // Ambil data meta yang berhubungan dengan gallery ini (menggunakan get() jika ada banyak data meta)
+        $meta = GalleriesMeta::where('gallery_id', $gallery->id)->get();
+    
+        // Kirim data gallery dan meta ke view
+        $theme = Theme::where('active', true)->first()->path;
+        return view($theme . '.detail_galleries', compact('gallery', 'meta'));
+    }
+    
+
 }

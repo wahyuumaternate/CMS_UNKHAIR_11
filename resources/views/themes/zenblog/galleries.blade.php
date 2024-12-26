@@ -28,21 +28,15 @@
 
                                 @foreach ($galleries as $item)
                                     <div class="col-lg-4">
-                                        <a href="{{ $item->slug }}">
+                                        <a href="{{ route('gallery.detail', $item->slug) }}">
                                             <article class="position-relative h-100">
-
                                                 <div class="post-img position-relative overflow-hidden">
-                                                    <img src="{{ asset('themes/zenblog/img/blog/blog-1.jpg') }}"
-                                                        class="img-fluid" alt="">
+                                                    <img src="{{ $item->image }}" class="img-fluid" alt="">
                                                     <span class="post-date">{{ $item->created_at->format('M Y') }}</span>
                                                 </div>
-
                                                 <div class="post-content d-flex flex-column">
-
                                                     <h3 class="post-title">{{ $item->name }}</h3>
-
                                                 </div>
-
                                             </article>
                                         </a>
                                     </div><!-- End post list item -->
@@ -62,4 +56,16 @@
         </div>
 
     </main>
+    <style>
+        .post-img img {
+            width: 100%;
+            /* Gambar mengikuti lebar penuh dari container */
+            height: 250px;
+            /* Atur tinggi sesuai kebutuhan */
+            object-fit: cover;
+            /* Pastikan gambar tetap proporsional dan memenuhi container */
+            display: block;
+            /* Menghilangkan spasi bawah bawaan gambar */
+        }
+    </style>
 @endsection
