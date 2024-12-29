@@ -25,6 +25,10 @@
     <link href="{{ asset('themes/zenblog/vendor/aos/aos.css') }}" rel="stylesheet">
     <link href="{{ asset('themes/zenblog/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
 
+    <!-- Add Head Stack -->
+    @stack('head')
+
+    <!-- Other Styles -->
     @stack('styles')
 
     <!-- Main CSS File -->

@@ -1,4 +1,27 @@
 @extends('themes.zenblog.layouts.main')
+@push('head')
+    <!-- SEO Meta Tags -->
+    <meta name="title" content="{{ $page->title }}">
+    <meta name="description" content="{{ Str::limit(strip_tags($page->content), 160) }}">
+    <meta name="keywords" content="{{ implode(',', $page->tags ?? ['blog', 'post']) }}">
+    <meta name="author" content="{{ $page->author ?? 'Admin' }}">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="{{ $page->title }}">
+    <meta property="og:description" content="{{ Str::limit(strip_tags($page->content), 160) }}">
+    <meta property="og:image" content="{{ $page->image }}">
+    <meta property="og:url" content="{{ request()->url() }}">
+    <meta property="og:site_name" content="Your Website Name">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $page->title }}">
+    <meta name="twitter:description" content="{{ Str::limit(strip_tags($page->content), 160) }}">
+    <meta name="twitter:image" content="{{ $page->image }}">
+@endpush
+
 @section('main')
     <main class="main">
 
@@ -53,7 +76,49 @@
 
                                 </div> <!-- End Share Buttons -->
                             </article>
+                            <!-- Comments Section -->
+                            <section id="comments" class="comments section mt-5">
+                                <h3 class="mb-4">Comments ({{ $comments->count() }})</h3>
 
+                                <!-- Comments List -->
+                                <ul class="list-unstyled">
+                                    @foreach ($comments as $comment)
+                                        <li class="mb-4">
+                                            <div class="comment">
+                                                <strong>{{ $comment->name }}</strong>
+                                                <span class="text-muted d-block small">
+                                                    {{ $comment->created_at->format('F d, Y h:i A') }}
+                                                </span>
+                                                <p>{{ $comment->content }}</p>
+                                            </div>
+                                        </li>
+                                    @endforeach
+                                </ul>
+
+                                <!-- Add Comment Form -->
+                                <h4 class="mt-5">Leave a Comment</h4>
+                                <form action="{{ route('comments.store') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="post_id" value="{{ $page->id }}">
+                                    <!-- Input Name -->
+                                    <div class="form-group mb-3">
+                                        <label for="name">Name</label>
+                                        <input type="text" name="name" id="name" class="form-control"
+                                            placeholder="Your Name" required>
+                                    </div>
+
+                                    <!-- Input Email -->
+                                    <div class="form-group mb-3">
+                                        <label for="email">Email</label>
+                                        <input type="email" name="email" id="email" class="form-control"
+                                            placeholder="Your Email" required>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <textarea name="content" class="form-control" rows="4" placeholder="Write your comment here..." required></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-outline-warning">Kirim</button>
+                                </form>
+                            </section><!-- /Comments Section -->
                         </div>
                     </section><!-- /Blog Details Section -->
 

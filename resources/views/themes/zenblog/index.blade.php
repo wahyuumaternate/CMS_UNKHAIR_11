@@ -1,502 +1,417 @@
 @extends('themes.zenblog.layouts.main')
+@push('styles')
+    <style>
+        .agenda-image {
+            width: 100%;
+            /* Sesuaikan dengan elemen parent */
+            height: 200px;
+            /* Pastikan tinggi gambar konsisten */
+            object-fit: cover;
+            /* Memastikan gambar tidak terdistorsi */
+            border-radius: 8px;
+            /* Opsional: Membuat sudut membulat */
+        }
+
+        /* Kartu berita utama */
+        .post-card {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .post-card-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .post-card-link {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .post-card-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            text-align: left;
+            transition: background 0.3s ease;
+        }
+
+        .post-card-overlay h3 {
+            font-size: 16px;
+            margin: 0;
+            line-height: 1.4;
+            color: #fff;
+        }
+
+        .post-card:hover .post-card-overlay {
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        /* Kartu Agenda */
+        .post-card {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .post-card-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .post-meta {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .post-meta .badge {
+            background-color: #ffc107;
+            color: #fff;
+            padding: 5px 10px;
+            font-size: 12px;
+            border-radius: 4px;
+        }
+
+        .post-meta .date {
+            display: inline-block;
+            margin-left: 10px;
+            color: #777;
+        }
+
+        .post-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin: 15px 0 0;
+            line-height: 1.4;
+        }
+
+        .post-title a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        .post-title a:hover {
+            color: #ffc107;
+        }
+
+        /* Tombol Selengkapnya */
+        .btn-primary {
+            background-color: #ffc107;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 14px;
+            border-radius: 4px;
+            text-decoration: none;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #ffc107;
+        }
+
+        /* Agenda Card */
+        .agenda-card {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+            background-color: #fff;
+        }
+
+        .agenda-card:hover {
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .agenda-date {
+            background-color: #ffc107;
+            color: #fff;
+            text-align: center;
+            padding: 15px 10px;
+            border-radius: 8px;
+            min-width: 80px;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .agenda-day {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .agenda-month {
+            font-size: 16px;
+            color: #fff;
+            text-transform: uppercase;
+        }
+
+        .agenda-content {
+            flex: 1;
+        }
+
+        .agenda-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 0 0 8px;
+            line-height: 1.5;
+        }
+
+        .agenda-title a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        .agenda-title a:hover {
+            color: #ffc107;
+        }
+
+        .agenda-location {
+            font-size: 14px;
+            color: #666;
+            margin: 0;
+        }
+
+        /* Button */
+        .btn-outline-primary {
+            color: #ffc107;
+            border: 1px solid #ffc107;
+            padding: 10px 25px;
+            font-size: 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            border: 2px solid #ffc107;
+            /* Border kuning pada tombol */
+        }
+
+        .btn-outline-primary:hover {
+            background-color: #ffc107;
+            color: #fff;
+            border: 2px solid #fff;
+        }
+
+        /* slider */
+        /* Swiper Slide */
+        .swiper-slide {
+            background-size: cover;
+            /* Memastikan gambar memenuhi area tanpa distorsi */
+            background-position: center center;
+            /* Memusatkan gambar */
+            height: 100vh;
+            /* Tinggi slider */
+            border-radius: 8px;
+            /* Opsional: Sudut membulat */
+            position: relative;
+            /* Memungkinkan konten di atas gambar */
+        }
+
+        /* Konten di atas gambar */
+        .swiper-slide .content {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            /* background: rgba(0, 0, 0, 0.6); */
+            /* Latar belakang transparan */
+            color: #fff;
+            /* Warna teks putih */
+            padding: 15px;
+            border-radius: 8px;
+            /* Opsional: Membulatkan kotak konten */
+        }
+
+        .swiper-slide .content h2 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .swiper-slide .content p {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+    </style>
+@endpush
 @section('main')
     <main class="main">
 
-        <!-- Slider Section -->
         <section id="slider" class="slider section dark-background">
-
             <div class="container" data-aos="fade-up" data-aos-delay="100">
-
                 <div class="swiper init-swiper">
 
                     <script type="application/json" class="swiper-config">
-        {
-          "loop": true,
-          "speed": 600,
-          "autoplay": {
-            "delay": 5000
-          },
-          "slidesPerView": "auto",
-          "centeredSlides": true,
-          "pagination": {
-            "el": ".swiper-pagination",
-            "type": "bullets",
-            "clickable": true
-          },
-          "navigation": {
-            "nextEl": ".swiper-button-next",
-            "prevEl": ".swiper-button-prev"
-          }
-        }
-      </script>
+                        {
+                          "loop": true,
+                          "speed": 600,
+                          "autoplay": {
+                            "delay": 5000
+                          },
+                          "slidesPerView": "auto",
+                          "centeredSlides": true,
+                          "pagination": {
+                            "el": ".swiper-pagination",
+                            "type": "bullets",
+                            "clickable": true
+                          },
+                          "navigation": {
+                            "nextEl": ".swiper-button-next",
+                            "prevEl": ".swiper-button-prev"
+                          }
+                        }
+                    </script>
 
                     <div class="swiper-wrapper">
-
-                        <div class="swiper-slide"
-                            style="background-image: url('{{ asset('themes/zenblog/img/post-slide-1.jpg') }}');">
-                            <div class="content">
-                                <h2><a href="single-posts.html">The Best Homemade Masks for Face (keep the Pimples
-                                        Away)</a></h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem neque est mollitia!
-                                    Beatae minima assumenda repellat harum vero, officiis ipsam magnam obcaecati cumque
-                                    maxime inventore repudiandae quidem necessitatibus rem atque.</p>
+                        @foreach ($agendaPosts->take(3) as $post)
+                            <div class="swiper-slide" style="background-image: url('{{ $post->image }}');">
+                                <div class="content">
+                                    <h2>
+                                        <a
+                                            href="{{ route('posts.show', $post->slug) }}">{{ Str::limit($post->title, 60, '...') }}</a>
+                                    </h2>
+                                    <p>{{ Str::limit($post->excerpt, 150, '...') }}</p>
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="swiper-slide"
-                            style="background-image: url('{{ asset('themes/zenblog/img/post-slide-2.jpg') }}');">
-                            <div class="content">
-                                <h2><a href="single-posts.html">17 Pictures of Medium Length Hair in Layers That Will
-                                        Inspire Your New Haircut</a></h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem neque est mollitia!
-                                    Beatae minima assumenda repellat harum vero, officiis ipsam magnam obcaecati cumque
-                                    maxime inventore repudiandae quidem necessitatibus rem atque.</p>
-                            </div>
-                        </div>
-
-                        <div class="swiper-slide"
-                            style="background-image: url('{{ asset('themes/zenblog/img/post-slide-3.jpg') }}');">
-                            <div class="content">
-                                <h2><a href="single-posts.html">13 Amazing Poems from Shel Silverstein with Valuable
-                                        Life
-                                        Lessons</a></h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem neque est mollitia!
-                                    Beatae minima assumenda repellat harum vero, officiis ipsam magnam obcaecati cumque
-                                    maxime inventore repudiandae quidem necessitatibus rem atque.</p>
-                            </div>
-                        </div>
-
-                        <div class="swiper-slide"
-                            style="background-image: url('{{ asset('themes/zenblog/img/post-slide-4.jpg') }}');">
-                            <div class="content">
-                                <h2><a href="single-posts.html">9 Half-up/half-down Hairstyles for Long and Medium
-                                        Hair</a></h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem neque est mollitia!
-                                    Beatae minima assumenda repellat harum vero, officiis ipsam magnam obcaecati cumque
-                                    maxime inventore repudiandae quidem necessitatibus rem atque.</p>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
 
                     <div class="swiper-button-next"></div>
                     <div class="swiper-button-prev"></div>
-
                     <div class="swiper-pagination"></div>
                 </div>
-
             </div>
-
-        </section><!-- /Slider Section -->
-
-        {{-- <!-- Page Title -->
-    <div class="page-title position-relative">
-        <div class="container d-lg-flex justify-content-between align-items-center">
-            <h1 class="mb-2 mb-lg-0">Category</h1>
-            <nav class="breadcrumbs">
-                <ol>
-                    <li><a href="index.html">Home</a></li>
-                    <li class="current">Categories</li>
-                </ol>
-            </nav>
-        </div>
-    </div><!-- End Page Title --> --}}
-        <section id="trending-category" class="trending-category section">
-            <!-- Section Title -->
-            <div class="container section-title aos-init aos-animate" data-aos="fade-up">
-                <div class="section-title-container d-flex align-items-center justify-content-between">
-                    <h2>Terkini</h2>
-                    <p><a href="categories.html">See All Culture</a></p>
-                </div>
-            </div><!-- End Section Title -->
-            <div class="container aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
-
-                <div class="container aos-init aos-animate" data-aos="fade-up">
-                    <div class="row g-5">
-                        <div class="col-lg-4">
-
-                            <div class="post-entry lg">
-                                <a href="blog-details.html"><img src="{{ asset('themes/zenblog/img/blog/blog-6.jpg') }}"
-                                        alt="" class="img-fluid"></a>
-                                <div class="post-meta"><span class="date">Culture</span> <span class="mx-1">•</span>
-                                    <span>Jul 5th '22</span>
-                                </div>
-                                <h2><a href="blog-details.html">11 Work From Home Part-Time Jobs You Can Do Now</a></h2>
-                                <p class="mb-4 d-block">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vero
-                                    temporibus repudiandae, inventore pariatur numquam cumque possimus exercitationem? Nihil
-                                    tempore odit ab minus eveniet praesentium, similique blanditiis molestiae ut saepe
-                                    perspiciatis officia nemo, eos quae cumque. Accusamus fugiat architecto rerum animi
-                                    atque eveniet, quo, praesentium dignissimos</p>
-
-                                <div class="d-flex align-items-center author">
-                                    <div class="photo"><img src="{{ asset('themes/zenblog/img/blog/blog-6.jpg') }}"
-                                            alt="" class="img-fluid"></div>
-                                    <div class="name">
-                                        <h3 class="m-0 p-0">Cameron Williamson</h3>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="col-lg-8">
-                            <div class="row g-5">
-                                <div class="col-lg-4 border-start custom-border">
-                                    <div class="post-entry">
-                                        <a href="blog-details.html"><img
-                                                src="{{ asset('themes/zenblog/img/blog/blog-6.jpg') }}" alt=""
-                                                class="img-fluid"></a>
-                                        <div class="post-meta"><span class="date">Sport</span> <span
-                                                class="mx-1">•</span> <span>Jul 5th '22</span></div>
-                                        <h2><a href="blog-details.html">Let’s Get Back to Work, New York</a></h2>
-                                    </div>
-                                    <div class="post-entry">
-                                        <a href="blog-details.html"><img
-                                                src="{{ asset('themes/zenblog/img/blog/blog-6.jpg') }}" alt=""
-                                                class="img-fluid"></a>
-                                        <div class="post-meta"><span class="date">Food</span> <span
-                                                class="mx-1">•</span> <span>Jul 17th '22</span></div>
-                                        <h2><a href="blog-details.html">How to Avoid Distraction and Stay Focused During
-                                                Video Calls?</a></h2>
-                                    </div>
-                                    <div class="post-entry">
-                                        <a href="blog-details.html"><img
-                                                src="{{ asset('themes/zenblog/img/blog/blog-6.jpg') }}" alt=""
-                                                class="img-fluid"></a>
-                                        <div class="post-meta"><span class="date">Design</span> <span
-                                                class="mx-1">•</span> <span>Mar 15th '22</span></div>
-                                        <h2><a href="blog-details.html">Why Craigslist Tampa Is One of The Most Interesting
-                                                Places On the Web?</a></h2>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 border-start custom-border">
-                                    <div class="post-entry">
-                                        <a href="blog-details.html"><img
-                                                src="{{ asset('themes/zenblog/img/blog/blog-6.jpg') }}" alt=""
-                                                class="img-fluid"></a>
-                                        <div class="post-meta"><span class="date">Business</span> <span
-                                                class="mx-1">•</span> <span>Jul 5th '22</span></div>
-                                        <h2><a href="blog-details.html">6 Easy Steps To Create Your Own Cute Merch For
-                                                Instagram</a></h2>
-                                    </div>
-                                    <div class="post-entry">
-                                        <a href="blog-details.html"><img
-                                                src="{{ asset('themes/zenblog/img/blog/blog-6.jpg') }}" alt=""
-                                                class="img-fluid"></a>
-                                        <div class="post-meta"><span class="date">Tech</span> <span
-                                                class="mx-1">•</span> <span>Mar 1st '22</span></div>
-                                        <h2><a href="blog-details.html">10 Life-Changing Hacks Every Working Mom Should
-                                                Know</a></h2>
-                                    </div>
-                                    <div class="post-entry">
-                                        <a href="blog-details.html"><img
-                                                src="{{ asset('themes/zenblog/img/blog/blog-6.jpg') }}" alt=""
-                                                class="img-fluid"></a>
-                                        <div class="post-meta"><span class="date">Travel</span> <span
-                                                class="mx-1">•</span> <span>Jul 5th '22</span></div>
-                                        <h2><a href="blog-details.html">5 Great Startup Tips for Female Founders</a></h2>
-                                    </div>
-                                </div>
-
-                                <!-- Trending Section -->
-                                <div class="col-lg-4">
-
-                                    <div class="trending">
-                                        <h3>Trending</h3>
-                                        <ul class="trending-post">
-                                            <li>
-                                                <a href="blog-details.html">
-                                                    <span class="number">1</span>
-                                                    <h3>The Best Homemade Masks for Face (keep the Pimples Away)</h3>
-                                                    <span class="author">Jane Cooper</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="blog-details.html">
-                                                    <span class="number">2</span>
-                                                    <h3>17 Pictures of Medium Length Hair in Layers That Will Inspire Your
-                                                        New Haircut</h3>
-                                                    <span class="author">Wade Warren</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="blog-details.html">
-                                                    <span class="number">3</span>
-                                                    <h3>13 Amazing Poems from Shel Silverstein with Valuable Life Lessons
-                                                    </h3>
-                                                    <span class="author">Esther Howard</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="blog-details.html">
-                                                    <span class="number">4</span>
-                                                    <h3>9 Half-up/half-down Hairstyles for Long and Medium Hair</h3>
-                                                    <span class="author">Cameron Williamson</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="blog-details.html">
-                                                    <span class="number">5</span>
-                                                    <h3>Life Insurance And Pregnancy: A Working Mom’s Guide</h3>
-                                                    <span class="author">Jenny Wilson</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-
-                                </div> <!-- End Trending Section -->
-                            </div>
-                        </div>
-
-                    </div> <!-- End .row -->
-                </div>
-
-            </div>
-
         </section>
 
-        <!-- Agenda Section -->
+        {{-- berita utama --}}
+        <section id="berita-utama" class="berita-utama section">
+            <div class="container section-title aos-init aos-animate" data-aos="fade-up">
+                <div class="section-title-container d-flex align-items-center justify-content-between">
+                    <h2>Berita Utama</h2>
+                </div>
+            </div>
+            <div class="container aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+                <div class="row g-3">
+                    @foreach ($agendaPosts->take(4) as $post)
+                        <div class="col-lg-3">
+                            <div class="post-card utama">
+                                <a href="{{ route('posts.show', $post->slug) }}" class="post-card-link">
+                                    <img src="{{ $post->image }}" alt="{{ $post->title }}"
+                                        class="img-fluid post-card-img">
+                                    <div class="post-card-overlay">
+                                        <h3 class="post-title">
+                                            {{ Str::limit($post->title, 25, '...') }}
+                                        </h3>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+        </section>
+
+        {{-- berita terbaru --}}
         <section id="agenda-category" class="agenda-category section">
-
-            <!-- Section Title -->
             <div class="container section-title aos-init aos-animate" data-aos="fade-up">
                 <div class="section-title-container d-flex align-items-center justify-content-between">
-                    <h2>Agenda</h2>
-                    <p><a href="{{ route('categories.show', 'agenda') }}">See All Agenda</a></p>
-                </div>
-            </div><!-- End Section Title -->
-
-            <div class="container aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
-                <div class="row g-5">
-                    <div class="col-lg-4">
-                        @foreach ($agendaPosts->take(1) as $post)
-                            <div class="post-list lg">
-                                <a href="{{ route('posts.show', $post->slug) }}"><img src="{{ $post->image }}"
-                                        alt="{{ $post->title }}" class="img-fluid"></a>
-                                <div class="post-meta">
-                                    <span class="date">VIEWS {{ $post->views }}</span> <span class="mx-1">•</span>
-                                    <span>{{ $post->created_at->format('M d, Y') }}</span>
-                                </div>
-                                <h2><a href="{{ route('posts.show', $post->slug) }}">{{ $post->title }}</a></h2>
-                                <p class="mb-4 d-block">{{ Str::limit($post->content, 100) }}</p>
-                            </div>
-                        @endforeach
-                        @foreach ($agendaPosts->skip(1)->take(2) as $post)
-                            <div class="post-list lg">
-                                <div class="post-meta">
-                                    <span class="date"> VIEWS {{ $post->views }}</span> <span class="mx-1">•</span>
-                                    <span>{{ $post->created_at->format('M d, Y') }}</span>
-                                </div>
-                                <h2><a href="{{ route('posts.show', $post->slug) }}">{{ $post->title }}</a></h2>
-                                <p class="mb-4 d-block">{{ Str::limit($post->content, 100) }}</p>
-                            </div>
-                        @endforeach
-                    </div>
-
-                    <div class="col-lg-8">
-                        <div class="row g-5">
-                            <div class="col-lg-4 border-start custom-border">
-                                @foreach ($agendaPosts->skip(3)->take(3) as $post)
-                                    <div class="post-list">
-                                        <a href="{{ route('posts.show', $post->slug) }}"><img src="{{ $post->image }}"
-                                                alt="" class="img-fluid"></a>
-                                        <div class="post-meta">
-                                            <span class="date">VIEWS {{ $post->views }}</span> <span
-                                                class="mx-1">•</span>
-                                            <span>{{ $post->created_at->format('M d, Y') }}</span>
-                                        </div>
-                                        <h2><a href="{{ route('posts.show', $post->slug) }}">{{ $post->title }}</a></h2>
-                                    </div>
-                                @endforeach
-                            </div>
-
-                            <div class="col-lg-4 border-start custom-border">
-                                @foreach ($agendaPosts->skip(6)->take(3) as $post)
-                                    <div class="post-list">
-                                        <a href="{{ route('posts.show', $post->slug) }}"><img src="{{ $post->image }}"
-                                                alt="" class="img-fluid"></a>
-                                        <div class="post-meta">
-                                            <span class="date">VIEWS {{ $post->views }}</span> <span
-                                                class="mx-1">•</span>
-                                            <span>{{ $post->created_at->format('M d, Y') }}</span>
-                                        </div>
-                                        <h2><a href="{{ route('posts.show', $post->slug) }}">{{ $post->title }}</a></h2>
-                                    </div>
-                                @endforeach
-                            </div>
-
-                            <div class="col-lg-4">
-                                @foreach ($agendaPosts->skip(9)->take(3) as $post)
-                                    <div class="post-list border-bottom">
-                                        <div class="post-meta">
-                                            <span class="date">VIEWS {{ $post->views }}</span> <span
-                                                class="mx-1">•</span>
-                                            <span>{{ $post->created_at->format('M d, Y') }}</span>
-                                        </div>
-                                        <h2 class="mb-2"><a
-                                                href="{{ route('posts.show', $post->slug) }}">{{ $post->title }}</a>
-                                        </h2>
-                                        <span class="author mb-3 d-block">{{ $post->author->name ?? 'Unknown' }}</span>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
-
+                    <h2>Berita Terbaru</h2>
                 </div>
             </div>
 
-        </section><!-- End Agenda Section -->
-
-
-
-        <section id="culture-category" class="culture-category section">
-
-            <!-- Section Title -->
-            <div class="container section-title aos-init aos-animate" data-aos="fade-up">
-                <div class="section-title-container d-flex align-items-center justify-content-between">
-                    <h2>Pengumuman</h2>
-                    <p><a href="categories.html">See All Culture</a></p>
-                </div>
-            </div><!-- End Section Title -->
-
             <div class="container aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
-
-                <div class="row">
-                    <div class="col-md-9">
-
-                        <div class="d-lg-flex post-entry">
-                            <a href="blog-details.html" class="me-4 thumbnail mb-4 mb-lg-0 d-inline-block">
-                                <img src="{{ asset('themes/zenblog/img/blog/blog-6.jpg') }}" alt=""
-                                    class="img-fluid">
-                            </a>
-                            <div>
-                                <div class="post-meta"><span class="date">Culture</span> <span class="mx-1">•</span>
-                                    <span>Jul 5th '22</span>
+                <div class="row g-3">
+                    @foreach ($agendaPosts->take(8) as $post)
+                        <div class="col-lg-3 col-md-6">
+                            <div class="post-card">
+                                <a href="{{ route('posts.show', $post->slug) }}">
+                                    <img src="{{ $post->image }}" alt="{{ $post->title }}"
+                                        class="img-fluid post-card-img">
+                                </a>
+                                <div class="post-meta">
+                                    <span class="badge">Terbaru</span>
+                                    <span class="date">{{ $post->created_at->format('d M Y') }}</span>
                                 </div>
-                                <h3><a href="blog-details.html">What is the son of Football Coach John Gruden, Deuce Gruden
-                                        doing Now?</a></h3>
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio placeat
-                                    exercitationem magni voluptates dolore. Tenetur fugiat voluptates quas, nobis error
-                                    deserunt aliquam temporibus sapiente, laudantium dolorum itaque libero eos deleniti?</p>
-                                <div class="d-flex align-items-center author">
-                                    <div class="photo"><img src="{{ asset('themes/zenblog/img/blog/blog-6.jpg') }}"
-                                            alt="" class="img-fluid"></div>
-                                    <div class="name">
-                                        <h3 class="m-0 p-0">Wade Warren</h3>
-                                    </div>
-                                </div>
+                                <h3 class="post-title">
+                                    <a href="{{ route('posts.show', $post->slug) }}">
+                                        {{ Str::limit($post->title, 25, '...') }}
+                                    </a>
+                                </h3>
                             </div>
                         </div>
-
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <div class="post-list border-bottom">
-                                    <a href="blog-details.html"><img
-                                            src="{{ asset('themes/zenblog/img/blog/blog-6.jpg') }}" alt=""
-                                            class="img-fluid"></a>
-                                    <div class="post-meta"><span class="date">Culture</span> <span
-                                            class="mx-1">•</span>
-                                        <span>Jul 5th '22</span>
-                                    </div>
-                                    <h2 class="mb-2"><a href="blog-details.html">11 Work From Home Part-Time Jobs You
-                                            Can
-                                            Do Now</a></h2>
-                                    <span class="author mb-3 d-block">Jenny Wilson</span>
-                                    <p class="mb-4 d-block">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vero
-                                        temporibus repudiandae, inventore pariatur numquam cumque possimus</p>
-                                </div>
-
-                                <div class="post-list">
-                                    <div class="post-meta"><span class="date">Culture</span> <span
-                                            class="mx-1">•</span>
-                                        <span>Jul 5th '22</span>
-                                    </div>
-                                    <h2 class="mb-2"><a href="blog-details.html">5 Great Startup Tips for Female
-                                            Founders</a></h2>
-                                    <span class="author mb-3 d-block">Jenny Wilson</span>
-                                </div>
-                            </div>
-                            <div class="col-lg-8">
-                                <div class="post-list">
-                                    <a href="blog-details.html"><img
-                                            src="{{ asset('themes/zenblog/img/blog/blog-6.jpg') }}" alt=""
-                                            class="img-fluid"></a>
-                                    <div class="post-meta"><span class="date">Culture</span> <span
-                                            class="mx-1">•</span>
-                                        <span>Jul 5th '22</span>
-                                    </div>
-                                    <h2 class="mb-2"><a href="blog-details.html">How to Avoid Distraction and Stay
-                                            Focused
-                                            During Video Calls?</a></h2>
-                                    <span class="author mb-3 d-block">Jenny Wilson</span>
-                                    <p class="mb-4 d-block">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vero
-                                        temporibus repudiandae, inventore pariatur numquam cumque possimus</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="post-list border-bottom">
-                            <div class="post-meta"><span class="date">Culture</span> <span class="mx-1">•</span>
-                                <span>Jul 5th '22</span>
-                            </div>
-                            <h2 class="mb-2"><a href="blog-details.html">How to Avoid Distraction and Stay Focused
-                                    During
-                                    Video Calls?</a></h2>
-                            <span class="author mb-3 d-block">Jenny Wilson</span>
-                        </div>
-
-                        <div class="post-list border-bottom">
-                            <div class="post-meta"><span class="date">Culture</span> <span class="mx-1">•</span>
-                                <span>Jul 5th '22</span>
-                            </div>
-                            <h2 class="mb-2"><a href="blog-details.html">17 Pictures of Medium Length Hair in Layers
-                                    That Will Inspire Your New Haircut</a></h2>
-                            <span class="author mb-3 d-block">Jenny Wilson</span>
-                        </div>
-
-                        <div class="post-list border-bottom">
-                            <div class="post-meta"><span class="date">Culture</span> <span class="mx-1">•</span>
-                                <span>Jul 5th '22</span>
-                            </div>
-                            <h2 class="mb-2"><a href="blog-details.html">9 Half-up/half-down Hairstyles for Long and
-                                    Medium Hair</a></h2>
-                            <span class="author mb-3 d-block">Jenny Wilson</span>
-                        </div>
-
-                        <div class="post-list border-bottom">
-                            <div class="post-meta"><span class="date">Culture</span> <span class="mx-1">•</span>
-                                <span>Jul 5th '22</span>
-                            </div>
-                            <h2 class="mb-2"><a href="blog-details.html">Life Insurance And Pregnancy: A Working Mom’s
-                                    Guide</a></h2>
-                            <span class="author mb-3 d-block">Jenny Wilson</span>
-                        </div>
-
-                        <div class="post-list border-bottom">
-                            <div class="post-meta"><span class="date">Culture</span> <span class="mx-1">•</span>
-                                <span>Jul 5th '22</span>
-                            </div>
-                            <h2 class="mb-2"><a href="blog-details.html">The Best Homemade Masks for Face (keep the
-                                    Pimples Away)</a></h2>
-                            <span class="author mb-3 d-block">Jenny Wilson</span>
-                        </div>
-
-                        <div class="post-list border-bottom">
-                            <div class="post-meta"><span class="date">Culture</span> <span class="mx-1">•</span>
-                                <span>Jul 5th '22</span>
-                            </div>
-                            <h2 class="mb-2"><a href="blog-details.html">10 Life-Changing Hacks Every Working Mom Should
-                                    Know</a></h2>
-                            <span class="author mb-3 d-block">Jenny Wilson</span>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
 
+                <div class="d-flex justify-content-end mt-4">
+                    <a href="{{ route('allPosts') }}" class="btn btn-outline-primary">Selengkapnya</a>
+                </div>
             </div>
-
         </section>
+
+        {{-- berita pengumuman --}}
+        @if ($pengumumanPosts->count() > 0)
+            <section id="agenda-section" class="agenda-section section">
+                <div class="container section-title aos-init aos-animate" data-aos="fade-up">
+                    <div class="section-title-container d-flex align-items-center justify-content-between">
+                        <h2>Pengumuman</h2>
+                    </div>
+                </div>
+
+                <div class="container aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+                    <div class="row g-4">
+                        @foreach ($pengumumanPosts->take(6) as $post)
+                            <div class="col-lg-4">
+                                <div class="agenda-card d-flex align-items-center">
+                                    <div class="agenda-date">
+                                        <span class="agenda-day">{{ $post->created_at->format('d') }}</span>
+                                        <span class="agenda-month">{{ $post->created_at->format('M') }}</span>
+                                    </div>
+                                    <div class="agenda-content">
+                                        <h3 class="agenda-title">
+                                            <a
+                                                href="{{ route('posts.show', $post->slug) }}">{{ Str::limit($post->title, 80, '...') }}</a>
+                                        </h3>
+                                        {{-- <p class="agenda-location">{{ $post->location ?? 'Lokasi Tidak Tersedia' }}</p> --}}
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+
+                    <div class="d-flex justify-content-end mt-4">
+                        <a href="{{ route('categories.show', 'pengumuman') }}"
+                            class="btn btn-outline-primary">Selengkapnya</a>
+                    </div>
+                </div>
+            </section>
+        @endif
 
 
     </main>

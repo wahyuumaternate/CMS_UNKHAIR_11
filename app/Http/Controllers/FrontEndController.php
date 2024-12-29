@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Categories;
+use App\Models\Comments;
 use App\Models\Page;
 use App\Models\Posts;
 use Illuminate\Http\Request;
@@ -39,12 +40,17 @@ class FrontEndController extends Controller
     public function showPost($slug)
     {
         $theme = Theme::where('active', true)->first()->path;
-        $data = []; // Data yang diperlukan
-    
+        
+        
         // Temukan halaman berdasarkan slug
         $page = Posts::where('slug', $slug)->firstOrFail();
         
-        return view($theme . '.detail_post', compact('data','page'));
+        $comments = Comments::where('status', 'approved')
+                    ->where('post_id', $page->id)
+                    ->latest()
+                    ->get();
+
+        return view($theme . '.detail_post', compact('comments','page'));
     }
     public function showCategories($slug)
     {
@@ -54,8 +60,19 @@ class FrontEndController extends Controller
         // Temukan halaman berdasarkan slug
         $category = Categories::where('slug', $slug)->firstOrFail();
 
-        $posts = Posts::where('category_id', $category->id)->latest()->get();
+        $posts = Posts::where('category_id', $category->id)->latest()->paginate(10); // Batasi 10 posting per halaman
+
         // dd($posts);
         return view($theme . '.posts_categories', compact('category','posts'));
+    }
+
+    public function allPosts(){
+        $theme = Theme::where('active', true)->first()->path;
+        // $data = []; // Data yang diperlukan
+
+        $posts = Posts::latest()->paginate(8); // Menampilkan 10 posting per halaman
+
+        // dd($posts);
+        return view($theme . '.posts_categories', compact('posts'));
     }
 }

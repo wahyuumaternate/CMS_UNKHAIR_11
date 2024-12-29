@@ -9,6 +9,7 @@ use App\Models\Posts;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -25,6 +26,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Paginator::useBootstrap(); // Gunakan gaya Bootstrap
          // Ambil menu aktif beserta itemnya untuk dibagikan ke seluruh view
          $menus = Menu::with(['items' => function ($query) {
             $query->whereNull('parent_id')  // Only top-level items

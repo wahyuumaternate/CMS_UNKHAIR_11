@@ -24,7 +24,7 @@
                                             <th>#</th>
                                             <th>Image</th>
                                             <th>Name</th>
-                                            <th>Order</th>
+                                            {{-- <th>Order</th> --}}
                                             <th>Status</th>
                                             <th>Tanggal Dibuat</th>
                                             <th>Aksi</th>
@@ -46,12 +46,12 @@
                                                 </td>
 
                                                 <!-- Nama Galeri -->
-                                                <td><a
-                                                        href="{{ route('galleries.show', $gallery->id) }}">{{ $gallery->name }}</a>
+                                                <td>
+                                                    {{ $gallery->name }}
                                                 </td>
 
                                                 <!-- Order -->
-                                                <td>{{ $gallery->order }}</td>
+                                                {{-- <td>{{ $gallery->order }}</td> --}}
 
                                                 <!-- Status -->
                                                 <td>

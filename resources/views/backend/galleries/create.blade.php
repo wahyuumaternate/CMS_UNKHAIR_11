@@ -15,22 +15,20 @@
                         <div class="card mb-3">
                             <div class="card-body">
                                 <div class="mb-3">
-                                    <label for="name" class="form-label">Name *</label>
-                                    <input type="text" class="form-control" id="name" name="name" required
-                                        value="ll">
+                                    <label for="name" class="form-label">Name</label>
+                                    <input type="text" class="form-control" id="name" name="name" required>
                                 </div>
                                 <input type="hidden" value="hh" name="image">
                                 <div class="mb-3">
-                                    <label for="permalink" class="form-label">Permalink *</label>
-                                    <input type="text" class="form-control" id="permalink" name="slug" required
-                                        value="ll">
+                                    <label for="permalink" class="form-label">Permalink</label>
+                                    <input type="text" class="form-control" id="permalink" name="slug" required>
                                     <small class="form-text text-muted">Preview:
                                         http://localhost/galleries/your-permalink</small>
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="description" class="form-label">Description *</label>
-                                    <textarea class="form-control" id="description" name="description" rows="3" required>lll</textarea>
+                                    <label for="description" class="form-label">Description</label>
+                                    <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
                                 </div>
 
                                 {{-- <div class="mb-3">
@@ -61,7 +59,7 @@
 
                         <div class="card mb-3">
                             <div class="card-body">
-                                <label for="status" class="form-label">Status *</label>
+                                <label for="status" class="form-label">Status</label>
                                 <select class="form-select" id="status" name="status" required>
                                     <option value="active">Published</option>
                                     <option value="inactive">Draft</option>

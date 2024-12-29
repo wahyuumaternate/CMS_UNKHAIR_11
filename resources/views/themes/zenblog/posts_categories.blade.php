@@ -1,128 +1,267 @@
 @extends('themes.zenblog.layouts.main')
+@push('styles')
+    <style>
+        /* Trending Section */
+        .trending h3 {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .trending-post li {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .trending-post li .number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffc107;
+            /* Warna kuning untuk angka */
+        }
+
+        .trending-post h4 {
+            font-size: 16px;
+            margin: 0;
+        }
+
+        .trending-post a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        .trending-post a:hover {
+            color: #007bff;
+        }
+
+        .trending-post .author {
+            font-size: 14px;
+            color: #777;
+        }
+
+        /* Container untuk gambar */
+        .post-entry {
+            position: relative;
+            /* Pastikan elemen dalam kontainer dapat diatur layer-nya */
+            overflow: hidden;
+            /* Membatasi zoom hanya pada area gambar */
+            border-radius: 8px;
+            /* Membulatkan sudut */
+            width: 100%;
+            height: 200px;
+            /* Ukuran seragam untuk semua gambar */
+        }
+
+        /* Gambar di dalam post-entry */
+        /* Container untuk gambar */
+        .post-entry {
+            position: relative;
+            /* Untuk mengatur layer elemen di dalamnya */
+            overflow: hidden;
+            /* Membatasi zoom hanya pada gambar */
+            border-radius: 8px;
+            /* Membulatkan sudut */
+            width: 100%;
+            height: auto;
+            /* Biarkan kontainer menyesuaikan tinggi elemen di dalamnya */
+            background-color: #f9f9f9;
+            /* Tambahkan warna latar untuk debug jika diperlukan */
+        }
+
+        /* Gambar di dalam post-entry */
+        .post-entry img {
+            width: 100%;
+            height: 200px;
+            /* Ukuran tetap untuk gambar */
+            object-fit: cover;
+            /* Memastikan gambar memenuhi area tanpa distorsi */
+            transition: transform 0.3s ease;
+            /* Efek transisi untuk zoom-in */
+            position: relative;
+            /* Pastikan gambar tidak menutupi elemen lainnya */
+            z-index: 1;
+            /* Gambar di bawah elemen judul */
+        }
+
+        /* Efek zoom-in pada gambar saat hover */
+        .post-entry:hover img {
+            transform: scale(1.1);
+            /* Zoom-in */
+        }
+
+        /* Meta informasi dan judul */
+        .post-meta {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #777;
+            /* Warna teks meta */
+            z-index: 2;
+            position: relative;
+        }
+
+        /* Container untuk gambar */
+        .post-entry {
+            position: relative;
+            /* Untuk mengatur layer elemen di dalamnya */
+            overflow: hidden;
+            /* Membatasi zoom hanya pada gambar */
+            border-radius: 8px;
+            /* Membulatkan sudut */
+            width: 100%;
+            height: auto;
+            /* Biarkan kontainer menyesuaikan tinggi elemen di dalamnya */
+            background-color: #f9f9f9;
+            /* Tambahkan warna latar untuk debug jika diperlukan */
+        }
+
+        /* Gambar di dalam post-entry */
+        .post-entry img {
+            width: 100%;
+            height: 200px;
+            /* Ukuran tetap untuk gambar */
+            object-fit: cover;
+            /* Memastikan gambar memenuhi area tanpa distorsi */
+            transition: transform 0.3s ease;
+            /* Efek transisi untuk zoom-in */
+            position: relative;
+            /* Pastikan gambar tidak menutupi elemen lainnya */
+            z-index: 1;
+            /* Gambar di bawah elemen judul */
+        }
+
+        /* Efek zoom-in pada gambar saat hover */
+        .post-entry:hover img {
+            transform: scale(1.1);
+            /* Zoom-in */
+        }
+
+        /* Meta informasi dan judul */
+        .post-meta {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #777;
+            /* Warna teks meta */
+            z-index: 2;
+            position: relative;
+        }
+
+        /* Elemen judul */
+        h2 a:hover {
+            color: #ffc107 !important;
+        }
+
+        h4 a:hover {
+            color: #ffc107 !important;
+        }
+
+        /* paginate */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .pagination a,
+        .pagination span {
+            margin: 1px 5px;
+            display: block;
+            padding: 8px 12px;
+            color: #000000;
+            text-decoration: none;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .pagination a:hover {
+            /* background-color: #ffc107; */
+            color: #ffc107;
+        }
+
+        .pagination .active span {
+            background-color: #ffc107;
+            color: white;
+            border-color: #ffc107;
+        }
+    </style>
+@endpush
 
 @section('main')
     <main class="main">
-
-
+        <!-- Trending Category Section -->
         <section id="trending-category" class="trending-category section">
             <!-- Section Title -->
             <div class="container section-title aos-init aos-animate" data-aos="fade-up">
                 <div class="section-title-container d-flex align-items-center justify-content-between">
-                    <h2>{{ $category->name }}</h2> <!-- Nama kategori -->
-
+                    @php
+                        $category = $category ?? null;
+                    @endphp
+                    <h2>{{ $category ? $category->name : 'All Posts' }}</h2>
                 </div>
             </div><!-- End Section Title -->
 
             <div class="container aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
                 <div class="row g-5">
-                    <!-- Postingan Besar di Samping Kiri (Cuma 1 Postingan) -->
-                    <div class="col-lg-4">
-                        @if ($posts->isNotEmpty())
-                            @php
-                                $featuredPost = $posts->first(); // Ambil satu postingan pertama sebagai featured
-                            @endphp
-                            <div class="post-entry lg">
-                                <a href="{{ route('posts.show', $featuredPost->slug) }}">
-                                    <img src="{{ $featuredPost->image }}" alt="{{ $featuredPost->title }}"
-                                        class="img-fluid w-100">
-                                </a>
-                                <div class="post-meta">
-                                    <span class="mx-1">•</span>
-                                    <span>{{ $featuredPost->created_at->format('M d, Y') }}</span>
-                                    <!-- Tanggal postingan -->
-                                </div>
-                                <h2><a href="{{ route('posts.show', $featuredPost->slug) }}">{{ $featuredPost->title }}</a>
-                                </h2>
-                                <p class="mb-4 d-block">{{ Str::limit($featuredPost->excerpt, 150) }}</p>
-                                <!-- Excerpt (ringkasan) -->
-
-                                <div class="d-flex align-items-center author">
-                                    <div class="photo">
-                                        <img src="{{ asset('themes/zenblog/img/blog/blog-6.jpg') }}" alt="Penulis"
-                                            class="img-fluid">
-                                    </div>
-                                    <div class="name">
-                                        <h3 class="m-0 p-0">{{ $featuredPost->author }}</h3> <!-- Nama penulis -->
-                                    </div>
-                                </div>
-                                <!-- Share Buttons -->
-                                <!-- Share Buttons -->
-                                <div class="share-buttons mt-4">
-                                    <span>Share:</span>
-                                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ route('posts.show', $featuredPost->slug) }}"
-                                        target="_blank" class="btn btn-social-icon btn-facebook">
-                                        <i class="bi bi-facebook"></i> <!-- Facebook -->
-                                    </a>
-                                    <a href="https://twitter.com/intent/tweet?url={{ route('posts.show', $featuredPost->slug) }}"
-                                        target="_blank" class="btn btn-social-icon btn-twitter">
-                                        <i class="bi bi-twitter"></i> <!-- Twitter -->
-                                    </a>
-                                    <a href="https://api.whatsapp.com/send?text={{ route('posts.show', $featuredPost->slug) }}"
-                                        target="_blank" class="btn btn-social-icon btn-whatsapp">
-                                        <i class="bi bi-whatsapp"></i> <!-- WhatsApp -->
-                                    </a>
-                                    <a href="https://www.instagram.com" target="_blank"
-                                        class="btn btn-social-icon btn-instagram">
-                                        <i class="bi bi-instagram"></i> <!-- Instagram -->
-                                    </a>
-
-                                </div> <!-- End Share Buttons -->
-
-                            </div>
-                        @endif
-                    </div>
-
+                    <!-- Main Content Posts -->
                     <div class="col-lg-8">
                         <div class="row g-5">
-                            <!-- Postingan Kecil Grid (Kolom Kecil) -->
-                            @foreach ($posts->skip(1) as $post)
-                                <div class="col-lg-4">
-                                    <div class="row g-5">
-                                        <!-- Lewati postingan pertama yang sudah ditampilkan besar -->
-                                        <div class="col-lg-12">
-                                            <div class="post-entry">
-                                                <a href="{{ route('posts.show', $post->slug) }}">
-                                                    <img src="{{ $post->image }}" alt="{{ $post->title }}"
-                                                        class="img-fluid">
-                                                </a>
-                                                <div class="post-meta">
-                                                    <span class="mx-1">•</span>
-                                                    <span>{{ $post->created_at->format('M d, Y') }} -
-                                                        Views {{ $post->views }}</span>
-                                                </div>
-                                                <h2><a
-                                                        href="{{ route('posts.show', $post->slug) }}">{{ $post->title }}</a>
-                                                </h2>
-                                            </div>
+                            @foreach ($posts as $post)
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="post-entry">
+                                        <a href="{{ route('posts.show', $post->slug) }}">
+                                            <img src="{{ $post->image }}" alt="{{ $post->title }}"
+                                                class="img-fluid rounded">
+                                        </a>
+                                        <div class="post-meta mt-2">
+                                            <span class="text-muted">{{ $post->created_at->format('M d, Y') }}</span>
+                                            <span class="mx-1">•</span>
+                                            <span>Views: {{ $post->views }}</span>
                                         </div>
+                                        <h2>
+                                            <a class="posts-title" href="{{ route('posts.show', $post->slug) }}">
+                                                {{ Str::limit($post->title, 50) }}
+                                            </a>
+                                        </h2>
                                     </div>
                                 </div>
                             @endforeach
-                            <!-- Trending Section -->
-                            <div class="col-lg-4">
-                                <div class="trending">
-                                    <h3>Trending</h3>
-                                    <ul class="trending-post">
-                                        @foreach ($posts->take(5) as $key => $post)
-                                            <!-- Mengambil 5 postingan teratas -->
-                                            <li>
-                                                <a href="{{ route('posts.show', $post->slug) }}">
-                                                    <span class="number">{{ $key + 1 }}</span>
-                                                    <h3>{{ $post->title }}</h3>
-                                                    <span class="author">{{ $post->author }}</span>
-                                                </a>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            </div> <!-- End Trending Section -->
-
                         </div>
+                        <!-- Pagination -->
+                        <div class="pagination mt-4">
+
+                            {{ $posts->links() }}
+                        </div>
+
                     </div>
-                </div> <!-- End .row -->
+
+                    <!-- Trending Section -->
+                    <div class="col-lg-4">
+                        <div class="trending">
+                            <h3 class="mb-4">Trending</h3>
+                            <ul class="trending-post list-unstyled">
+                                @foreach ($posts->take(5) as $key => $post)
+                                    <li class="d-flex mb-3">
+                                        <span class="number me-3">{{ $key + 1 }}</span>
+                                        <div>
+                                            <h4 class="m-0">
+                                                <a href="{{ route('posts.show', $post->slug) }}" class="text-dark">
+                                                    {{ Str::limit($post->title, 50) }}
+                                                </a>
+                                            </h4>
+                                            {{-- <span class="author text-muted">{{ $post->author }}</span> --}}
+                                        </div>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div> <!-- End Trending Section -->
+                </div>
+
             </div>
         </section>
-
-
     </main>
 @endsection
