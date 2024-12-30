@@ -185,21 +185,6 @@
             margin-bottom: 20px;
             font-weight: bold;
         }
-
-        /* CSS untuk gambar dalam konten TinyMCE */
-        .tox-edit-area__iframe img,
-        .mce-content-body img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        /* Mengatasi overflow */
-        .tox-edit-area__iframe,
-        .mce-content-body {
-            overflow-x: auto;
-            word-wrap: break-word;
-        }
     </style>
 </head>
 
