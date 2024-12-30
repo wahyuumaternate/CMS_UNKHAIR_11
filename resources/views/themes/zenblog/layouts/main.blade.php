@@ -19,7 +19,7 @@
 
         <!-- Open Graph / Facebook -->
         <meta property="og:type" content="website">
-        <meta property="og:url" content="{{ url('url') }}">
+        <meta property="og:url" content="{{ url('') }}">
         <meta property="og:title" content="{{ $site_name->value }}">
         <meta property="og:description"
             content="Universitas Khairun adalah Perguruan Tinggi Negeri terkemuka di Ternate, Maluku Utara. Menawarkan program Sarjana, Magister & Doktor dengan akreditasi unggul.">
@@ -27,14 +27,14 @@
 
         <!-- Twitter -->
         <meta property="twitter:card" content="summary_large_image">
-        <meta property="twitter:url" content="{{ url('url') }}">
+        <meta property="twitter:url" content="{{ url('') }}">
         <meta property="twitter:title" content="{{ $site_name->value }}">
         <meta property="twitter:description"
             content="Universitas Khairun adalah Perguruan Tinggi Negeri terkemuka di Ternate, Maluku Utara. Menawarkan program Sarjana, Magister & Doktor dengan akreditasi unggul.">
         <meta property="twitter:image" content="{{ asset('storage/' . $site_logo->value) }}">
 
         <!-- Canonical URL -->
-        <link rel="canonical" href="{{ url('url') }}">
+        <link rel="canonical" href="{{ url('') }}">
 
         <!-- Additional Meta Tags -->
         <meta name="geo.region" content="ID-MA" />
