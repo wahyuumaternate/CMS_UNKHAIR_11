@@ -291,7 +291,7 @@
                     </script>
 
                     <div class="swiper-wrapper">
-                        @foreach ($agendaPosts->take(3) as $post)
+                        @foreach ($posts->take(3) as $post)
                             <div class="swiper-slide" style="background-image: url('{{ $post->image }}');">
                                 <div class="content">
                                     <h2>
@@ -320,7 +320,7 @@
             </div>
             <div class="container aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
                 <div class="row g-3">
-                    @foreach ($agendaPosts->take(4) as $post)
+                    @foreach ($beritaUtama->take(4) as $post)
                         <div class="col-lg-3">
                             <div class="post-card utama">
                                 <a href="{{ route('posts.show', $post->slug) }}" class="post-card-link">
@@ -348,7 +348,7 @@
 
             <div class="container aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
                 <div class="row g-3">
-                    @foreach ($agendaPosts->take(8) as $post)
+                    @foreach ($posts->take(8) as $post)
                         <div class="col-lg-3 col-md-6">
                             <div class="post-card">
                                 <a href="{{ route('posts.show', $post->slug) }}">

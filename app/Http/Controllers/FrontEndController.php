@@ -15,15 +15,19 @@ class FrontEndController extends Controller
         $theme = Theme::where('active', true)->first()->path;
     
         // Ambil kategori "Agenda" dan "Pengumuman"
-        $agendaPosts = Posts::whereHas('category', function ($query) {
-            $query->where('name', 'Agenda');
-        })->latest()->get();
+        // $agendaPosts = Posts::whereHas('category', function ($query) {
+        //     $query->where('name', 'Agenda');
+        // })->latest()->get();
+
+        $beritaUtama = Posts::where('comments_is_active', 1)->latest()->get();
     
         $pengumumanPosts = Posts::whereHas('category', function ($query) {
             $query->where('name', 'Pengumuman');
         })->latest()->get();
     
-        return view($theme . '.index', compact('agendaPosts', 'pengumumanPosts'));
+        $posts = Posts::latest()->get();
+
+        return view($theme . '.index', compact('beritaUtama', 'pengumumanPosts','posts'));
     }
     
     public function showPage($slug)

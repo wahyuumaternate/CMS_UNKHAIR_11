@@ -59,19 +59,19 @@
                                     {{-- <span>Share:</span> --}}
                                     <a href="https://www.facebook.com/sharer/sharer.php?u={{ route('posts.show', $page->slug) }}"
                                         target="_blank" class="btn btn-social-icon btn-facebook">
-                                        <i class="bi bi-facebook"></i> <!-- Facebook -->
+                                        <img src="{{ asset('assets/facebook.svg') }}" alt="" width="40">
                                     </a>
                                     <a href="https://twitter.com/intent/tweet?url={{ route('posts.show', $page->slug) }}"
                                         target="_blank" class="btn btn-social-icon btn-twitter">
-                                        <i class="bi bi-twitter"></i> <!-- Twitter -->
+                                        <img src="{{ asset('assets/x.svg') }}" alt="" width="40">
                                     </a>
                                     <a href="https://api.whatsapp.com/send?text={{ route('posts.show', $page->slug) }}"
                                         target="_blank" class="btn btn-social-icon btn-whatsapp">
-                                        <i class="bi bi-whatsapp"></i> <!-- WhatsApp -->
+                                        <img src="{{ asset('assets/whatsapp.svg') }}" alt="" width="30">
                                     </a>
                                     <a href="https://www.instagram.com" target="_blank"
                                         class="btn btn-social-icon btn-instagram">
-                                        <i class="bi bi-instagram"></i> <!-- Instagram -->
+                                        <img src="{{ asset('assets/instagram.svg') }}" alt="" width="30">
                                     </a>
 
                                 </div> <!-- End Share Buttons -->
