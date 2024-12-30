@@ -8,7 +8,7 @@
     @if (Request::is('/'))
         <!-- Primary Meta Tags -->
         <title>{{ $site_name->value }}</title>
-        <meta name="title" content="Universitas Khairun | PTN di Ternate Maluku Utara">
+        <meta name="title" content="{{ $site_name->value }}">
         <meta name="description"
             content="Universitas Khairun adalah Perguruan Tinggi Negeri terkemuka di Ternate, Maluku Utara. Menawarkan program Sarjana, Magister & Doktor dengan akreditasi unggul. Memiliki 8 fakultas dengan 40+ program studi dalam bidang sains, teknologi, sosial & humaniora.">
         <meta name="keywords"
@@ -20,7 +20,7 @@
         <!-- Open Graph / Facebook -->
         <meta property="og:type" content="website">
         <meta property="og:url" content="{{ url('url') }}">
-        <meta property="og:title" content="Universitas Khairun | PTN di Ternate Maluku Utara">
+        <meta property="og:title" content="{{ $site_name->value }}">
         <meta property="og:description"
             content="Universitas Khairun adalah Perguruan Tinggi Negeri terkemuka di Ternate, Maluku Utara. Menawarkan program Sarjana, Magister & Doktor dengan akreditasi unggul.">
         <meta property="og:image" content="{{ asset('storage/' . $site_logo->value) }}">
@@ -28,7 +28,7 @@
         <!-- Twitter -->
         <meta property="twitter:card" content="summary_large_image">
         <meta property="twitter:url" content="{{ url('url') }}">
-        <meta property="twitter:title" content="Universitas Khairun | PTN di Ternate Maluku Utara">
+        <meta property="twitter:title" content="{{ $site_name->value }}">
         <meta property="twitter:description"
             content="Universitas Khairun adalah Perguruan Tinggi Negeri terkemuka di Ternate, Maluku Utara. Menawarkan program Sarjana, Magister & Doktor dengan akreditasi unggul.">
         <meta property="twitter:image" content="{{ asset('storage/' . $site_logo->value) }}">
