@@ -4,9 +4,49 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>{{ $site_name->value }}</title>
-    <meta name="description" content="">
-    <meta name="keywords" content="">
+
+    @if (Request::is('/'))
+        <!-- Primary Meta Tags -->
+        <title>{{ $site_name->value }}</title>
+        <meta name="title" content="Universitas Khairun | PTN di Ternate Maluku Utara">
+        <meta name="description"
+            content="Universitas Khairun adalah Perguruan Tinggi Negeri terkemuka di Ternate, Maluku Utara. Menawarkan program Sarjana, Magister & Doktor dengan akreditasi unggul. Memiliki 8 fakultas dengan 40+ program studi dalam bidang sains, teknologi, sosial & humaniora.">
+        <meta name="keywords"
+            content="universitas khairun, unkhair, kampus ternate, universitas negeri ternate, ptn ternate, kuliah di ternate, fakultas unkhair, pendaftaran unkhair, beasiswa unkhair, biaya kuliah unkhair, pmb unkhair, jalur masuk unkhair, akreditasi unkhair, jurusan unkhair, program studi unkhair">
+        <meta name="robots" content="index, follow">
+        <meta name="language" content="Indonesia">
+        <meta name="author" content="Universitas Khairun">
+
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="{{ url('url') }}">
+        <meta property="og:title" content="Universitas Khairun | PTN di Ternate Maluku Utara">
+        <meta property="og:description"
+            content="Universitas Khairun adalah Perguruan Tinggi Negeri terkemuka di Ternate, Maluku Utara. Menawarkan program Sarjana, Magister & Doktor dengan akreditasi unggul.">
+        <meta property="og:image" content="{{ asset('storage/' . $site_logo->value) }}">
+
+        <!-- Twitter -->
+        <meta property="twitter:card" content="summary_large_image">
+        <meta property="twitter:url" content="{{ url('url') }}">
+        <meta property="twitter:title" content="Universitas Khairun | PTN di Ternate Maluku Utara">
+        <meta property="twitter:description"
+            content="Universitas Khairun adalah Perguruan Tinggi Negeri terkemuka di Ternate, Maluku Utara. Menawarkan program Sarjana, Magister & Doktor dengan akreditasi unggul.">
+        <meta property="twitter:image" content="{{ asset('storage/' . $site_logo->value) }}">
+
+        <!-- Canonical URL -->
+        <link rel="canonical" href="{{ url('url') }}">
+
+        <!-- Additional Meta Tags -->
+        <meta name="geo.region" content="ID-MA" />
+        <meta name="geo.placename" content="Ternate" />
+        <meta name="geo.position" content="0.7714;127.3771" />
+        <meta name="ICBM" content="0.7714, 127.3771" />
+
+        <!-- Cache Control -->
+        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+        <meta http-equiv="Pragma" content="no-cache">
+        <meta http-equiv="Expires" content="0">
+    @endif
 
     <!-- Favicons -->
     <link href="assets/img/favicon.png" rel="icon">
