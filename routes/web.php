@@ -12,15 +12,22 @@ use Illuminate\Support\Facades\Route;
 
 use Illuminate\Support\Facades\Artisan;
 
-Route::get('/migrate', function () {
+Route::get('/seeder', function () {
     try {
-        Artisan::call('migrate:fresh --seed');
+        Artisan::call('db:seed');
         return "Database seeder berhasil dijalankan!";
     } catch (\Exception $e) {
         return "Error: " . $e->getMessage();
     }
 });
-
+Route::get('/migrate', function () {
+    try {
+        Artisan::call('migrate');
+        return "Database seeder berhasil dijalankan!";
+    } catch (\Exception $e) {
+        return "Error: " . $e->getMessage();
+    }
+});
 Route::get('/search-menu', [SearchController::class, 'searchMenu'])->name('search-menu')->middleware('auth');
 
 Route::get('/', [FrontEndController::class, 'index']);
