@@ -13,20 +13,11 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 
 Route::get('/seeder', function () {
-    try {
-        Artisan::call('db:seed');
-        return "Database seeder berhasil dijalankan!";
-    } catch (\Exception $e) {
-        return "Error: " . $e->getMessage();
-    }
+    Artisan::call('db:seed');
+   
 });
 Route::get('/migrate', function () {
-    try {
-        Artisan::call('migrate');
-        return "Database seeder berhasil dijalankan!";
-    } catch (\Exception $e) {
-        return "Error: " . $e->getMessage();
-    }
+    Artisan::call('migrate');
 });
 Route::get('/search-menu', [SearchController::class, 'searchMenu'])->name('search-menu')->middleware('auth');
 
