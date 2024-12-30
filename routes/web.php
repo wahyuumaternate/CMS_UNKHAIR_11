@@ -10,6 +10,17 @@ use App\Models\Theme;
 use Illuminate\Support\Facades\Route;
 // use UniSharp\LaravelFilemanager\Lfm;
 
+use Illuminate\Support\Facades\Artisan;
+
+Route::get('/migrate', function () {
+    try {
+        Artisan::call('migrate:fresh --seed');
+        return "Database seeder berhasil dijalankan!";
+    } catch (\Exception $e) {
+        return "Error: " . $e->getMessage();
+    }
+});
+
 Route::get('/search-menu', [SearchController::class, 'searchMenu'])->name('search-menu')->middleware('auth');
 
 Route::get('/', [FrontEndController::class, 'index']);
