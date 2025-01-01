@@ -19,6 +19,7 @@ class CreateCommentsTable extends Migration
             $table->text('content'); // The actual comment content
             $table->string('name')->nullable(); // Optional field for guest's name
             $table->string('email')->nullable(); // Optional field for guest's email
+            $table->boolean('read')->default(false); // Menandai apakah post ini menjadi banner
             $table->enum('status', ['approved', 'pending', 'rejected'])->default('pending');
             $table->timestamps();
 

@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Categories;
+use App\Models\Comments;
 use App\Models\GeneralSettings;
 use App\Models\Menu;
 use App\Models\Posts;
@@ -66,5 +67,11 @@ class AppServiceProvider extends ServiceProvider
                              ->get();
          // Membagikan data trending posts ke semua view
          View::share('trendingPosts', $trendingPosts);
+
+         // Menghitung jumlah post yang belum dibaca (read = false)
+        $unreadCommentsCount = Comments::where('read', false)->count();
+        // Membagikan data trending posts ke semua view
+        View::share('unreadCommentsCount', $unreadCommentsCount);
+
     }
 }

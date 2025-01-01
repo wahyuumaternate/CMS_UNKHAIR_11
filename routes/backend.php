@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GalleriesController;
 use App\Http\Controllers\GeneralSettingsController;
@@ -37,8 +38,8 @@ Route::prefix('/cms-unkhair/cp')->middleware('auth')->group(function () {
     Route::get('/create-post', [PostsController::class, 'create'])->name('posts.create');
     // Route::get('/posts/{id}', [PostsController::class, 'show'])->name('posts.show');
     Route::post('/posts/store', [PostsController::class, 'store'])->name('posts.store');
-    Route::get('/post/{id}/edit', [PostsController::class, 'edit'])->name('posts.edit'); // Menampilkan form untuk edit post
-    Route::put('/post/{id}', [PostsController::class, 'update'])->name('posts.update'); // Memperbarui post
+    Route::get('/post/{post:slug}/edit', [PostsController::class, 'edit'])->name('posts.edit'); // Menampilkan form untuk edit post
+    Route::put('/post/{post:slug}', [PostsController::class, 'update'])->name('posts.update'); // Memperbarui post
     // Route::post('/upload-image', [PostsController::class, 'uploadImage'])->name('upload.image');
     Route::post('/posts/bulk', [PostsController::class, 'bulk'])->name('posts.bulk_action');
     // categories
@@ -80,5 +81,14 @@ Route::prefix('/cms-unkhair/cp')->middleware('auth')->group(function () {
     Route::put('galleries/{id}', [GalleriesController::class, 'update'])->name('galleries.update');
     Route::delete('galleries/{id}', [GalleriesController::class, 'destroy'])->name('galleries.destroy'); 
     Route::delete('/gallery/image/{id}', [GalleriesController::class, 'destroyImage']);
+    // Halaman Daftar Komentar
+    Route::get('/comments', [CommentsController::class, 'index'])->name('comments.index');
+    // Halaman Edit Komentar
+    Route::get('/comments/{id}/edit', [CommentsController::class, 'edit'])->name('comments.edit');
+    // Proses Update Komentar
+    Route::put('/comments/{id}', [CommentsController::class, 'update'])->name('comments.update');
+    // Hapus Komentar
+    Route::delete('/comments/{id}', [CommentsController::class, 'destroy'])->name('comments.destroy');
+
 
 });

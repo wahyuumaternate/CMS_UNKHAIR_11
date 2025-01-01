@@ -11,37 +11,80 @@ use Illuminate\Support\Str;
 
 class PostsController extends Controller
 {
-    public function index(Request $request)
-    {
-        // Mendapatkan status dari query string
-        $status = $request->query('status');
+    // public function index(Request $request)
+    // {
+    //     // Mendapatkan status dari query string
+    //     $status = $request->query('status');
         
-        // Menghitung total posts yang tidak dihapus
-        $totalPosts = Posts::whereNull('deleted_at')->count();
+    //     // Menghitung total posts yang tidak dihapus
+    //     $totalPosts = Posts::whereNull('deleted_at')->count();
         
-        // Menghitung total posts yang dihapus
-        $totalTrashed = Posts::onlyTrashed()->count();
+    //     // Menghitung total posts yang dihapus
+    //     $totalTrashed = Posts::onlyTrashed()->count();
         
-        // Memilih posts berdasarkan status
-        if ($status === 'trashed') {
-            $posts = Posts::onlyTrashed()->with('categories')->get();
-        } else {
-            $posts = Posts::whereNull('deleted_at')->with('categories')->get();
-        }
-        // dd($posts);
-        // Menentukan apakah ada posts yang dihapus
-        $hasTrashed = $totalTrashed > 0;
+    //     // Memilih posts berdasarkan status
+    //     if ($status === 'trashed') {
+    //         $posts = Posts::onlyTrashed()->with('categories')->get();
+    //     } else {
+    //         $posts = Posts::whereNull('deleted_at')->with('categories')->get();
+    //     }
+    //     // dd($posts);
+    //     // Menentukan apakah ada posts yang dihapus
+    //     $hasTrashed = $totalTrashed > 0;
     
-        $categories = Categories::all();
+    //     $categories = Categories::all();
 
-        // Mengembalikan tampilan dengan data yang diperlukan
-        return view('backend.posts.index', compact('posts','categories', 'status', 'hasTrashed', 'totalPosts', 'totalTrashed'));
+    //     // Mengembalikan tampilan dengan data yang diperlukan
+    //     return view('backend.posts.index', compact('posts','categories', 'status', 'hasTrashed', 'totalPosts', 'totalTrashed'));
+    // }
+    public function index(Request $request)
+{
+    // Mendapatkan status dari query string
+    $status = $request->query('status');
+    
+    // Menghitung total posts yang tidak dihapus
+    $totalPosts = Posts::whereNull('deleted_at')->count();
+    
+    // Menghitung total posts yang dihapus
+    $totalTrashed = Posts::onlyTrashed()->count();
+    
+    // Memilih posts berdasarkan status
+    if ($status === 'trashed') {
+        // Mengambil posts yang dihapus dan mengurutkan berdasarkan yang terbaru
+        $posts = Posts::onlyTrashed()
+                      ->with('categories')
+                      ->orderBy('deleted_at', 'desc') // Urutkan berdasarkan deleted_at (terbaru)
+                      ->get();
+    } else {
+        // Mengambil posts yang tidak dihapus dan mengurutkan berdasarkan yang terbaru
+        $posts = Posts::whereNull('deleted_at')
+                      ->with('categories')
+                      ->orderBy('created_at', 'desc') // Urutkan berdasarkan created_at (terbaru)
+                      ->get();
     }
+    
+    // Menentukan apakah ada posts yang dihapus
+    $hasTrashed = $totalTrashed > 0;
+
+    $categories = Categories::all();
+
+    // Mengembalikan tampilan dengan data yang diperlukan
+    return view('backend.posts.index', compact('posts','categories', 'status', 'hasTrashed', 'totalPosts', 'totalTrashed'));
+}
+
     
     public function create()
     {
+         // Menghitung jumlah post yang sudah diberi status 'is_featured' dan 'is_banner'
+        $featuredCount = Posts::where('is_featured', 1)->count();
+        $bannerCount = Posts::where('is_banner', 1)->count();
+
+        // Menentukan apakah fitur is_featured dan is_banner dapat diaktifkan
+        $canBeFeatured = $featuredCount < 4; // Batas maksimal 4
+        $canBeBanner = $bannerCount < 3;     // Batas maksimal 3
+    
         $categories = Categories::all();
-        return view('backend.posts.create', compact('categories'));
+        return view('backend.posts.create', compact('categories','canBeFeatured', 'canBeBanner'));
     }
 
     public function store(Request $request)
@@ -59,6 +102,8 @@ class PostsController extends Controller
             'status' => $validatedData['status'],
             'content' => $validatedData['content'],
             'comments_is_active' => $validatedData['comments_is_active'],
+            'is_featured' =>$validatedData['is_featured'],
+            'is_banner' =>$validatedData['is_banner'],
             'views' => 0,
             'author' => Auth::user()->name,
             'image' => $request->input('image'),
@@ -86,6 +131,8 @@ class PostsController extends Controller
             'status' => 'required|in:draft,published,trashed',
             'comments_is_active' => 'required|boolean',
             'category_id' => 'required|exists:categories,id',
+            'is_featured' => 'required|boolean',
+            'is_banner' => 'required|boolean',
         ]);
     }
 
@@ -135,44 +182,68 @@ class PostsController extends Controller
         }
     }
 
-    public function edit($id)
+    public function edit(Posts $post)
 {
+    
     // Temukan post berdasarkan ID
-    $post = Posts::findOrFail($id);
+    // $post = Posts::findOrFail($slug);
     $categories = Categories::all(); // Mengambil semua kategori untuk dropdown
+    // Menghitung jumlah post dengan is_featured = 1 dan is_banner = 1
+    $featuredCount = Posts::where('is_featured', 1)->count();
+    $bannerCount = Posts::where('is_banner', 1)->count();
+
+    // Menentukan apakah opsi is_featured dan is_banner bisa dipilih
+    $canBeFeatured = $featuredCount < 4; // Batas 4 untuk featured
+    $canBeBanner = $bannerCount < 3;     // Batas 3 untuk banner
 
     // dd($post);
     // dd($post->status); // This will halt execution and display the status
-    return view('backend.posts.edit', compact('post', 'categories'));
+    return view('backend.posts.edit', compact('post', 'categories', 'canBeFeatured', 'canBeBanner'));
 }
 
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Posts $post)
     {
-        $post = Posts::findOrFail($id);
-
+        // $post = Posts::findOrFail($slug);
+        // Validasi untuk memastikan 'is_banner' hanya dibutuhkan jika radio button aktif
+        $canBeBanner = Posts::where('is_banner', 1)->count() < 3; // Hanya bisa ada maksimal 3 banner
+        $canBeFeatured = Posts::where('is_featured', 1)->count() < 4; // Hanya bisa ada maksimal 4 featured posts
         // Validasi input
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required',
             'status' => 'required|in:draft,published,trashed',
             'comments_is_active' => 'required|boolean',
-            // 'image' => 'required',
-            'category_id' => 'required|exists:categories,id',
-        ]);
+           'is_featured' => [
+            'nullable', 
+            'boolean', 
+            // Validasi hanya diterapkan jika jumlah featured belum mencapai batas
+            $canBeFeatured ? 'required' : '',
+            ],
+            'is_banner' => [
+                'nullable', 
+                'boolean', 
+                // Validasi hanya diterapkan jika jumlah banner belum mencapai batas
+                $canBeBanner ? 'required' : '',
+            ], 
+                // 'image' => 'required',
+                'category_id' => 'required|exists:categories,id',
+            ]);
 
         // Menghasilkan slug dari judul
-        $slug = Str::slug($request->title);
+        $slugs = Str::slug($request->title);
 
         // Memperbarui post dengan data yang baru
         $post->update([
             'title' => $request->title,
-            'slug' => $slug,
+            'slug' => $slugs,
             'image' => $request->input('image'),
             'content' => $request->content,
             'status' => $request->status,
             'category_id' => $request->category_id,
             'comments_is_active' => $request->comments_is_active,
+            'is_featured' => $request->has('is_featured') ? $request->is_featured : $post->is_featured, // Jika tidak ada perubahan, tetap gunakan nilai lama
+        'is_banner' => $request->has('is_banner') ? $request->is_banner : $post->is_banner, // Jika tidak ada perubahan, tetap gunakan nilai lama
             // Tambahkan kategori jika diperlukan
         ]);
 

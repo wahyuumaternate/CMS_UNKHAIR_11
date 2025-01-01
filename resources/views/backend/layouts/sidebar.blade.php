@@ -81,10 +81,13 @@
                  </li>
 
                  <li class="nav-item ">
-                     <a href="">
+                     <a href="{{ route('comments.index') }}">
                          <i class="fab fa-facebook-messenger"></i>
                          <p>Comments</p>
-                         <span class="badge badge-secondary">1</span>
+                         {{-- <span class="badge badge-secondary">2000</span> --}}
+                         @if ($unreadCommentsCount)
+                             <span class="badge badge-secondary">{{ $unreadCommentsCount }}</span>
+                         @endif
                      </a>
                  </li>
 

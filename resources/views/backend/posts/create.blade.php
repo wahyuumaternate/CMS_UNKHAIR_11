@@ -132,7 +132,7 @@
                             <div class="card-body">
                                 <label for="category" class="form-label">Comments</label>
                                 <div class="mb-3">
-                                    <label class="form-label">Status Komentar</label>
+                                    <small class="text-muted">Aktifkan untuk izinkan komentar</small>
                                     <div class="d-flex">
                                         <div class="form-check me-3">
                                             <input class="form-check-input" type="radio" name="comments_is_active"
@@ -155,13 +155,81 @@
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
-
-
-
                             </div>
                         </div>
+                        {{-- Featured & Banner --}}
+                        <div class="card">
+                            <div class="card-body">
+                                <label for="is_featured" class="form-label">Featured</label>
+                                <div class="mb-3">
+                                    <small class="text-muted">Tandai sebagai postingan utama</small>
+                                    <div class="d-flex">
+                                        <div class="form-check me-3">
+                                            <input class="form-check-input" type="radio" name="is_featured"
+                                                id="featuredActive" value="1"
+                                                {{ old('is_featured') == '1' ? 'checked' : '' }}
+                                                {{ !$canBeFeatured ? 'disabled' : '' }}>
+                                            <label class="form-check-label" for="featuredActive">
+                                                Aktif
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="is_featured"
+                                                id="featuredInactive" value="0"
+                                                {{ old('is_featured') == '0' ? 'checked' : '' }} checked>
+                                            <label class="form-check-label" for="featuredInactive">
+                                                Tidak Aktif
+                                            </label>
+                                        </div>
+                                    </div>
+                                    @if (!$canBeFeatured)
+                                        <small class="text-muted">Jumlah featured post sudah mencapai batas maksimal
+                                            (4).</small>
+                                    @endif
+                                    @error('is_featured')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mt-3">
+                            <div class="card-body">
+                                <label for="is_banner" class="form-label">Banner</label>
+                                <div class="mb-3">
+                                    <small class="text-muted">Tandai sebagai banner website</small>
+                                    <div class="d-flex">
+                                        <div class="form-check me-3">
+                                            <input class="form-check-input" type="radio" name="is_banner"
+                                                id="bannerActive" value="1"
+                                                {{ old('is_banner') == '1' ? 'checked' : '' }}
+                                                {{ !$canBeBanner ? 'disabled' : '' }}>
+                                            <label class="form-check-label" for="bannerActive">
+                                                Aktif
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="is_banner"
+                                                id="bannerInactive" value="0"
+                                                {{ old('is_banner') == '0' ? 'checked' : '' }} checked>
+                                            <label class="form-check-label" for="bannerInactive">
+                                                Tidak Aktif
+                                            </label>
+                                        </div>
+                                    </div>
+                                    @if (!$canBeBanner)
+                                        <small class="text-muted">Jumlah banner post sudah mencapai batas maksimal
+                                            (3).</small>
+                                    @endif
+                                    @error('is_banner')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+
+
                     </div>
-                </div>
             </form>
         </div>
     </div>

@@ -8,5 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Comments extends Model
 {
     use HasFactory;
+    protected $table = 'comments';
     protected $guarded = ['id'];
+
+    public function post()
+    {
+        return $this->belongsTo(Posts::class);
+    }
 }

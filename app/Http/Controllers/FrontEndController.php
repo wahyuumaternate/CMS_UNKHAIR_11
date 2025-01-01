@@ -19,13 +19,13 @@ class FrontEndController extends Controller
         //     $query->where('name', 'Agenda');
         // })->latest()->get();
 
-        $beritaUtama = Posts::where('comments_is_active', 1)->latest()->get();
+        $beritaUtama = Posts::where('is_featured', 1)->latest()->get();
     
         $pengumumanPosts = Posts::whereHas('category', function ($query) {
             $query->where('name', 'Pengumuman');
         })->latest()->get();
     
-        $posts = Posts::latest()->get();
+        $posts = Posts::whereIn('status', ['published', 'approved'])->latest()->get();
 
         return view($theme . '.index', compact('beritaUtama', 'pengumumanPosts','posts'));
     }
@@ -64,7 +64,7 @@ class FrontEndController extends Controller
         // Temukan halaman berdasarkan slug
         $category = Categories::where('slug', $slug)->firstOrFail();
 
-        $posts = Posts::where('category_id', $category->id)->latest()->paginate(10); // Batasi 10 posting per halaman
+        $posts = Posts::where('category_id', $category->id)->latest()->paginate(8); // Batasi 10 posting per halaman
 
         // dd($posts);
         return view($theme . '.posts_categories', compact('category','posts'));
@@ -74,7 +74,8 @@ class FrontEndController extends Controller
         $theme = Theme::where('active', true)->first()->path;
         // $data = []; // Data yang diperlukan
 
-        $posts = Posts::latest()->paginate(8); // Menampilkan 10 posting per halaman
+        $posts = Posts::whereIn('status', ['published', 'approved'])->latest()->paginate(8);
+
 
         // dd($posts);
         return view($theme . '.posts_categories', compact('posts'));

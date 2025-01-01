@@ -31,7 +31,7 @@
                     {{-- Jika perlu, Anda bisa menambahkan tombol atau link lain di sini --}}
                 </div>
             </div>
-            <form method="POST" action="{{ route('posts.update', $post->id) }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('posts.update', $post->slug) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT') <!-- Tambahkan metode PUT untuk pembaruan -->
                 <div class="row">
@@ -142,7 +142,7 @@
                             <div class="card-body">
                                 <label for="comments_is_active" class="form-label">Comments</label>
                                 <div class="mb-3">
-                                    <label class="form-label">Status Komentar</label>
+                                    <small class="text-muted">Aktifkan untuk izinkan komentar</small>
                                     <div class="d-flex">
                                         <div class="form-check me-3">
                                             <input class="form-check-input" type="radio" name="comments_is_active"
@@ -163,8 +163,79 @@
                                 </div>
                             </div>
                         </div>
+                        {{-- Featured Post --}}
+                        <div class="card">
+                            <div class="card-body">
+                                <label for="is_featured" class="form-label">Featured Post</label>
+                                <div class="mb-3">
+                                    <small class="text-muted">Tandai sebagai postingan utama</small>
+                                    <div class="d-flex">
+                                        <div class="form-check me-3">
+                                            <input class="form-check-input" type="radio" name="is_featured"
+                                                id="isFeatured" value="1"
+                                                {{ old('is_featured', $post->is_featured) == '1' ? 'checked' : '' }}
+                                                {{ !$canBeFeatured ? 'disabled' : '' }}>
+                                            <label class="form-check-label" for="isFeatured">
+                                                Featured
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="is_featured"
+                                                id="isNotFeatured" value="0"
+                                                {{ old('is_featured', $post->is_featured) == '0' ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="isNotFeatured">
+                                                Not Featured
+                                            </label>
+                                        </div>
+                                    </div>
+                                    @if (!$canBeFeatured)
+                                        <small class="text-muted">Jumlah featured post sudah mencapai batas maksimal
+                                            (4).</small>
+                                    @endif
+                                    @error('is_featured')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Banner Post --}}
+                        <div class="card">
+                            <div class="card-body">
+                                <label for="is_banner" class="form-label">Banner Post</label>
+                                <div class="mb-3">
+                                    <small class="text-muted">Tandai sebagai banner website</small>
+                                    <div class="d-flex">
+                                        <div class="form-check me-3">
+                                            <input class="form-check-input" type="radio" name="is_banner"
+                                                id="isBanner" value="1"
+                                                {{ old('is_banner', $post->is_banner) == '1' ? 'checked' : '' }}
+                                                {{ !$canBeBanner ? 'disabled' : '' }}>
+                                            <label class="form-check-label" for="isBanner">
+                                                Banner
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="is_banner"
+                                                id="isNotBanner" value="0"
+                                                {{ old('is_banner', $post->is_banner) == '0' ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="isNotBanner">
+                                                Not Banner
+                                            </label>
+                                        </div>
+                                    </div>
+                                    @if (!$canBeBanner)
+                                        <small class="text-muted">Jumlah banner post sudah mencapai batas maksimal
+                                            (3).</small>
+                                    @endif
+                                    @error('is_banner')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
-                </div>
             </form>
         </div>
     </div>

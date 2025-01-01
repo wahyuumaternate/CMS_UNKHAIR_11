@@ -21,6 +21,8 @@ return new class extends Migration
             $table->integer('views');
             $table->longText('content');
             $table->boolean('comments_is_active')->default(true); // Menambahkan kolom is_active
+            $table->boolean('is_banner')->default(false); // Menandai apakah post ini menjadi banner
+            $table->boolean('is_featured')->default(false); // Menandai apakah post ini menjadi featured            
             $table->enum('status', ['draft', 'published', 'trashed'])->default('draft');
             $table->timestamps();
             $table->softDeletes(); // Adds the deleted_at column

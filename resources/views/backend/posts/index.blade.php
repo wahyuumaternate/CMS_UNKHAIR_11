@@ -60,12 +60,12 @@
                                         style="width: 200px;">
                                         <option value="" disabled selected>Pilih Tindakan Bulk</option>
                                         @if ($status !== 'trashed')
-                                            <option value="trash">Pindahkan ke Sampah</option>
                                             <option value="publish">Terbitkan</option>
                                             <option value="draft">Buat Menjadi Draft</option>
+                                            <option value="trash">Pindahkan ke Sampah</option>
                                         @else
-                                            <option value="delete">Hapus Permanen</option>
                                             <option value="kembalikan">Kembalikan</option>
+                                            <option value="delete">Hapus Permanen</option>
                                         @endif
                                     </select>
                                     <button type="button" id="applyAction" class="btn btn-primary">Terapkan</button>
@@ -79,6 +79,8 @@
                                                 <th>Status</th>
                                                 <th>Penulis</th>
                                                 <th>Kategori</th>
+                                                <th>Banner</th>
+                                                <th>Featured</th>
                                                 <th>Tanggal</th>
                                             </tr>
                                         </thead>
@@ -90,9 +92,16 @@
                                                             value="{{ $post->id }}">
                                                     </td>
                                                     <td>
-                                                        <a
-                                                            href="{{ route('posts.edit', $post->id) }}">{{ $post->title }}</a>
+                                                        @if ($post->deleted_at)
+                                                            <!-- Jika post dihapus, tampilkan status atau teks saja -->
+                                                            <span class="text-muted">{{ $post->title }}</span>
+                                                        @else
+                                                            <!-- Jika post tidak dihapus, tampilkan link edit -->
+                                                            <a
+                                                                href="{{ route('posts.edit', $post->slug) }}">{{ $post->title }}</a>
+                                                        @endif
                                                     </td>
+
                                                     <td>
                                                         @if (\App\Enums\PostStatus::isPublished($post->status))
                                                             <span class="badge badge-success">{{ $post->status }}</span>
@@ -113,6 +122,24 @@
                                                         @endforeach
                                                         {{-- {{ $post->categories->name }} --}}
                                                     </td>
+                                                    <!-- Menampilkan status Banner -->
+                                                    <td>
+                                                        @if ($post->is_banner)
+                                                            <span class="badge bg-success">Aktif</span>
+                                                        @else
+                                                            <span class="badge bg-secondary">Tidak Aktif</span>
+                                                        @endif
+                                                    </td>
+
+                                                    <!-- Menampilkan status Featured -->
+                                                    <td>
+                                                        @if ($post->is_featured)
+                                                            <span class="badge bg-success">Aktif</span>
+                                                        @else
+                                                            <span class="badge bg-secondary">Tidak Aktif</span>
+                                                        @endif
+                                                    </td>
+
                                                     <td>
                                                         @php
                                                             $dates = \App\Helpers\DateHelper::formatDates(
