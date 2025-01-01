@@ -210,32 +210,35 @@
                     <div class="col-lg-8">
                         <div class="row g-5">
                             @foreach ($posts as $post)
-                                <div class="col-lg-6 col-md-6">
-                                    <div class="post-entry">
+                                <div class="col-lg-6 col-md-6 mb-4">
+                                    <!-- Menambahkan margin bawah agar ada jarak antar kartu -->
+                                    <div class="post-entry card h-100 shadow-sm border-0">
+                                        <!-- Menggunakan card untuk membuat tampilan lebih terstruktur -->
                                         <a href="{{ route('posts.show', $post->slug) }}">
                                             <img src="{{ $post->image }}" alt="{{ $post->title }}"
-                                                class="img-fluid rounded">
+                                                class="card-img-top img-fluid rounded">
                                         </a>
-                                        <div class="post-meta mt-2">
-                                            <span class="text-muted">{{ $post->created_at->format('M d, Y') }}</span>
-                                            <span class="mx-1">•</span>
-                                            <span>Views: {{ $post->views }}</span>
+                                        <div class="card-body">
+                                            <div class="post-meta mb-2">
+                                                <span class="text-muted">{{ $post->created_at->format('M d, Y') }}</span>
+                                                <span class="mx-1">•</span>
+                                                <span>Views: {{ $post->views }}</span>
+                                            </div>
+                                            <h5 class="card-title">
+                                                <a class="text-dark" href="{{ route('posts.show', $post->slug) }}">
+                                                    {{ Str::limit($post->title, 50) }}
+                                                </a>
+                                            </h5>
                                         </div>
-                                        <h2>
-                                            <a class="posts-title" href="{{ route('posts.show', $post->slug) }}">
-                                                {{ Str::limit($post->title, 50) }}
-                                            </a>
-                                        </h2>
                                     </div>
                                 </div>
                             @endforeach
                         </div>
+
                         <!-- Pagination -->
                         <div class="pagination mt-4">
-
                             {{ $posts->links() }}
                         </div>
-
                     </div>
 
                     <!-- Trending Section -->
@@ -252,7 +255,6 @@
                                                     {{ Str::limit($post->title, 50) }}
                                                 </a>
                                             </h4>
-                                            {{-- <span class="author text-muted">{{ $post->author }}</span> --}}
                                         </div>
                                     </li>
                                 @endforeach
@@ -260,8 +262,8 @@
                         </div>
                     </div> <!-- End Trending Section -->
                 </div>
-
             </div>
+
         </section>
     </main>
 @endsection
