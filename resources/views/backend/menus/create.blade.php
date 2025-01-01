@@ -200,7 +200,7 @@
 
                                 <!-- Link Section (Auto-filled) -->
                                 <div class="mb-3" id="link-section" style="display: none;">
-                                    <label for="label" class="form-label">Link Label (optional)</label>
+                                    <label for="label" class="form-label">Link Label</label>
                                     <input type="text" name="label" id="label" class="form-control"
                                         maxlength="255" placeholder="Enter Link Label">
                                     @error('label')

@@ -64,6 +64,7 @@ class CommentsController extends Controller
         ]);
 
         // Redirect ke halaman komentar dengan pesan sukses
+        notify()->success('Komentar berhasil diperbarui!');
         return redirect()->route('comments.index')->with('success', 'Komentar berhasil diperbarui!');
     }
 
@@ -75,7 +76,8 @@ class CommentsController extends Controller
         $comment->delete(); // Hapus komentar
 
         // Redirect ke halaman komentar dengan pesan sukses
-        return redirect()->route('comments.index')->with('success', 'Komentar berhasil dihapus!');
+        notify()->success('Komentar berhasil dihapus!');
+        return redirect()->route('comments.index');
     }
     
 }
