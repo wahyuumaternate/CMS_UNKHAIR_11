@@ -103,7 +103,7 @@
                 'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen',
                 'insertdatetime media table paste code help wordcount'
             ],
-            toolbar: 'undo redo | formatselect | bold italic underline strikethrough | forecolor backcolor | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | removeformat | table link image media | code fullscreen preview',
+            toolbar: 'undo redo | formatselect | bold italic underline strikethrough | forecolor backcolor | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | removeformat | table link image media | code fullscreen preview visualblocks ',
             toolbar_mode: 'sliding',
             content_css: [
                 'https://www.tiny.cloud/css/codepen.min.css'
@@ -122,8 +122,17 @@
             },
 
             setup: function(editor) {
+                editor.on('NodeChange', function(e) {
+                    // Periksa apakah elemen yang diubah adalah gambar
+                    if (e.element && e.element.nodeName === 'IMG') {
+                        e.element.style.maxWidth =
+                            '100%'; // Batasi lebar maksimum gambar ke 100% kontainer
+                        e.element.style.height = 'auto'; // Pastikan aspek rasio terjaga
+                    }
+                });
+
                 editor.on('change', function() {
-                    editor.save();
+                    editor.save(); // Simpan perubahan konten editor ke textarea
                 });
             }
         });
