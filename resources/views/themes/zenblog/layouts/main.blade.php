@@ -185,6 +185,18 @@
             margin-bottom: 20px;
             font-weight: bold;
         }
+
+        /* Warna dot yang tidak aktif */
+        .swiper-pagination-bullet {
+            background-color: #f6ff00 !important;
+            /* Ganti dengan warna yang diinginkan */
+        }
+
+        /* Warna dot yang aktif */
+        .swiper-pagination-bullet-active {
+            background-color: #FFB200 !important;
+            /* Ganti dengan warna yang diinginkan */
+        }
     </style>
 </head>
 

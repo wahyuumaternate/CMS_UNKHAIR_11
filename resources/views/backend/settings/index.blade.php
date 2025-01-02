@@ -47,11 +47,11 @@
                                                     @endif
                                                 </div>
                                             </div>
-                                            <div class="mb-3">
+                                            {{-- <div class="mb-3">
                                                 <label for="app_url" class="form-label">App URL</label>
                                                 <input type="text" name="app_url" id="app_url"
                                                     value="{{ $settings['app_url'] ?? '' }}" class="form-control">
-                                            </div>
+                                            </div> --}}
                                             <button type="submit" class="btn btn-primary mt-3">Simpan Pengaturan</button>
                                         </div>
                                     </div>
