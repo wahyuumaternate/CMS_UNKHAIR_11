@@ -73,5 +73,12 @@ class AppServiceProvider extends ServiceProvider
         // Membagikan data trending posts ke semua view
         View::share('unreadCommentsCount', $unreadCommentsCount);
 
+
+        $banner = Posts::where('is_banner', 1)
+               ->where('status', 'published')
+               ->latest()
+               ->get();
+
+        View::share('banner', $banner);
     }
 }

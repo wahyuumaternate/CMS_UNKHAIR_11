@@ -271,7 +271,7 @@
 
                     <script type="application/json" class="swiper-config">
                         {
-                          "loop": true,
+                          "loop": false,
                           "speed": 600,
                           "autoplay": {
                             "delay": 5000
@@ -291,7 +291,7 @@
                     </script>
 
                     <div class="swiper-wrapper">
-                        @foreach ($posts->take(3) as $post)
+                        @foreach ($banner as $post)
                             <div class="swiper-slide" style="background-image: url('{{ $post->image }}');">
                                 <div class="content">
                                     <h2>
