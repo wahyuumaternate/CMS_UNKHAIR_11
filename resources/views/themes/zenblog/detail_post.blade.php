@@ -130,7 +130,7 @@
                                             <textarea name="content" class="form-control" rows="4" placeholder="Write your comment here..." required></textarea>
                                         </div>
                                         <div class="form-group">
-                                            {!! ReCaptcha::renderJs() !!}
+                                            {!! ReCaptcha::htmlScriptTagJsApi() !!}
                                             {!! ReCaptcha::htmlFormSnippet() !!}
                                             @error('g-recaptcha-response')
                                                 <span class="text-danger">{{ $message }}</span>
