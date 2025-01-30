@@ -338,7 +338,8 @@
                                             <label for="content">Comment</label>
                                             <textarea name="content" id="content" class="form-control" rows="4" required></textarea>
                                         </div>
-                                        <div class="form-group mb-3">
+                                        <div class="form-group  mb-3">
+                                            {!! ReCaptcha::htmlScriptTagJsApi() !!}
                                             {!! ReCaptcha::htmlFormSnippet() !!}
                                             @error('g-recaptcha-response')
                                                 <span class="text-danger">{{ $message }}</span>

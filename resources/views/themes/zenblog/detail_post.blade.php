@@ -129,7 +129,7 @@
                                         <div class="form-group mb-3">
                                             <textarea name="content" class="form-control" rows="4" placeholder="Write your comment here..." required></textarea>
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group  mb-3">
                                             {!! ReCaptcha::htmlScriptTagJsApi() !!}
                                             {!! ReCaptcha::htmlFormSnippet() !!}
                                             @error('g-recaptcha-response')

@@ -266,7 +266,7 @@
             });
         });
     </script>
-    {!! ReCaptcha::htmlScriptTagJsApi() !!}
+    {{-- {!! ReCaptcha::htmlScriptTagJsApi() !!} --}}
 </body>
 
 </html>

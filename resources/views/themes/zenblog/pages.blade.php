@@ -8,7 +8,7 @@
                 <h1 class="mb-2 mb-lg-0">{{ $page->title }}</h1>
                 <nav class="breadcrumbs">
                     <ol>
-                        <li><a href="index.html">Home</a></li>
+                        <li><a href="/">Home</a></li>
                         <li class="current">{{ $page->title }}</li>
                     </ol>
                 </nav>
