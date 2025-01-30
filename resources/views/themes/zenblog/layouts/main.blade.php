@@ -198,6 +198,7 @@
             /* Ganti dengan warna yang diinginkan */
         }
     </style>
+      {!! ReCaptcha::htmlScriptTagJsApi() !!}
 </head>
 
 <body class="index-page">
