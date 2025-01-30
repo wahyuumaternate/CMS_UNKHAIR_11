@@ -198,8 +198,6 @@
             /* Ganti dengan warna yang diinginkan */
         }
     </style>
-    <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response">
-    {!! ReCaptcha::htmlScriptTagJsApi() !!}
 </head>
 
 <body class="index-page">
@@ -268,7 +266,7 @@
             });
         });
     </script>
-
+    {!! ReCaptcha::htmlScriptTagJsApi() !!}
 </body>
 
 </html>
