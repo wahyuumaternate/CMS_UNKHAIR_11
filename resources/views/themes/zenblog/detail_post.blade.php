@@ -130,8 +130,8 @@
                                             <textarea name="content" class="form-control" rows="4" placeholder="Write your comment here..." required></textarea>
                                         </div>
                                         <div class="form-group">
-                                            {!! NoCaptcha::renderJs() !!}
-                                            {!! NoCaptcha::display(['data-theme' => 'light']) !!}
+                                            {!! ReCaptcha::renderJs() !!}
+                                            {!! ReCaptcha::htmlFormSnippet() !!}
                                             @error('g-recaptcha-response')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
