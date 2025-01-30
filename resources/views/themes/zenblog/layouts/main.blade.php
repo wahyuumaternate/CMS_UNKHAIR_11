@@ -198,7 +198,8 @@
             /* Ganti dengan warna yang diinginkan */
         }
     </style>
-      {!! ReCaptcha::htmlScriptTagJsApi() !!}
+    <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response">
+    {!! ReCaptcha::htmlScriptTagJsApi() !!}
 </head>
 
 <body class="index-page">
@@ -256,6 +257,14 @@
                         }
                     });
                 });
+            });
+        });
+
+        grecaptcha.ready(function() {
+            grecaptcha.execute('{{ env('RECAPTCHA_SITE_KEY') }}', {
+                action: 'submit'
+            }).then(function(token) {
+                document.getElementById('g-recaptcha-response').value = token;
             });
         });
     </script>
