@@ -19,6 +19,12 @@ Route::get('/seeder', function () {
 Route::get('/migrate', function () {
     Artisan::call('migrate');
 });
+Route::get('/clear', function () {
+    Artisan::call('config:clear');
+    Artisan::call('cache:clear');
+    
+    return "Cache cleared successfully";
+});
 Route::get('/search-menu', [SearchController::class, 'searchMenu'])->name('search-menu')->middleware('auth');
 
 Route::get('/', [FrontEndController::class, 'index']);
