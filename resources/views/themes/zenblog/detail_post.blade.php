@@ -129,14 +129,14 @@
                                         <div class="form-group mb-3">
                                             <textarea name="content" class="form-control" rows="4" placeholder="Write your comment here..." required></textarea>
                                         </div>
-                                        <div class="form-group  mb-3">
+                                        <div class="form-group mb-3">
                                             {!! ReCaptcha::htmlScriptTagJsApi() !!}
                                             {!! ReCaptcha::htmlFormSnippet() !!}
                                             @error('g-recaptcha-response')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
-                                        <button type="submit" class="btn btn-outline-warning">Kirim</button>
+                                        <button type="submit" class="btn btn-outline-warning mt-3">Kirim</button>
                                     </form>
                                 </section><!-- /Comments Section -->
                             @endif
