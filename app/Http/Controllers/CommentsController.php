@@ -14,26 +14,22 @@ class CommentsController extends Controller
     }
     public function store(Request $request)
     {
-        // dd($request->all());
-        // Validasi input
         $validated = $request->validate([
-            'post_id' => 'required|exists:posts,id', // Pastikan post_id valid
-            'content' => 'required|string|min:3|max:500', // Konten minimal 3 karakter
-            'name' => 'required|string|min:3|max:500', // Nama minimal 3 karakter
-            'email' => 'required|email|min:3|max:500', // Pastikan email valid
+            'post_id' => 'required|exists:posts,id',
+            'content' => 'required|string|min:3|max:500',
+            'name' => 'required|string|min:3|max:500',
+            'email' => 'required|email|min:3|max:500',
+            'g-recaptcha-response' => 'required|recaptcha', // Tambahkan validasi reCAPTCHA
         ]);
     
-        // Simpan komentar
         Comments::create([
             'post_id' => $validated['post_id'],
             'content' => $validated['content'],
-            'name' => $validated['name'],    // Menambahkan kolom name
-            'email' => $validated['email'],  // Menambahkan kolom email
+            'name' => $validated['name'],
+            'email' => $validated['email'],
         ]);
     
-       // Redirect dengan pesan sukses
         return redirect()->back()->with('success', 'Komentar Anda telah ditambahkan dan sedang diverifikasi!');
-
     }
 
     // Menampilkan form edit komentar

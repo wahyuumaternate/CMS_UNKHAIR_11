@@ -125,14 +125,15 @@
                                             <input type="email" name="email" id="email" class="form-control"
                                                 placeholder="Your Email" required>
                                         </div>
+
+                                        <div class="form-group mb-3">
+                                            <textarea name="content" class="form-control" rows="4" placeholder="Write your comment here..." required></textarea>
+                                        </div>
                                         <div class="form-group mb-3">
                                             {!! ReCaptcha::htmlFormSnippet() !!}
                                             @error('g-recaptcha-response')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
-                                        </div>
-                                        <div class="form-group mb-3">
-                                            <textarea name="content" class="form-control" rows="4" placeholder="Write your comment here..." required></textarea>
                                         </div>
                                         <button type="submit" class="btn btn-outline-warning">Kirim</button>
                                     </form>
