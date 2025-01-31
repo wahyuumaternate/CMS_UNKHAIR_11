@@ -197,6 +197,63 @@
             background-color: #FFB200 !important;
             /* Ganti dengan warna yang diinginkan */
         }
+
+        @media (max-width: 991px) {
+            .navmenu.navbar-mobile {
+                position: fixed;
+                overflow: hidden;
+                top: 0;
+                right: 0;
+                left: 0;
+                bottom: 0;
+                background: #fff;
+                transition: 0.3s;
+                z-index: 999;
+                padding: 15px;
+            }
+
+            .navmenu.navbar-mobile ul {
+                display: block;
+                position: absolute;
+                top: 55px;
+                right: 15px;
+                bottom: 45px;
+                left: 15px;
+                padding: 10px 0;
+                overflow-y: auto;
+                transition: 0.3s;
+                background: #fff;
+            }
+
+            .dropdown-menu {
+                display: none;
+                padding-left: 15px;
+            }
+
+            .dropdown-menu.dropdown-active {
+                display: block;
+            }
+
+            .navmenu.navbar-mobile ul li {
+                padding: 0;
+            }
+
+            .navmenu.navbar-mobile .dropdown ul {
+                position: static;
+                display: none;
+                margin: 10px 20px;
+                padding: 10px 0;
+                z-index: 99;
+                opacity: 1;
+                visibility: visible;
+                background: transparent;
+                box-shadow: none;
+            }
+
+            .navmenu.navbar-mobile .dropdown ul.dropdown-active {
+                display: block;
+            }
+        }
     </style>
 </head>
 
@@ -234,28 +291,47 @@
     <script src="{{ asset('themes/zenblog/js/main.js') }}"></script>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Get all toggle buttons for the dropdowns
-            var dropdownToggles = document.querySelectorAll('.dropdown .toggle-dropdown');
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.innerWidth < 992) {
+                const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
+                const navMenu = document.querySelector('.navmenu');
 
-            dropdownToggles.forEach(function(toggle) {
-                toggle.addEventListener('click', function(e) {
-                    e.preventDefault(); // Prevent default link behavior
-                    var dropdownMenu = this.closest('li').querySelector('.dropdown-menu');
+                // Toggle untuk menu utama mobile
+                if (mobileNavToggle) {
+                    mobileNavToggle.addEventListener('click', function(e) {
+                        navMenu.classList.toggle('navbar-mobile');
+                        this.classList.toggle('bi-x');
+                    });
+                }
 
-                    // Toggle the 'show' class on the dropdown menu
-                    dropdownMenu.classList.toggle('show');
+                // Handler untuk dropdown level 1
+                document.querySelectorAll('.navmenu .dropdown').forEach(function(dropdown) {
+                    const dropdownToggle = dropdown.querySelector('.dropdown-toggle');
+                    const dropdownMenu = dropdown.querySelector('.dropdown-menu');
 
-                    // Close other dropdowns when opening a new one
-                    // Optionally, you can close other open dropdowns
-                    var otherDropdowns = document.querySelectorAll('.dropdown-menu');
-                    otherDropdowns.forEach(function(menu) {
-                        if (menu !== dropdownMenu) {
-                            menu.classList.remove('show');
-                        }
+                    dropdownToggle.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        dropdownMenu.classList.toggle('dropdown-active');
                     });
                 });
-            });
+
+                // Handler untuk dropdown level 2 dan 3
+                document.querySelectorAll('.dropdown-menu .dropdown').forEach(function(dropdown) {
+                    const link = dropdown.querySelector('a');
+                    const subMenu = dropdown.querySelector('ul');
+
+                    if (link && subMenu) {
+                        link.addEventListener('click', function(e) {
+                            if (this.classList.contains('dropdown-toggle')) {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                subMenu.classList.toggle('dropdown-active');
+                            }
+                        });
+                    }
+                });
+            }
         });
 
         grecaptcha.ready(function() {

@@ -52,7 +52,7 @@
         }
 
         .card-title a:hover {
-            color: #FF9D23;
+            color: #5DB996;
         }
 
         /* Trending Section Styles */
@@ -88,7 +88,7 @@
         .trending-post .number {
             font-size: 24px;
             font-weight: bold;
-            color: #FF9D23;
+            color: #5DB996;
             min-width: 30px;
         }
 
@@ -104,7 +104,7 @@
         }
 
         .trending-post a:hover {
-            color: #FF9D23;
+            color: #5DB996;
         }
 
         /* Pagination Styles */
@@ -122,8 +122,8 @@
         }
 
         .pagination .page-item.active .page-link {
-            background-color: #FF9D23;
-            border-color: #FF9D23;
+            background-color: #5DB996;
+            border-color: #5DB996;
             color: #fff;
         }
 
@@ -190,23 +190,7 @@
 
                     <!-- Trending Section -->
                     <div class="col-lg-4">
-                        <div class="trending">
-                            <h3>Trending</h3>
-                            <ul class="trending-post list-unstyled">
-                                @foreach ($posts->take(5) as $key => $post)
-                                    <li>
-                                        <span class="number">{{ $key + 1 }}</span>
-                                        <div>
-                                            <h4>
-                                                <a href="{{ route('posts.show', $post->slug) }}">
-                                                    {{ Str::limit($post->title, 50) }}
-                                                </a>
-                                            </h4>
-                                        </div>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </div>
+                        @include('themes.medicio.layouts.sidebar')
                     </div>
                 </div>
             </div>

@@ -28,7 +28,7 @@ Route::get('/clear', function () {
 Route::get('/search-menu', [SearchController::class, 'searchMenu'])->name('search-menu')->middleware('auth');
 
 Route::get('/', [FrontEndController::class, 'index']);
-
+Route::get('/search', [SearchController::class, 'searchPosts'])->name('search');
 // Route::get('/', function () {
 //     $theme = Theme::where('active', true)->first()->path;
 //     $data = []; // Data yang diperlukan

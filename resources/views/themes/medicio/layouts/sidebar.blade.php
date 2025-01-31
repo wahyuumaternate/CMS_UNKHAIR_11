@@ -19,7 +19,7 @@
         font-weight: 600;
         margin-bottom: 20px;
         padding-bottom: 10px;
-        border-bottom: 2px solid #FF9D23;
+        border-bottom: 2px solid #5DB996;
     }
 
     /* Search Widget */
@@ -38,12 +38,12 @@
     }
 
     .search-widget input:focus {
-        border-color: #FF9D23;
+        border-color: #5DB996;
         box-shadow: 0 0 0 0.2rem rgba(255, 157, 35, 0.25);
     }
 
     .search-widget button {
-        background: #FF9D23;
+        background: #5DB996;
         color: white;
         border: none;
         padding: 10px 15px;
@@ -53,7 +53,7 @@
     }
 
     .search-widget button:hover {
-        background: #e88b15;
+        background: #5db9968f;
     }
 
     /* Trending Posts Widget */
@@ -90,7 +90,7 @@
     }
 
     .post-item h4 a:hover {
-        color: #FF9D23;
+        color: #5DB996;
     }
 
     .post-item time {
@@ -124,7 +124,7 @@
     }
 
     .tags-widget a:hover {
-        background: #FF9D23;
+        background: #5DB996;
         color: white;
     }
 </style>
@@ -134,8 +134,8 @@
         <!-- Search Widget -->
         <div class="search-widget widget-item">
             <h3 class="widget-title">Search</h3>
-            <form action="">
-                <input type="text" placeholder="Search...">
+            <form action="{{ route('search') }}" method="GET">
+                <input type="text" name="q" placeholder="Search..." value="{{ request('q') }}">
                 <button type="submit" title="Search">
                     <i class="bi bi-search"></i>
                 </button>

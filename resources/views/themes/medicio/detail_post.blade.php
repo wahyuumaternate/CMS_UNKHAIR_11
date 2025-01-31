@@ -75,7 +75,7 @@
         }
 
         .comment strong {
-            color: #FF9D23;
+            color: #5DB996;
         }
 
         .form-control {
@@ -85,12 +85,12 @@
         }
 
         .form-control:focus {
-            border-color: #FF9D23;
+            border-color: #5DB996;
             box-shadow: 0 0 0 0.2rem rgba(255, 157, 35, 0.25);
         }
 
         .btn-submit {
-            background: #FF9D23;
+            background: #5DB996;
             color: #fff;
             padding: 10px 25px;
             border: none;
@@ -110,7 +110,7 @@
         }
 
         .breadcrumbs h2 {
-            color: #FF9D23;
+            color: #5DB996;
             margin: 0;
         }
 
@@ -141,7 +141,7 @@
         }
 
         .breadcrumbs ol li a:hover {
-            color: #FF9D23;
+            color: #5DB996;
         }
 
         /* Alert styles */
@@ -172,7 +172,7 @@
         }
 
         .content a {
-            color: #FF9D23;
+            color: #5DB996;
             text-decoration: none;
         }
 

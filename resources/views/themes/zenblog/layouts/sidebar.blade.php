@@ -5,11 +5,13 @@
         <!-- Search Widget -->
         <div class="search-widget widget-item">
             <h3 class="widget-title">Search</h3>
-            <form action="">
-                <input type="text">
-                <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+            <form action="{{ route('search') }}" method="GET">
+                <input type="text" name="q" placeholder="Search..." value="{{ request('q') }}">
+                <button type="submit" title="Search">
+                    <i class="bi bi-search"></i>
+                </button>
             </form>
-        </div><!--/Search Widget -->
+        </div>
 
         <!-- Trending Posts Widget -->
         <div class="recent-posts-widget widget-item">

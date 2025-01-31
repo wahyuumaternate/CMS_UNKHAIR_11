@@ -58,6 +58,12 @@ class DatabaseSeeder extends Seeder
             'image' => 'themes/nextpage-lite.png',
             'active' => 0,
         ]);
+        Theme::create([
+            'name' => 'nextpage-lite',
+            'path' => 'themes/medicio',
+            'image' => 'themes/medicio.png',
+            'active' => 0,
+        ]);
         
 
         $this->call(GalleriesSeeder::class);

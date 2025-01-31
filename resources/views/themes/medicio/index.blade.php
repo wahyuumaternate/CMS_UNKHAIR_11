@@ -154,7 +154,7 @@
         }
 
         .card-title a:hover {
-            color: #FF9D23;
+            color: #5DB996;
         }
 
         /* Post Meta Styles */
@@ -171,7 +171,7 @@
 
         /* Date Box Styles for Announcements */
         .date-box {
-            background: #FF9D23;
+            background: #5DB996;
             color: white;
             padding: 10px;
             border-radius: 5px;

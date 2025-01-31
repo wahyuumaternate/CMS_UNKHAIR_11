@@ -242,25 +242,8 @@
                     </div>
 
                     <!-- Trending Section -->
-                    <div class="col-lg-4">
-                        <div class="trending">
-                            <h3 class="mb-4">Trending</h3>
-                            <ul class="trending-post list-unstyled">
-                                @foreach ($posts->take(5) as $key => $post)
-                                    <li class="d-flex mb-3">
-                                        <span class="number me-3">{{ $key + 1 }}</span>
-                                        <div>
-                                            <h4 class="m-0">
-                                                <a href="{{ route('posts.show', $post->slug) }}" class="text-dark">
-                                                    {{ Str::limit($post->title, 50) }}
-                                                </a>
-                                            </h4>
-                                        </div>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    </div> <!-- End Trending Section -->
+                    @include('themes.zenblog.layouts.sidebar')
+
                 </div>
             </div>
 
