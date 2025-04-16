@@ -6,6 +6,7 @@ use App\Http\Controllers\GalleriesController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\UpdateController;
 use App\Models\Theme;
 use Illuminate\Support\Facades\Route;
 // use UniSharp\LaravelFilemanager\Lfm;
@@ -68,3 +69,15 @@ Route::post('comments-post', [CommentsController::class, 'store'])->name('commen
 
 require __DIR__.'/auth.php';
 require __DIR__.'/backend.php';
+
+Route::post('/admin/update-app', [UpdateController::class, 'updateApp'])->name('admin.update.app')->middleware('auth');
+
+
+// Route::get('/api/check-update', function () {
+//     return response()->json([
+//         'version' => '1.2.0',
+//         'changelog' => 'Tambah fitur X, fix bug Y',
+//         'file_url' => 'https://wahyuumaternate.my.id/resources.zip',
+//         'migrate' => true
+//     ]);
+// });

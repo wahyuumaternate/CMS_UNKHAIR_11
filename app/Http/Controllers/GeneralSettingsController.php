@@ -9,6 +9,8 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use ZipArchive;
+use Illuminate\Support\Facades\Http;
+
 
 class GeneralSettingsController extends Controller
 {
@@ -18,12 +20,31 @@ class GeneralSettingsController extends Controller
      * @return \Illuminate\View\View
      */
     public function index()
-    {
-        // Ambil semua pengaturan dari tabel general_settings
-        $settings = DB::table('general_settings')->pluck('value', 'key');
+{
+    // Ambil semua pengaturan dari tabel general_settings
+    $settings = DB::table('general_settings')->pluck('value', 'key');
 
-        // Tampilkan halaman dengan pengaturan
-        return view('backend.settings.index', ['settings' => $settings]);
+    // Ambil versi aplikasi saat ini dari config
+    $currentVersion = config('app.version');
+
+    // Ambil versi terbaru dari server update
+    $remoteVersion = null;
+    try {
+        $response = Http::get('https://cms-unkhair.wahyuumaternate.my.id/api/check-update');
+        if ($response->ok()) {
+            $remoteVersion = $response->json('version');
+        }
+    } catch (\Exception $e) {
+        // Optional: log error atau tangani jika server update tidak bisa diakses
+        $remoteVersion = null;
+    }
+
+    // Tampilkan halaman settings
+    return view('backend.settings.index', [
+        'settings' => $settings,
+        'currentVersion' => $currentVersion,
+        'remoteVersion' => $remoteVersion,
+    ]);
     }
 
     /**

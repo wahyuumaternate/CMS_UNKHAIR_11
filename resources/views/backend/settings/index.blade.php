@@ -21,6 +21,36 @@
                         <h4 class="card-title">Settings</h4>
                     </div> --}}
                     <div class="card-body">
+                        @php
+                            $disabled = version_compare($remoteVersion, $currentVersion, '<='); // true kalau tidak perlu update
+                        @endphp
+
+                        @if (session('success'))
+                            <div class="alert alert-success mt-2">
+                                {{ session('success') }}
+                                <pre>{{ session('output') }}</pre>
+                            </div>
+                        @endif
+
+                        <form id="updateForm" action="{{ route('admin.update.app') }}" method="POST" class="mt-3">
+                            @csrf
+                            <button id="updateButton" type="submit" class="btn btn-warning d-flex align-items-center"
+                                @if ($disabled) disabled style="opacity: 0.5; cursor: not-allowed;" @endif>
+                                <span class="spinner-border spinner-border-sm me-2 d-none" id="updateSpinner" role="status"
+                                    aria-hidden="true"></span>
+                                🔄 Perbarui Aplikasi ke Versi {{ $remoteVersion ?? '...' }}
+
+                            </button>
+                            @if ($disabled)
+                                <small class="d-block text-muted mt-1">Aplikasi sudah dalam versi terbaru
+                                    (v{{ $currentVersion }})</small>
+                            @else
+                                <small class="d-block text-muted mt-1">Terdapat Versi Terbaru Dari Aplikasi Ini segera
+                                    update</small>
+                            @endif
+                        </form>
+
+
                         <div class="row py-2">
                             <div class="col-lg-8">
                                 <form action="{{ route('settings.update') }}" method="POST" enctype="multipart/form-data">
@@ -216,6 +246,19 @@
             var tabLink = document.querySelector('[href="#v-pills-' + activeTab + '-settings"]');
             if (tabLink) {
                 tabLink.click();
+            }
+            // Tambahkan animasi loading saat tombol update ditekan
+            const updateForm = document.getElementById('updateForm');
+            const updateButton = document.getElementById('updateButton');
+            const updateSpinner = document.getElementById('updateSpinner');
+
+            if (updateForm && updateButton && updateSpinner) {
+                updateForm.addEventListener('submit', function() {
+                    updateSpinner.classList.remove('d-none');
+                    updateButton.setAttribute('disabled', 'disabled');
+                    updateButton.style.opacity = 0.6;
+                    updateButton.style.cursor = 'not-allowed';
+                });
             }
         });
     </script>
